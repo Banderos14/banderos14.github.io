@@ -1,0 +1,130 @@
+.projects {
+  border-top: 1px solid var(--border);
+}
+
+.projects-title {
+  font-size: clamp(24px, 3.5vw, 36px);
+  font-weight: 700;
+  margin-bottom: 48px;
+  color: var(--white);
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.project-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+
+.project-card:hover {
+  border-color: rgba(201, 168, 76, 0.5);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+}
+
+.project-card--featured {
+  border-color: rgba(201, 168, 76, 0.4);
+  background: linear-gradient(135deg, var(--surface) 0%, rgba(201, 168, 76, 0.03) 100%);
+}
+
+.project-featured-badge {
+  position: absolute;
+  top: -1px;
+  right: 20px;
+  background: var(--gold);
+  color: var(--navy);
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 3px 10px;
+  border-radius: 0 0 6px 6px;
+}
+
+.project-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.project-icon {
+  font-family: var(--mono);
+  font-size: 18px;
+  color: var(--gold);
+  opacity: 0.6;
+}
+
+.project-links {
+  display: flex;
+  gap: 12px;
+}
+
+.project-link {
+  color: var(--muted);
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.project-link:hover {
+  color: var(--gold);
+}
+
+.project-title {
+  font-family: var(--sans);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--white);
+  margin-top: 4px;
+}
+
+.project-desc {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+  flex: 1;
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.project-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--gold);
+  background: var(--gold-dim);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+
+.projects-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 48px;
+}
+
+.projects-more .btn {
+  gap: 10px;
+}
+
+@media (max-width: 600px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+}
