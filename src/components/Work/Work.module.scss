@@ -1,0 +1,35 @@
+.section {
+  padding: 96px 0;
+  position: relative;
+  z-index: 2;
+}
+
+.header {
+  @include section-header;
+}
+
+.num {
+  @include font-mono;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+}
+
+.title {
+  @include font-mono;
+  font-size: 11px;
+  color: var(--text-m);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}

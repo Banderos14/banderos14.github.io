@@ -1,0 +1,52 @@
+.section {
+  padding: 96px 0;
+  position: relative;
+  z-index: 2;
+}
+
+.header {
+  @include section-header;
+}
+
+.num {
+  @include font-mono;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+}
+
+.title {
+  @include font-mono;
+  font-size: 11px;
+  color: var(--text-m);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: start;
+}
+
+.text {
+  p {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--text-m);
+    margin-bottom: 16px;
+
+    strong {
+      color: var(--text);
+      font-weight: 400;
+    }
+  }
+}

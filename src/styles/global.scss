@@ -1,0 +1,198 @@
+// =========================================================
+// CSS TOKENS
+// =========================================================
+:root {
+  --bg:           #080c10;
+  --bg-2:         #0d1117;
+  --bg-3:         #111820;
+  --surface:      #141c26;
+  --border:       rgba(255, 255, 255, 0.06);
+  --border-h:     rgba(255, 255, 255, 0.12);
+  --text:         #dde4ec;
+  --text-m:       rgba(221, 228, 236, 0.5);
+  --text-d:       rgba(221, 228, 236, 0.22);
+  --accent:       #3b82f6;
+  --accent-dim:   rgba(59, 130, 246, 0.1);
+  --accent-glow:  rgba(59, 130, 246, 0.05);
+  --green:        #34d399;
+  --yellow:       #f0c040;
+  --red:          #f87171;
+  --purple:       #a78bfa;
+  --font-s:       'DM Sans', sans-serif;
+  --font-m:       'DM Mono', monospace;
+  --ease:         cubic-bezier(0.16, 1, 0.3, 1);
+  --nav-bg:       rgba(8, 12, 16, 0.9);
+}
+
+[data-theme='light'] {
+  --bg:           #f7f4ed;
+  --bg-2:         #f0ece2;
+  --bg-3:         #e8e2d4;
+  --surface:      #e0d9c8;
+  --border:       rgba(0, 0, 0, 0.07);
+  --border-h:     rgba(0, 0, 0, 0.13);
+  --text:         #1a1a18;
+  --text-m:       rgba(26, 26, 24, 0.52);
+  --text-d:       rgba(26, 26, 24, 0.28);
+  --accent:       #c47f0a;
+  --accent-dim:   rgba(196, 127, 10, 0.1);
+  --accent-glow:  rgba(196, 127, 10, 0.05);
+  --green:        #059669;
+  --yellow:       #c47f0a;
+  --red:          #dc2626;
+  --purple:       #7c3aed;
+  --nav-bg:       rgba(247, 244, 237, 0.92);
+}
+
+// =========================================================
+// RESET
+// =========================================================
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  background: none;
+  border: none;
+  font: inherit;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+::selection {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+
+::-webkit-scrollbar { width: 2px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border-h); }
+
+// =========================================================
+// TYPOGRAPHY & ANIMATIONS
+// =========================================================
+body {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+  cursor: none;
+  overflow-x: hidden;
+  transition: background 0.4s ease, color 0.4s ease;
+
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9997;
+    opacity: 0.3;
+  }
+}
+
+@keyframes slideUp {
+  to { transform: translateY(0); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+@keyframes tickScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+// =========================================================
+// LAYOUT UTILS
+// =========================================================
+section {
+  padding: 96px 0;
+  position: relative;
+  z-index: 2;
+}
+
+.container {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-m);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  padding: 10px 20px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.25s var(--ease);
+  text-decoration: none;
+  white-space: nowrap;
+
+  &-p {
+    background: var(--accent);
+    color: #fff;
+    border: 1px solid var(--accent);
+
+    &:hover {
+      background: transparent;
+      color: var(--accent);
+    }
+  }
+
+  &-s {
+    background: transparent;
+    color: var(--text-m);
+    border: 1px solid var(--border-h);
+
+    &:hover {
+      border-color: var(--text-m);
+      color: var(--text);
+    }
+  }
+
+  &-arr {
+    transition: transform 0.25s;
+    display: inline-block;
+  }
+
+  &:hover .btn-arr {
+    transform: translate(2px, -2px);
+  }
+}
