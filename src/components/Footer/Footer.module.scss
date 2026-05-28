@@ -1,0 +1,29 @@
+.footer {
+  position: relative;
+  z-index: 2;
+  border-top: 1px solid var(--border);
+  padding: 24px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.left {
+  @include font-mono;
+  font-size: 11px;
+  color: var(--text-d);
+  letter-spacing: 0.06em;
+}
+
+.right {
+  @include font-mono;
+  font-size: 11px;
+  color: var(--text-d);
+  letter-spacing: 0.06em;
+
+  span {
+    color: var(--accent);
+  }
+}

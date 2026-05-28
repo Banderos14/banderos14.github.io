@@ -1,0 +1,77 @@
+.wrap {
+  width: 100%;
+  position: relative;
+  align-self: flex-end;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.3s forwards;
+}
+
+.photo {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-3);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 15%;
+    display: block;
+    filter: grayscale(15%) contrast(1.05);
+    transition: filter 0.4s;
+
+    [data-theme='light'] & {
+      filter: grayscale(5%) contrast(1.02) brightness(0.98);
+    }
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 55%, rgba(8, 12, 16, 0.7) 100%);
+    pointer-events: none;
+
+    [data-theme='light'] & {
+      background: linear-gradient(to bottom, transparent 55%, rgba(247, 244, 237, 0.6) 100%);
+    }
+  }
+}
+
+.corner {
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  z-index: 3;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    background: var(--accent);
+    opacity: 0.55;
+  }
+
+  &::before {
+    width: 100%;
+    height: 1px;
+    top: 0;
+    left: 0;
+  }
+
+  &::after {
+    width: 1px;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
+}
+
+.tl { top: 10px; left: 10px; }
+.tr { top: 10px; right: 10px; transform: rotate(90deg); }
+.bl { bottom: 10px; left: 10px; transform: rotate(270deg); }
+.br { bottom: 10px; right: 10px; transform: rotate(180deg); }

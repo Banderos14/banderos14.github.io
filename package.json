@@ -1,21 +1,27 @@
 {
-  "name": "banderos14-portfolio",
+  "name": "portfolio",
   "private": true,
   "version": "1.0.0",
-  "type": "module",
+  "homepage": "https://banderos14.github.io",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "deploy": "npm run build && gh-pages -d dist"
   },
   "dependencies": {
+    "framer-motion": "^11.3.0",
+    "gsap": "^3.12.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@types/react": "^18.3.1",
-    "@types/react-dom": "^18.3.1",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
-    "vite": "^5.4.2"
+    "gh-pages": "^6.1.1",
+    "sass": "^1.77.8",
+    "typescript": "^5.5.3",
+    "vite": "^5.3.4"
   }
 }
