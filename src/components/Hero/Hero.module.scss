@@ -9,7 +9,7 @@
 
 .console {
   position: absolute;
-  top: 80px;
+  top: 160px;
   right: 40px;
   z-index: 3;
   @include font-mono;
@@ -18,8 +18,6 @@
   line-height: 1.9;
   letter-spacing: 0.03em;
   text-align: right;
-  opacity: 0;
-  animation: fadeUp 0.6s ease 1.2s forwards;
   pointer-events: none;
 }
 
@@ -66,8 +64,6 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  opacity: 0;
-  animation: fadeUp 0.5s ease 0.2s forwards;
 
   &::before {
     content: '// ';
@@ -81,17 +77,15 @@
   font-weight: 200;
   line-height: 1;
   letter-spacing: -0.03em;
+}
+
+.lineClip {
+  display: block;
   overflow: hidden;
 }
 
 .nameLine {
   display: block;
-  transform: translateY(108%);
-  animation: slideUp 0.9s var(--ease) forwards;
-
-  &:nth-child(2) {
-    animation-delay: 0.07s;
-  }
 
   em {
     font-style: normal;
@@ -100,26 +94,30 @@
   }
 }
 
+.name em {
+  font-style: normal;
+  color: var(--text-m);
+  font-weight: 200;
+}
+
 .sub {
   margin-top: 22px;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  opacity: 0;
-  animation: fadeUp 0.5s ease 0.5s forwards;
+}
 
-  &Fr {
-    font-size: 15px;
-    font-weight: 300;
-    color: var(--text-m);
-  }
+.subFr {
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--text-m);
+}
 
-  &Mono {
-    @include font-mono;
-    font-size: 11px;
-    color: var(--text-d);
-    letter-spacing: 0.07em;
-  }
+.subMono {
+  @include font-mono;
+  font-size: 11px;
+  color: var(--text-d);
+  letter-spacing: 0.07em;
 }
 
 .desc {
@@ -128,38 +126,103 @@
   color: var(--text-m);
   line-height: 1.75;
   max-width: 420px;
-  opacity: 0;
-  animation: fadeUp 0.5s ease 0.65s forwards;
 }
 
 .cta {
   display: flex;
   gap: 11px;
   margin-top: 30px;
-  opacity: 0;
-  animation: fadeUp 0.5s ease 0.8s forwards;
 }
+
+// ── TICKER ───────────────────────────────────────────────────
+.ticker {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 0;
+  mask-image: linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%);
+}
+
+.tickerTrack {
+  display: flex;
+  width: max-content;
+  animation: tickScroll 32s linear infinite;
+  will-change: transform;
+}
+
+// Keyframe определён локально — иначе CSS Modules его не найдёт
+@keyframes tickScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.tickerItem {
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+  white-space: nowrap;
+
+  span {
+    @include font-mono;
+    font-size: 10px;
+    color: var(--text-d);
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+}
+
+.tickerSep {
+  color: var(--accent);
+  opacity: 0.4;
+  margin: 0 5px;
+  font-size: 9px;
+}
+// ─────────────────────────────────────────────────────────────
 
 .scrollHint {
   position: absolute;
-  bottom: 30px;
   right: 40px;
-  @include font-mono;
-  font-size: 10px;
-  color: var(--text-d);
-  letter-spacing: 0.1em;
-  writing-mode: vertical-rl;
+  top: 90px;   /* совпадает с отступом нав-кнопки Dark */
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
-  opacity: 0;
-  animation: fadeIn 0.6s ease 1.6s forwards;
+  gap: 12px;
   z-index: 3;
+}
 
-  &::before {
-    content: '';
-    width: 1px;
-    height: 40px;
-    background: linear-gradient(to bottom, transparent, var(--border-h));
-  }
+.scrollLine {
+  width: 1px;
+  height: 80px;
+  background: var(--border-h);
+  position: relative;
+  overflow: hidden;
+}
+
+.scrollLineAccent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 35%;
+  background: #c0392b;
+  animation: scrollPulse 2.2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%   { height: 28%; top: 0;   opacity: 1; }
+  50%  { height: 50%; top: 0;   opacity: 0.7; }
+  100% { height: 28%; top: 0;   opacity: 1; }
+}
+
+.scrollText {
+  @include font-sans;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--text-d);
+  writing-mode: vertical-rl;
+  text-transform: uppercase;
 }

@@ -1,135 +1,142 @@
+// ── НАВ ─────────────────────────────────────────────────────
+// Трюк с анимацией:
+//   padding у .nav увеличивается при скролле →
+//   .inner сужается с обеих сторон →
+//   визуально плавно "схлопывается" в пилюлю по центру
+// ─────────────────────────────────────────────────────────────
+
 .nav {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 500;
-  padding: 22px 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: all 0.5s var(--ease);
+  padding: 26px 44px;
+
+  // Одна transition на padding — она и создаёт плавное сжатие
+  transition: padding 0.65s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+.scrolled {
+  // max(24px, ...) — защита чтобы не уйти в минус на узких экранах
+  padding: 12px max(24px, calc((100% - 900px) / 2));
+}
+
+// ─────────────────────────────────────────────────────────────
 
 .inner {
   width: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  transition: all 0.5s var(--ease);
-  border-radius: 0;
+  justify-content: space-between;
+
+  // Начало: прозрачный, без фона
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 50px;
   padding: 0;
+
+  transition:
+    background  0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    padding     0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow  0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.scrolled {
-  padding: 10px 40px;
-
-  .inner {
-    max-width: 560px;
-    margin: 0 auto;
-    background: var(--nav-bg);
-    backdrop-filter: blur(24px) saturate(160%);
-    -webkit-backdrop-filter: blur(24px) saturate(160%);
-    border: 1px solid var(--border-h);
-    border-radius: 50px;
-    padding: 10px 24px;
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  }
-
-  .links {
-    gap: 18px;
-  }
-
-  .avail {
-    width: 0;
-    overflow: hidden;
-    opacity: 0;
-  }
+// При скролле inner получает фон, рамку, внутренние отступы
+.scrolled .inner {
+  background: var(--nav-bg);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border-color: var(--border-h);
+  padding: 10px 22px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14);
 }
+
+// ─────────────────────────────────────────────────────────────
 
 .logo {
   display: flex;
   align-items: center;
   transition: opacity 0.2s;
 
-  &:hover {
-    opacity: 0.75;
-  }
+  &:hover { opacity: 0.7; }
 }
 
 .logoImg {
-  height: 26px;
+  height: 22px;
   width: auto;
   display: block;
-}
-
-.links {
-  display: flex;
-  gap: 28px;
-  list-style: none;
-
-  a {
-    @include font-mono;
-    font-size: 12px;
-    color: var(--text-m);
-    letter-spacing: 0.06em;
-    transition: color 0.2s;
-
-    &:hover {
-      color: var(--text);
-    }
-  }
 }
 
 .right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
-.avail {
+.links {
   display: flex;
   align-items: center;
-  gap: 6px;
-  @include font-mono;
-  font-size: 11px;
-  color: var(--green);
-  white-space: nowrap;
-  transition: all 0.5s;
+  gap: 4px;
+  list-style: none;
+
+  a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 5px 12px;
+    color: var(--text-m);
+    cursor: pointer;
+    transition: color 0.22s;
+
+    &:hover {
+      color: var(--text);
+      .linkLine { transform: scaleX(1); }
+    }
+  }
 }
 
-.dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--green);
-  flex-shrink: 0;
-  animation: pulse 2s infinite;
+.linkText {
+  @include font-display;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.linkLine {
+  display: block;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .themeBtn {
-  width: 34px;
-  height: 19px;
-  border-radius: 10px;
-  background: var(--surface);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 15px;
+  border-radius: 50px;
   border: 1px solid var(--border-h);
+  background: var(--surface);
+  color: var(--text-m);
   cursor: pointer;
-  position: relative;
-  transition: background 0.3s;
-  flex-shrink: 0;
-}
+  transition: color 0.2s, border-color 0.2s;
 
-.knob {
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 13px;
-  height: 13px;
-  border-radius: 50%;
-  background: var(--accent);
-  transition: transform 0.3s var(--ease), background 0.3s;
-}
+  span {
+    @include font-sans;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+  }
 
-.knobLight {
-  transform: translateX(15px);
+  &:hover {
+    color: var(--text);
+    border-color: var(--text-d);
+  }
 }

@@ -13,6 +13,10 @@ $ease: cubic-bezier(0.16, 1, 0.3, 1);
   font-family: 'DM Sans', sans-serif;
 }
 
+@mixin font-display {
+  font-family: 'Syne', sans-serif;
+}
+
 @mixin container {
   max-width: 980px;
   margin: 0 auto;

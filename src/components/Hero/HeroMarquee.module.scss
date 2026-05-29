@@ -17,9 +17,9 @@
   padding-right: 44px;
 
   span {
-    @include font-sans;
+    @include font-display;
     font-size: clamp(58px, 8vw, 110px);
-    font-weight: 200;
+    font-weight: 700;
     color: var(--text);
     letter-spacing: -0.04em;
     line-height: 1.1;

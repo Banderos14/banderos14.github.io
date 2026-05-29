@@ -6,16 +6,43 @@
   overflow: hidden;
 }
 
-.cell {
+// Один квадрат — просто рамка с маленькой звёздочкой внутри
+.square {
   position: absolute;
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.02);
-  user-select: none;
-  will-change: transform, opacity;
-  transition: color 0.4s;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
 
-  [data-theme='light'] & {
-    color: rgba(0, 0, 0, 0.035);
+  // Звёздочка в центре квадрата
+  &::after {
+    content: '*';
+    font-size: 10px;
+    color: var(--text-d);
+    font-family: var(--font-m);
+    opacity: 0.6;
   }
 }
+
+// Анимация "плавания" — определена локально чтобы CSS Modules её нашёл
+@keyframes floatA {
+  0%   { transform: translate(0px,   0px)   rotate(0deg); }
+  50%  { transform: translate(18px,  -14px) rotate(1.2deg); }
+  100% { transform: translate(0px,   0px)   rotate(0deg); }
+}
+@keyframes floatB {
+  0%   { transform: translate(0px,   0px)   rotate(0deg); }
+  50%  { transform: translate(-12px, 20px)  rotate(-1deg); }
+  100% { transform: translate(0px,   0px)   rotate(0deg); }
+}
+@keyframes floatC {
+  0%   { transform: translate(0px,   0px)   rotate(0deg); }
+  50%  { transform: translate(24px,  10px)  rotate(0.8deg); }
+  100% { transform: translate(0px,   0px)   rotate(0deg); }
+}
+
+.animA { animation: floatA var(--dur) ease-in-out var(--delay) infinite; }
+.animB { animation: floatB var(--dur) ease-in-out var(--delay) infinite; }
+.animC { animation: floatC var(--dur) ease-in-out var(--delay) infinite; }

@@ -2,18 +2,16 @@
   width: 100%;
   position: relative;
   align-self: flex-end;
-  opacity: 0;
-  animation: fadeUp 0.8s ease 0.3s forwards;
 }
 
 .photo {
   width: 100%;
   aspect-ratio: 3 / 4;
   border-radius: 3px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-h);
   position: relative;
   overflow: hidden;
-  background: var(--bg-3);
+  background: var(--surface);
 
   img {
     width: 100%;

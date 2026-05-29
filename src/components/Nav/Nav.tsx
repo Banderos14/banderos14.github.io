@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Theme } from '@/types';
 import s from './Nav.module.scss';
 
@@ -7,10 +8,17 @@ interface NavProps {
   onToggleTheme: () => void;
 }
 
+const ContrastIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+    <circle cx="7" cy="7" r="6" stroke="currentColor" strokeWidth="1.2" />
+    <path d="M7 1 A6 6 0 1 0 7 13 Z" fill="currentColor" />
+  </svg>
+);
+
 const sections = [
-  { id: 'about', label: '_about' },
-  { id: 'work', label: '_work' },
-  { id: 'contact', label: '_contact' },
+  { id: 'work',    label: 'Work' },
+  { id: 'about',   label: 'About' },
+  { id: 'contact', label: 'Contact' },
 ];
 
 export default function Nav({ scrollY, theme, onToggleTheme }: NavProps) {
@@ -24,29 +32,25 @@ export default function Nav({ scrollY, theme, onToggleTheme }: NavProps) {
   return (
     <nav className={`${s.nav} ${scrolled ? s.scrolled : ''}`}>
       <div className={s.inner}>
-        <a href="#" className={s.logo} onClick={scrollTo('root')} aria-label="Home">
+        <a href="#" className={s.logo} onClick={scrollTo('hero')} aria-label="Home">
           <img src="/logo.svg" alt="AS" className={s.logoImg} />
         </a>
 
-        <ul className={s.links}>
-          {sections.map(({ id, label }) => (
-            <li key={id}>
-              <a href={`#${id}`} onClick={scrollTo(id)}>{label}</a>
-            </li>
-          ))}
-        </ul>
-
         <div className={s.right}>
-          <span className={s.avail}>
-            <span className={s.dot} />
-            available
-          </span>
-          <button
-            className={s.themeBtn}
-            onClick={onToggleTheme}
-            aria-label="Toggle theme"
-          >
-            <span className={`${s.knob} ${theme === 'light' ? s.knobLight : ''}`} />
+          <ul className={s.links}>
+            {sections.map(({ id, label }) => (
+              <li key={id}>
+                <a href={`#${id}`} onClick={scrollTo(id)}>
+                  <span className={s.linkText}>{label}</span>
+                  <span className={s.linkLine} />
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <button className={s.themeBtn} onClick={onToggleTheme} aria-label="Toggle theme">
+            <ContrastIcon />
+            <span>{theme === 'dark' ? 'Dark' : 'Light'}</span>
           </button>
         </div>
       </div>
