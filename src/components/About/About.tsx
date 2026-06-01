@@ -1,58 +1,182 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import CodeBlock from './CodeBlock';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import ConwayBg from '@/components/ConwayBg/ConwayBg';
 import s from './About.module.scss';
 
+gsap.registerPlugin(ScrollTrigger);
+
+const STATS = [
+  { val: 3,  suffix: '+',  label: 'Years\nExperience' },
+  { val: 20, suffix: '+',  label: 'Projects\nShipped'  },
+  { val: 2,  suffix: '',   label: 'Countries\nLived'   },
+  { val: 99, suffix: '☕', label: 'Cups of\nCoffee'    },
+];
+
 export default function About() {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref    = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
+
+  // GSAP counter for stat numbers
+  useEffect(() => {
+    const triggers: ScrollTrigger[] = [];
+    document.querySelectorAll<HTMLElement>('[data-count]').forEach(el => {
+      const target = parseInt(el.dataset.count || '0', 10);
+      const suffix = el.dataset.suffix || '';
+      const obj    = { val: 0 };
+      const tw = gsap.to(obj, {
+        val: target, duration: 1.8, ease: 'power3.out',
+        onUpdate() { el.textContent = Math.floor(obj.val) + suffix; },
+        scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+      });
+      if (tw.scrollTrigger) triggers.push(tw.scrollTrigger);
+    });
+    return () => triggers.forEach(t => t.kill());
+  }, []);
+
+  const scrollToWork = (e: React.MouseEvent) => {
+    e.preventDefault();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const lenis = (window as any).__lenis;
+    if (lenis) lenis.scrollTo('#work');
+    else document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <section className={s.section} id="about" ref={ref}>
-      <div className="container">
-        <div className={s.header}>
-          <span className={s.num}>01</span>
-          <span className={s.title}>about</span>
-          <span className={s.line} />
-        </div>
 
-        <div className={s.grid}>
-          <motion.div
-            className={s.text}
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6 }}
-          >
-            <p>
-              I&apos;m a <strong>frontend developer</strong> based in{' '}
-              <strong>Lyon, France</strong>, focused on building elegant,
-              performant web experiences.
-            </p>
-            <p>
-              I work with <strong>React</strong>, <strong>TypeScript</strong>, and{' '}
-              <strong>SCSS</strong>, with a strong eye for design systems,
-              animation, and attention to detail.
-            </p>
-            <p>
-              Before moving into tech, I spent years working in hospitality —
-              an experience that shaped my approach to{' '}
-              <strong>user-centered thinking</strong> and empathy in product design.
-            </p>
-            <p>
-              Currently <strong>open to opportunities</strong> — full-time roles,
-              freelance projects, or interesting collaborations.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.15 }}
-          >
-            <CodeBlock />
-          </motion.div>
+      {/* ── Header sits on page bg (above Conway block) ── */}
+      <div className={s.headerWrap}>
+        <div className="container">
+          <div className={s.header}>
+            <span className={s.num}>01</span>
+            <span className={s.title}>about</span>
+            <span className={s.line} />
+          </div>
         </div>
       </div>
+
+      {/* ── Conway block — separate visual block below header ── */}
+      <div className={s.conwayBlock}>
+        <ConwayBg opacity={0.9} />
+        <div className={s.fadeTop}    aria-hidden="true" />
+        <div className={s.fadeBottom} aria-hidden="true" />
+
+        <div className={s.inner}>
+
+        {/* ── 2-column layout ───────────────────────────────────── */}
+        <div className={s.layout}>
+
+          {/* LEFT — text */}
+          <div className={s.left}>
+            <motion.h2
+              className={s.heading}
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              Who I Am
+            </motion.h2>
+
+            <motion.div
+              className={s.text}
+              initial={{ opacity: 0, y: 16 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <p>
+                I'm a <strong>frontend developer</strong> based in{' '}
+                <strong>Nice, France</strong>, focused on building elegant,
+                performant web interfaces that feel as good as they look.
+              </p>
+              <p>
+                I work with <strong>React</strong>, <strong>TypeScript</strong>,
+                and <strong>SCSS</strong> — with a strong eye for animation,
+                design systems, and pixel-perfect detail.
+              </p>
+              <p>
+                Before tech, I spent years in hospitality. That shaped how I
+                think about <strong>user experience</strong>: empathy first,
+                complexity last.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.35 }}
+              className={s.cta}
+            >
+              <div className="btn-wrap">
+                <a href="#work" className="btn btn-s" onClick={scrollToWork}>
+                  View my work <span className="btn-arr">↗</span>
+                </a>
+                <span className="btn-c btn-c--tl" aria-hidden="true" />
+                <span className="btn-c btn-c--tr" aria-hidden="true" />
+                <span className="btn-c btn-c--bl" aria-hidden="true" />
+                <span className="btn-c btn-c--br" aria-hidden="true" />
+              </div>
+            </motion.div>
+          </div>
+
+          {/* RIGHT — stats + code */}
+          <div className={s.right}>
+            {/* Stats 2×2 grid */}
+            <motion.div
+              className={s.statsCard}
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.25 }}
+            >
+              {STATS.map(({ val, suffix, label }, i) => (
+                <div key={label} className={`${s.statCell} ${i < 2 ? s.statCellTop : ''}`}>
+                  <span
+                    className={s.statNum}
+                    data-count={val}
+                    data-suffix={suffix}
+                  >
+                    0{suffix}
+                  </span>
+                  <span className={s.statLabel}>
+                    {label.split('\n').map((l, j) => (
+                      <span key={j}>{l}<br /></span>
+                    ))}
+                  </span>
+                </div>
+              ))}
+            </motion.div>
+
+            {/* Code object card */}
+            <motion.div
+              className={s.codeCard}
+              initial={{ opacity: 0, y: 16 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.55, delay: 0.38 }}
+            >
+              <pre className={s.code}>
+                <span className={s.ckw}>const</span>{' '}
+                <span className={s.cid}>me</span>{' '}
+                <span className={s.cop}>=</span>{' '}{'{'}
+                {'\n'}
+                {'  '}<span className={s.ckey}>stack</span><span className={s.cop}>:</span>
+                {'   ['}<span className={s.cstr}>"React"</span>{', '}
+                <span className={s.cstr}>"TS"</span>{', '}
+                <span className={s.cstr}>"GSAP"</span>{'],'}
+                {'\n'}
+                {'  '}<span className={s.ckey}>location</span><span className={s.cop}>:</span>
+                {' '}<span className={s.cstr}>"Nice, France 🇫🇷"</span>{','}
+                {'\n'}
+                {'  '}<span className={s.ckey}>openToWork</span><span className={s.cop}>:</span>
+                {' '}<span className={s.cbool}>true</span>{','}
+                {'\n'}
+                {'}'}
+              </pre>
+            </motion.div>
+          </div>
+        </div>
+      </div>{/* end .inner */}
+      </div>{/* end .conwayBlock */}
     </section>
   );
 }

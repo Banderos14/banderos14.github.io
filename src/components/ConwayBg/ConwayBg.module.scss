@@ -1,0 +1,11 @@
+.wrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.canvas {
+  display: block;
+  // opacity animated by GSAP on mount
+}

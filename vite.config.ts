@@ -6,11 +6,15 @@ const scssAdditionalData = `
 $ease: cubic-bezier(0.16, 1, 0.3, 1);
 
 @mixin font-mono {
-  font-family: 'DM Mono', monospace;
+  font-family: 'JetBrains Mono', monospace;
 }
 
 @mixin font-sans {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+@mixin font-display {
+  font-family: 'Halfre', serif;
 }
 
 @mixin container {
