@@ -131,9 +131,13 @@ body {
   line-height: 1.6;
   color: var(--text);
   background: var(--bg);
-  cursor: none;
   overflow-x: hidden;
   transition: background 0.4s ease, color 0.4s ease;
+}
+
+// Custom cursor only on pointer:fine (mouse) devices
+@media (hover: hover) and (pointer: fine) {
+  body { cursor: none; }
 }
 
 h1 {
@@ -197,12 +201,16 @@ section {
   padding: 96px 0;
   position: relative;
   z-index: 2;
+
+  @media (max-width: 640px) { padding: 64px 0; }
 }
 
 .container {
   max-width: 980px;
   margin: 0 auto;
   padding: 0 40px;
+
+  @media (max-width: 640px) { padding: 0 20px; }
 }
 
 // =========================================================
@@ -310,6 +318,30 @@ section {
 
   &:hover .btn-arr {
     transform: translate(2px, -2px);
+  }
+
+  // Monobank-style press feedback on touch
+  @media (pointer: coarse) {
+    &:active {
+      transform: scale(0.95);
+      opacity: 0.88;
+      transition: transform 0.08s ease, opacity 0.08s ease !important;
+    }
+  }
+}
+
+// Bigger touch targets on mobile
+@media (pointer: coarse) {
+  .btn {
+    min-height: 52px;
+  }
+}
+
+// Full-width buttons in flex-column CTA on mobile
+@media (max-width: 480px) {
+  .btn-wrap {
+    width: 100%;
+    .btn { width: 100%; min-width: 0; }
   }
 }
 

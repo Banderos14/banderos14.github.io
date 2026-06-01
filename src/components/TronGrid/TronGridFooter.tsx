@@ -16,12 +16,27 @@ const LOOK      = 12;
 const TLOOK     = 17;
 const HEAD_LEN  = 8;
 
-const COLORS = [
-  { r: 0,   g: 210, b: 200 },  // electric teal
-  { r: 255, g: 75,  b: 90  },  // coral red
-  { r: 80,  g: 230, b: 130 },  // lime green
-  { r: 170, g: 80,  b: 255 },  // electric violet
-] as const;
+type Color = { r: number; g: number; b: number };
+
+const COLORS_DARK: Color[] = [
+  { r: 27,  g: 93,  b: 239 },  // accent blue
+  { r: 88,  g: 145, b: 255 },  // bright blue
+  { r: 50,  g: 115, b: 250 },  // medium blue
+  { r: 155, g: 190, b: 255 },  // pale blue
+];
+
+const COLORS_LIGHT: Color[] = [
+  { r: 212, g: 175, b: 55  },  // accent gold
+  { r: 240, g: 205, b: 80  },  // bright gold
+  { r: 180, g: 145, b: 25  },  // dark gold
+  { r: 155, g: 118, b: 10  },  // deep gold
+];
+
+function getThemeColors(): Color[] {
+  return document.documentElement.getAttribute('data-theme') === 'light'
+    ? COLORS_LIGHT
+    : COLORS_DARK;
+}
 
 const DIR: Record<string, [number, number]> = {
   up:    [0, -1],
@@ -85,6 +100,7 @@ export default function TronGridFooter() {
     let cgCols = 0, cgRows = 0;
     let collision = new Int16Array(0);
     let sprites: HTMLCanvasElement[] = [];
+    let colors: Color[] = getThemeColors();
     let lines: Line[]     = [];
     let particles: Particle[] = [];
     let spawnTimer = 0;
@@ -136,7 +152,7 @@ export default function TronGridFooter() {
     }
 
     function buildSprites() {
-      sprites = COLORS.map(c => {
+      sprites = colors.map(c => {
         const sp = document.createElement('canvas');
         sp.width = 12; sp.height = 12;
         const sc = sp.getContext('2d')!;
@@ -348,7 +364,7 @@ export default function TronGridFooter() {
 
       for (const l of lines) {
         if (l.trail.length < 2) continue;
-        const c = COLORS[l.colorIdx];
+        const c = colors[l.colorIdx];
         let br = l.brightness;
         if (!l.alive && l.deadAt > 0)
           br *= Math.max(0, 1 - (now - l.deadAt) / FADE_MS);
@@ -403,7 +419,7 @@ export default function TronGridFooter() {
       }
 
       for (const p of particles) {
-        const c = COLORS[p.colorIdx];
+        const c = colors[p.colorIdx];
         ctx.fillStyle = `rgba(${c.r},${c.g},${c.b},${p.life * 0.6})`;
         ctx.fillRect(p.x - 0.5, p.y - 0.5, 1, 1);
       }
@@ -441,9 +457,11 @@ export default function TronGridFooter() {
       }
     }, { threshold: 0 });
 
-    // Rebuild grid texture when theme switches (dark ↔ light)
+    // Rebuild grid texture + snake colors when theme switches (dark ↔ light)
     const themeObs = new MutationObserver(() => {
+      colors = getThemeColors();
       buildGrid();
+      buildSprites();
     });
     themeObs.observe(document.documentElement, {
       attributes: true,

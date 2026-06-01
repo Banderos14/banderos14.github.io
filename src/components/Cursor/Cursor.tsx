@@ -2,11 +2,14 @@ import { useEffect, useRef, useState } from 'react';
 import s from './Cursor.module.scss';
 
 export default function Cursor() {
+  const isTouch = typeof window !== 'undefined' && !window.matchMedia('(pointer: fine)').matches;
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState(false);
 
   useEffect(() => {
+    if (isTouch) return;
+
     const dot = dotRef.current;
     const ring = ringRef.current;
     if (!dot || !ring) return;
@@ -45,7 +48,9 @@ export default function Cursor() {
       document.removeEventListener('mouseover', onOver);
       cancelAnimationFrame(rafId);
     };
-  }, []);
+  }, [isTouch]);
+
+  if (isTouch) return null;
 
   return (
     <>

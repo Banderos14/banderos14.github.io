@@ -2,6 +2,12 @@
   width: 100%;
   position: relative;
   align-self: flex-end;
+
+  @media (max-width: 768px) {
+    max-width: 260px;
+    margin: 0 auto;
+    order: -1; // Photo first on mobile
+  }
 }
 
 .photo {
