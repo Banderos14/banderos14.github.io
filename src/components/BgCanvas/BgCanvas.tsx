@@ -1,13 +1,16 @@
 import { useEffect, useRef } from 'react';
 
-// Параметры сетки (как у codedgar)
-const SPACING  = 24;    // расстояние между точками
-const DOT_SIZE = 1.2;   // базовый радиус точки
-const RADIUS   = 120;   // зона влияния мыши (px)
-const PUSH     = 18;    // насколько далеко точки отбегают
-const MAX_SCL  = 2.5;   // максимальное увеличение точки под мышью
-const LERP_HOME = 0.06; // скорость возврата домой (медленно)
-const LERP_PUSH = 0.12; // скорость при отталкивании (быстро)
+const SPACING    = 38;   // larger gap → sparser grid
+const DOT_R      = 0.85; // smaller dot
+const RADIUS     = 110;
+const RADIUS2    = RADIUS * RADIUS;
+const PUSH       = 16;
+const MAX_SCL    = 2.2;
+const LERP_HOME  = 0.055;
+const LERP_PUSH  = 0.11;
+const FPS_CAP    = 1000 / 30;
+const PARALLAX   = 0.14;   // dots move at 14% of scroll speed (like codedgar yPercent:-15)
+const SCROLL_LERP = 0.08;  // smooth scroll interpolation
 
 interface Dot {
   homeX: number; homeY: number;
@@ -26,96 +29,120 @@ export default function BgCanvas() {
     if (!ctx) return;
 
     let dots: Dot[] = [];
-    let mouseX = -9999;
-    let mouseY = -9999;
-    let phase  = 0;       // для breathing-анимации
-    let rafId: number;
+    let mouseX = -9999, mouseY = -9999;
+    let phase = 0;
+    let lastT = 0;
+    let rafId = 0;
     let W = 0, H = 0;
+    let dotColor = '';
+    let rawScroll = 0;     // actual window.scrollY
+    let smoothScroll = 0;  // lerped scroll for parallax
 
-    // Получаем цвет точки в зависимости от темы
-    const getDotColor = () =>
-      document.documentElement.getAttribute('data-theme') === 'light'
-        ? 'rgba(0,0,0,0.09)'
-        : 'rgba(255,255,255,0.1)';
+    const updateColor = () => {
+      dotColor = document.documentElement.getAttribute('data-theme') === 'light'
+        ? 'rgba(0,0,0,0.22)'
+        : 'rgba(255,255,255,0.28)';
+    };
+    updateColor();
 
-    // Строим сетку точек — вызывается при старте и ресайзе
     const buildGrid = () => {
       W = canvas.width  = window.innerWidth;
       H = canvas.height = window.innerHeight;
       dots = [];
       const off = SPACING / 2;
-      for (let y = off; y < H + SPACING; y += SPACING)
+      // Extra rows above and below for seamless parallax tiling
+      for (let y = -SPACING * 2 + off; y < H + SPACING * 3; y += SPACING)
         for (let x = off; x < W + SPACING; x += SPACING)
-          dots.push({ homeX:x, homeY:y, x, y, size:DOT_SIZE,
-                      targetX:x, targetY:y, targetSize:DOT_SIZE });
+          dots.push({ homeX: x, homeY: y, x, y, size: DOT_R,
+                      targetX: x, targetY: y, targetSize: DOT_R });
     };
 
-    const tick = () => {
+    const tick = (now: number) => {
+      rafId = requestAnimationFrame(tick);
+      if (now - lastT < FPS_CAP) return;
+      lastT = now;
+
+      // Smooth scroll lerp — drives parallax
+      smoothScroll += (rawScroll - smoothScroll) * SCROLL_LERP;
+
+      // Parallax shift: dots drift upward as page scrolls down, tiled seamlessly
+      const tileShift = -(smoothScroll * PARALLAX) % SPACING;
+
       ctx.clearRect(0, 0, W, H);
-      phase += 0.015;
-      // breathing: точки слегка пульсируют ±20%
-      const breathe = 1 + 0.2 * Math.sin(phase);
-      const color = getDotColor();
+      phase += 0.012;
+      const breathe = 1 + 0.18 * Math.sin(phase);
+
+      ctx.save();
+      ctx.translate(0, tileShift);  // shift entire dot field by parallax amount
+
+      ctx.beginPath();
+      ctx.fillStyle = dotColor;
 
       for (const d of dots) {
-        // Считаем расстояние от "дома" точки до мыши
+        // Mouse repel uses screen coords — adjust for the canvas translate
+        const adjustedMouseY = mouseY - tileShift;
         const dx = d.homeX - mouseX;
-        const dy = d.homeY - mouseY;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+        const dy = d.homeY - adjustedMouseY;
+        const d2 = dx * dx + dy * dy;
 
-        if (dist < RADIUS && dist > 0) {
-          // Точка в зоне влияния — отталкиваем её
+        if (d2 < RADIUS2 && d2 > 1) {
+          const dist     = Math.sqrt(d2);
           const strength = (1 - dist / RADIUS) ** 2;
-          const angle = Math.atan2(dy, dx);
+          const angle    = Math.atan2(dy, dx);
           d.targetX    = d.homeX + Math.cos(angle) * PUSH * strength;
           d.targetY    = d.homeY + Math.sin(angle) * PUSH * strength;
-          d.targetSize = DOT_SIZE * (1 + (MAX_SCL - 1) * strength);
+          d.targetSize = DOT_R * (1 + (MAX_SCL - 1) * strength);
         } else {
-          // Возвращаем точку домой
           d.targetX    = d.homeX;
           d.targetY    = d.homeY;
-          d.targetSize = DOT_SIZE;
+          d.targetSize = DOT_R;
         }
 
-        // Плавная интерполяция (lerp) к цели
-        const lr = (d.targetX === d.homeX && d.targetY === d.homeY)
-          ? LERP_HOME : LERP_PUSH;
+        const lr = (d.targetX === d.homeX) ? LERP_HOME : LERP_PUSH;
         d.x    += (d.targetX    - d.x)    * lr;
         d.y    += (d.targetY    - d.y)    * lr;
         d.size += (d.targetSize - d.size) * lr;
 
-        // Рисуем точку
-        ctx.beginPath();
-        ctx.arc(d.x, d.y, d.size * breathe * 0.5, 0, Math.PI * 2);
-        ctx.fillStyle = color;
-        ctx.fill();
+        const r = d.size * breathe * 0.5;
+        ctx.moveTo(d.x + r, d.y);
+        ctx.arc(d.x, d.y, r, 0, Math.PI * 2);
       }
 
-      rafId = requestAnimationFrame(tick);
+      ctx.fill();
+      ctx.restore();
     };
 
     const onMove   = (e: MouseEvent) => { mouseX = e.clientX; mouseY = e.clientY; };
     const onLeave  = () => { mouseX = -9999; mouseY = -9999; };
     const onResize = () => buildGrid();
+    const onScroll = () => { rawScroll = window.scrollY; };
+
+    const themeObs = new MutationObserver(updateColor);
+    themeObs.observe(document.documentElement, {
+      attributes: true, attributeFilter: ['data-theme'],
+    });
 
     buildGrid();
-    tick();
+    rafId = requestAnimationFrame(tick);
     window.addEventListener('mousemove', onMove,   { passive: true });
     window.addEventListener('mouseleave', onLeave);
-    window.addEventListener('resize',   onResize);
+    window.addEventListener('resize',   onResize,  { passive: true });
+    window.addEventListener('scroll',   onScroll,  { passive: true });
 
     return () => {
       cancelAnimationFrame(rafId);
-      window.removeEventListener('mousemove', onMove);
+      themeObs.disconnect();
+      window.removeEventListener('mousemove',  onMove);
       window.removeEventListener('mouseleave', onLeave);
-      window.removeEventListener('resize',   onResize);
+      window.removeEventListener('resize',     onResize);
+      window.removeEventListener('scroll',     onScroll);
     };
   }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      style={{ position:'fixed', inset:0, pointerEvents:'none', zIndex:0 }}
+      style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }}
     />
   );
 }

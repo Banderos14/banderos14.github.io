@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import HeroPhoto from './HeroPhoto';
-import HeroMarquee from './HeroMarquee';
 import s from './Hero.module.scss';
 
 // Список скиллов для бегущей строки внизу Hero
@@ -34,7 +33,10 @@ export default function Hero() {
 
   const scrollTo = (id: string) => (e: React.MouseEvent) => {
     e.preventDefault();
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const lenis = (window as any).__lenis;
+    if (lenis) lenis.scrollTo(`#${id}`);
+    else document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -86,41 +88,45 @@ export default function Hero() {
           </p>
 
           <div className={s.cta} style={fade(0.8)}>
-            <a href="#work" className="btn btn-p" onClick={scrollTo('work')}>
-              view work <span className="btn-arr">↗</span>
-            </a>
-            <a href="#contact" className="btn btn-s" onClick={scrollTo('contact')}>
-              get in touch
-            </a>
+            <div className="btn-wrap">
+              <a href="#work" className="btn btn-p" onClick={scrollTo('work')}>
+                view work <span className="btn-arr">↗</span>
+              </a>
+              <span className="btn-c btn-c--tl" aria-hidden="true" />
+              <span className="btn-c btn-c--tr" aria-hidden="true" />
+              <span className="btn-c btn-c--bl" aria-hidden="true" />
+              <span className="btn-c btn-c--br" aria-hidden="true" />
+            </div>
+            <div className="btn-wrap">
+              <a href="#contact" className="btn btn-s" onClick={scrollTo('contact')}>
+                get in touch
+              </a>
+              <span className="btn-c btn-c--tl" aria-hidden="true" />
+              <span className="btn-c btn-c--tr" aria-hidden="true" />
+              <span className="btn-c btn-c--bl" aria-hidden="true" />
+              <span className="btn-c btn-c--br" aria-hidden="true" />
+            </div>
           </div>
         </div>
 
         <HeroPhoto visible={on} />
       </div>
 
-      {/* ── TICKER ─────────────────────────────────────────────
-          Бесконечная бегущая строка со скиллами.
-          Дублируем массив ×2 чтобы при зацикливании не было пустоты.
-      ────────────────────────────────────────────────────────── */}
+      {/* ── TICKER ── */}
       <div className={s.ticker}>
         <div className={s.tickerTrack}>
           {[...SKILLS, ...SKILLS].map((skill, i) => (
             <span key={i} className={s.tickerItem}>
               <span>{skill}</span>
-              <span className={s.tickerSep}>✦</span>
             </span>
           ))}
         </div>
       </div>
 
-      <HeroMarquee />
-
-      {/* Scroll-индикатор справа */}
+      {/* Scroll-индикатор центр */}
       <div className={s.scrollHint} style={fade(1.6)}>
-        <div className={s.scrollLine}>
-          <span className={s.scrollLineAccent} />
-        </div>
-        <span className={s.scrollText}>Scroll</span>
+        <span className={s.scrollLabel}>my work</span>
+        <span className={s.scrollArrow}>↓</span>
       </div>
 
     </section>

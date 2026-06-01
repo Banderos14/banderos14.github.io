@@ -1,5 +1,16 @@
 // =========================================================
-// CSS TOKENS
+// FONTS
+// =========================================================
+@font-face {
+  font-family: 'Halfre';
+  src: url('/fonts/halfre.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+// =========================================================
+// CSS TOKENS — dark theme (default)
 // =========================================================
 :root {
   --bg:           #080c10;
@@ -11,38 +22,59 @@
   --text:         #dde4ec;
   --text-m:       rgba(221, 228, 236, 0.5);
   --text-d:       rgba(221, 228, 236, 0.22);
-  --accent:       #3b82f6;
-  --accent-dim:   rgba(59, 130, 246, 0.1);
-  --accent-glow:  rgba(59, 130, 246, 0.05);
+  --accent:       #1b5def;
+  --accent-dim:   rgba(27, 93, 239, 0.18);
+  --accent-glow:  rgba(27, 93, 239, 0.08);
+  --accent-text:  #f4f4f4;   // text on accent-bg buttons (white on blue)
   --green:        #34d399;
-  --yellow:       #f0c040;
+  --yellow:       #D4AF37;
   --red:          #f87171;
   --purple:       #a78bfa;
-  --font-s:       'DM Sans', sans-serif;
-  --font-m:       'DM Mono', monospace;
-  --font-display: 'Syne', sans-serif;   /* крупные заголовки — имя, marquee, nav */
+  --font-s:       'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-m:       'JetBrains Mono', monospace;
+  --font-display: 'Halfre', serif;
   --ease:         cubic-bezier(0.16, 1, 0.3, 1);
   --nav-bg:       rgba(8, 12, 16, 0.9);
+
+  // Spacing — codedgar tokens
+  --space-xs: 6px;
+  --space-sm: 16px;
+  --space-md: 32px;
+  --space-lg: 106px;
+  --space-xl: 128px;
+
+  // Shadows
+  --shadow-sm: rgba(27, 93, 239, 0.3) 0px 0px 8px 0px;
+  --shadow-md: rgb(27, 93, 239) 0px 0px 4px 0px, rgb(27, 93, 239) 0px 0px 8px -2px;
+  --shadow-lg: rgba(255, 255, 255, 0.4) 0px 0px 12px 0px, rgba(27, 93, 239, 0.6) 0px 0px 25px 0px, rgba(27, 93, 239, 0.3) 0px 0px 50px 0px;
 }
 
+// =========================================================
+// CSS TOKENS — light theme (Ukrainian flag: blue + yellow)
+// =========================================================
 [data-theme='light'] {
-  --bg:           #f7f4ed;
-  --bg-2:         #f0ece2;
-  --bg-3:         #e8e2d4;
-  --surface:      #e0d9c8;
-  --border:       rgba(0, 0, 0, 0.07);
-  --border-h:     rgba(0, 0, 0, 0.13);
-  --text:         #1a1a18;
-  --text-m:       rgba(26, 26, 24, 0.52);
-  --text-d:       rgba(26, 26, 24, 0.28);
-  --accent:       #c47f0a;
-  --accent-dim:   rgba(196, 127, 10, 0.1);
-  --accent-glow:  rgba(196, 127, 10, 0.05);
+  --bg:           #f4f4f4;
+  --bg-2:         #ebebeb;
+  --bg-3:         #e2e2e2;
+  --surface:      #ffffff;
+  --border:       rgba(0, 0, 0, 0.08);
+  --border-h:     rgba(0, 0, 0, 0.16);
+  --text:         #191818;
+  --text-m:       rgba(25, 24, 24, 0.6);
+  --text-d:       rgba(25, 24, 24, 0.38);
+  --accent:       #D4AF37;
+  --accent-dim:   rgba(212, 175, 55, 0.2);
+  --accent-glow:  rgba(212, 175, 55, 0.08);
+  --accent-text:  #191818;
   --green:        #059669;
-  --yellow:       #c47f0a;
+  --yellow:       #D4AF37;
   --red:          #dc2626;
   --purple:       #7c3aed;
-  --nav-bg:       rgba(247, 244, 237, 0.92);
+  --nav-bg:       rgba(244, 244, 244, 0.92);
+
+  --shadow-sm: rgba(212, 175, 55, 0.4) 0px 0px 8px 0px;
+  --shadow-md: rgb(212, 175, 55) 0px 0px 4px 0px, rgb(212, 175, 55) 0px 0px 8px -2px;
+  --shadow-lg: rgba(255, 255, 255, 0.5) 0px 0px 12px 0px, rgba(212, 175, 55, 0.5) 0px 0px 25px 0px, rgba(212, 175, 55, 0.25) 0px 0px 50px 0px;
 }
 
 // =========================================================
@@ -57,7 +89,6 @@
 }
 
 html {
-  scroll-behavior: smooth;
   font-size: 16px;
 }
 
@@ -91,20 +122,51 @@ ul, ol {
 ::-webkit-scrollbar-thumb { background: var(--border-h); }
 
 // =========================================================
-// TYPOGRAPHY & ANIMATIONS
+// TYPOGRAPHY — codedgar scale
 // =========================================================
 body {
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 300;
+  font-family: var(--font-s);
+  font-weight: 400;
+  font-size: 14px;
   line-height: 1.6;
   color: var(--text);
   background: var(--bg);
   cursor: none;
   overflow-x: hidden;
   transition: background 0.4s ease, color 0.4s ease;
-  // Dot grid рендерится через BgCanvas (canvas с mouse-интеракцией)
 }
 
+h1 {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 48px;
+}
+
+h2 {
+  font-family: var(--font-display);
+  font-size: 31px;
+  font-weight: 400;
+  line-height: 48px;
+}
+
+h3 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 33.6px;
+}
+
+h4 {
+  font-family: var(--font-s);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+// =========================================================
+// ANIMATIONS
+// =========================================================
 @keyframes slideUp {
   to { transform: translateY(0); }
 }
@@ -143,62 +205,91 @@ section {
   padding: 0 40px;
 }
 
+// =========================================================
+// BUTTONS — exact codedgar implementation
+// =========================================================
+
+// Wrapper — positioned context for corner brackets (OUTSIDE the <a>)
+.btn-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  justify-content: center;
+  gap: 8px;
   font-family: var(--font-m);
-  font-size: 12px;
-  letter-spacing: 0.06em;
-  padding: 10px 20px;
-  border-radius: 3px;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0;
+  padding: 12px 24px;
+  min-width: 193px;
+  min-height: 48px;
+  border-radius: 0;
+  border: 1px solid transparent;
   cursor: pointer;
   text-decoration: none;
   white-space: nowrap;
   position: relative;
-  overflow: hidden;
-  transition: color 0.3s var(--ease), border-color 0.3s var(--ease);
+  overflow: hidden;       // clips ::before pseudo-element animation
+  isolation: isolate;     // stacking context so z-index:-1 works on ::before
+  transition:
+    color 0.16s var(--ease),
+    border-color 0.16s var(--ease),
+    box-shadow 0.16s var(--ease);
 
-  // Primary — синяя кнопка: белый фон выезжает слева при hover
+  // Primary — accent bg, page-bg fill slides in, text turns blue
   &-p {
     background: var(--accent);
-    color: #fff;
-    border: 1px solid var(--accent);
+    color: var(--accent-text);
+    border-color: var(--accent);
 
     &::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: rgba(255, 255, 255, 0.15);
+      background: var(--bg);    // slides in from right (page background color)
       transform: scaleX(0);
       transform-origin: right;
-      transition: transform 0.35s var(--ease);
-      z-index: 0;
+      transition: transform 0.3s var(--ease);
+      z-index: -1;              // behind text (within isolation context)
     }
 
-    &:hover::before {
-      transform: scaleX(1);
-      transform-origin: left;
-    }
+    &:hover {
+      color: #1b5def;           // always Ukrainian/codedgar blue in both themes
+      box-shadow: 0 4px 20px var(--accent-dim);
 
-    span, .btn-arr { position: relative; z-index: 1; }
+      &::before {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
+    }
   }
 
-  // Secondary — прозрачная: граница подсвечивается при hover
+  // Secondary — transparent outline, subtle accent gradient sweep on hover
   &-s {
     background: transparent;
-    color: var(--text-m);
-    border: 1px solid var(--border-h);
+    color: var(--text);
+    border-color: var(--text-d);
 
     &::before {
       content: '';
       position: absolute;
-      inset: 0;
-      background: var(--accent-dim);
-      transform: scaleX(0);
-      transform-origin: right;
-      transition: transform 0.35s var(--ease);
-      z-index: 0;
+      inset: -1px;
+      background: linear-gradient(
+        90deg,
+        var(--accent) 0%,
+        var(--accent) 50%,
+        transparent 50%,
+        transparent 100%
+      );
+      background-size: 200% 100%;
+      background-position: 100% 0;   // starts hidden (right side)
+      transition: background-position 0.4s var(--ease);
+      z-index: -1;
+      opacity: 0;
     }
 
     &:hover {
@@ -206,12 +297,10 @@ section {
       color: var(--text);
 
       &::before {
-        transform: scaleX(1);
-        transform-origin: left;
+        background-position: 0 0;    // slides to left (visible)
+        opacity: 0.12;
       }
     }
-
-    span, .btn-arr { position: relative; z-index: 1; }
   }
 
   &-arr {
@@ -222,4 +311,28 @@ section {
   &:hover .btn-arr {
     transform: translate(2px, -2px);
   }
+}
+
+// ── Corner brackets — positioned on .btn-wrap (OUTSIDE the <a> element) ─────
+// They appear at button corners but are NOT clipped by the button's overflow:hidden
+.btn-c {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: var(--accent);
+  border-style: solid;
+  border-width: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+
+  &--tl { top: -6px;    left: -6px;   border-top-width: 2px;    border-left-width: 2px; }
+  &--tr { top: -6px;    right: -6px;  border-top-width: 2px;    border-right-width: 2px; }
+  &--bl { bottom: -6px; left: -6px;   border-bottom-width: 2px; border-left-width: 2px; }
+  &--br { bottom: -6px; right: -6px;  border-bottom-width: 2px; border-right-width: 2px; }
+}
+
+// Reveal on wrapper hover (works for both btn-p and btn-s)
+.btn-wrap:hover .btn-c {
+  opacity: 1;
 }

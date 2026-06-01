@@ -1,52 +1,207 @@
+// ── CSS vars — section background ──────────────────────────────────────────
+:root                { --about-bg: #0f1d30; }
+[data-theme='light'] { --about-bg: #ebebeb; }
+
+// ── Section wrapper — transparent, just stacks header + conwayBlock ───────
 .section {
-  padding: 96px 0;
   position: relative;
   z-index: 2;
+  padding: 0;
 }
 
-.header {
-  @include section-header;
+// ── Header area — sits on regular page bg, above Conway ───────────────────
+.headerWrap {
+  padding: 80px 0 24px;
 }
 
-.num {
-  @include font-mono;
-  font-size: 11px;
-  color: var(--accent);
-  letter-spacing: 0.08em;
+// ── Conway block — full-width with its own bg ─────────────────────────────
+.conwayBlock {
+  position: relative;
+  overflow: hidden;
+  background: var(--about-bg);
 }
 
-.title {
-  @include font-mono;
-  font-size: 11px;
-  color: var(--text-m);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+// Gradient fade blends conwayBlock into page bg
+.fadeTop,
+.fadeBottom {
+  position: absolute;
+  left: 0; right: 0;
+  height: 64px;
+  z-index: 4;
+  pointer-events: none;
+}
+.fadeTop    { top: 0;    background: linear-gradient(to bottom, var(--bg), transparent); }
+.fadeBottom { bottom: 0; background: linear-gradient(to top,   var(--bg), transparent); }
+
+// ── Section header ────────────────────────────────────────────────────────
+.header { @include section-header; }
+
+.num   { @include font-mono; font-size: 11px; color: var(--accent); letter-spacing: 0.08em; }
+.title { @include font-mono; font-size: 11px; color: var(--text-m); letter-spacing: 0.1em; text-transform: uppercase; }
+.line  { flex: 1; height: 1px; background: var(--border); }
+
+// ── Inner container (inside conwayBlock) ──────────────────────────────────
+.inner {
+  position: relative;
+  z-index: 5;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 56px 40px 72px;
 }
 
-.line {
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-}
-
-.grid {
+// ── 2-column layout ───────────────────────────────────────────────────────
+.layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 64px;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 56px;
   align-items: start;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+// ── LEFT column ───────────────────────────────────────────────────────────
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-size: clamp(31px, 5vw, 48px);
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1.2;
+  letter-spacing: 0;
+  margin: 0;
 }
 
 .text {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
   p {
     font-size: 15px;
     font-weight: 300;
     line-height: 1.8;
     color: var(--text-m);
-    margin-bottom: 16px;
+    margin: 0;
 
     strong {
       color: var(--text);
-      font-weight: 400;
+      font-weight: 500;
     }
   }
+}
+
+.cta {
+  align-self: flex-start;
+  margin-top: 4px;
+}
+
+// ── RIGHT column ──────────────────────────────────────────────────────────
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+// ── Stats 2×2 card ────────────────────────────────────────────────────────
+.statsCard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 4px;
+  overflow: hidden;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  [data-theme='light'] & {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(0, 0, 0, 0.08);
+    border-radius: 0;
+  }
+}
+
+.statCell {
+  padding: 24px 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+  [data-theme='light'] & {
+    border-right-color:  rgba(0, 0, 0, 0.06);
+    border-bottom-color: rgba(0, 0, 0, 0.06);
+  }
+
+  &:nth-child(even) { border-right: none; }
+  &:nth-child(3),
+  &:nth-child(4)    { border-bottom: none; }
+}
+
+.statNum {
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 400;
+  color: var(--text);
+  letter-spacing: 0;
+  line-height: 1;
+  min-width: 2.5ch;
+}
+
+.statLabel {
+  @include font-mono;
+  font-size: 10px;
+  color: var(--text-d);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+
+// ── Code card ─────────────────────────────────────────────────────────────
+.codeCard {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 4px;
+  padding: 16px 18px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  [data-theme='light'] & {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(0, 0, 0, 0.08);
+    border-radius: 0;
+  }
+}
+
+.code {
+  @include font-mono;
+  font-size: 12px;
+  line-height: 1.85;
+  margin: 0;
+  white-space: pre;
+
+  @media (max-width: 500px) { font-size: 10.5px; white-space: pre-wrap; }
+}
+
+// Syntax colours
+.ckw   { color: #60a5fa; }
+.cid   { color: #fbbf24; }
+.cop   { color: var(--text-d); }
+.ckey  { color: var(--text-m); }
+.cstr  { color: #34d399; }
+.cbool { color: #f87171; }
+
+[data-theme='light'] {
+  .ckw  { color: #2563eb; }
+  .cid  { color: #92400e; }
+  .cstr { color: #059669; }
+  .cbool{ color: #dc2626; }
 }

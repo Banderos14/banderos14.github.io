@@ -12,7 +12,8 @@ export default function Work() {
           <span className={s.line} />
         </div>
 
-        <div className={s.list}>
+        {/* data-stagger-group drives GSAP stagger reveal (replaces Framer Motion on items) */}
+        <div className={s.list} data-stagger-group="0.07" data-reveal-start="top 90%">
           {projects.map((project, i) => (
             <ProjectItem key={project.name} project={project} index={i} />
           ))}

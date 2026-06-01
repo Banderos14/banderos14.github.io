@@ -1,22 +1,47 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
 import type { Project } from '@/types';
+import Glyph from '@/components/Glyph/Glyph';
 import s from './ProjectItem.module.scss';
+
+// Each project gets a unique glyph pattern
+const PATTERNS = [
+  '111101111', // frame (all except center)
+  '010111010', // plus / cross
+  '101010101', // checkerboard
+  '111010111', // inverse-center
+  '110011001', // diagonal
+  '010010010', // column
+];
 
 interface ProjectItemProps {
   project: Project;
-  index: number;
+  index:   number;
 }
 
 export default function ProjectItem({ project, index }: ProjectItemProps) {
+  const [hovered, setHovered] = useState(false);
+  const pattern = PATTERNS[index % PATTERNS.length];
+
   return (
-    <motion.div
+    <div
       className={s.item}
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.5, delay: index * 0.08 }}
+      data-hovered={hovered}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
-      <span className={s.year}>{project.year}</span>
+      {/* Year + Glyph column */}
+      <div className={s.yearCol}>
+        <span className={s.year}>{project.year}</span>
+        <div className={s.glyphWrap}>
+          <Glyph
+            isActive={hovered}
+            idlePattern="000010000"
+            hoverPattern={pattern}
+            transitionStyle="radial"
+            cellSize={4}
+          />
+        </div>
+      </div>
 
       <div className={s.main}>
         <h3 className={s.name}>{project.name}</h3>
@@ -36,6 +61,6 @@ export default function ProjectItem({ project, index }: ProjectItemProps) {
           ↗ github
         </a>
       </div>
-    </motion.div>
+    </div>
   );
 }

@@ -3,7 +3,7 @@ import { motion, useInView } from 'framer-motion';
 import s from './Contact.module.scss';
 
 export default function Contact() {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref   = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-60px' });
 
   return (
@@ -23,12 +23,20 @@ export default function Contact() {
         >
           <span className={s.label}>// get in touch</span>
 
-          <a
-            className={s.email}
-            href="mailto:anton.shyshenko@gmail.com"
-          >
-            anton.shyshenko@gmail.com
-          </a>
+          {/* Cross icon — rotates 45° on CTA hover */}
+          <div className={s.cta}>
+            <div className={s.cross} aria-hidden="true">
+              <span className={s.crossH} />
+              <span className={s.crossV} />
+            </div>
+
+            <a
+              className={s.email}
+              href="mailto:anton.shyshenko@gmail.com"
+            >
+              anton.shyshenko@gmail.com
+            </a>
+          </div>
 
           <div className={s.socials}>
             <a

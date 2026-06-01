@@ -30,20 +30,18 @@
   align-items: center;
   justify-content: space-between;
 
-  // Начало: прозрачный, без фона
   background: transparent;
   border: 1px solid transparent;
   border-radius: 50px;
   padding: 0;
 
   transition:
-    background  0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    background   0.5s cubic-bezier(0.16, 1, 0.3, 1),
     border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-    padding     0.5s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow  0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    padding      0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow   0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-// При скролле inner получает фон, рамку, внутренние отступы
 .scrolled .inner {
   background: var(--nav-bg);
   backdrop-filter: blur(20px) saturate(160%);
