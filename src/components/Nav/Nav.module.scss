@@ -1,10 +1,3 @@
-// ── НАВ ─────────────────────────────────────────────────────
-// Трюк с анимацией:
-//   padding у .nav увеличивается при скролле →
-//   .inner сужается с обеих сторон →
-//   визуально плавно "схлопывается" в пилюлю по центру
-// ─────────────────────────────────────────────────────────────
-
 .nav {
   position: fixed;
   top: 0;
@@ -12,17 +5,20 @@
   right: 0;
   z-index: 500;
   padding: 26px 44px;
-
-  // Одна transition на padding — она и создаёт плавное сжатие
   transition: padding 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+
+  @media (max-width: 640px) {
+    padding: 16px 20px;
+  }
 }
 
 .scrolled {
-  // max(24px, ...) — защита чтобы не уйти в минус на узких экранах
   padding: 12px max(24px, calc((100% - 900px) / 2));
-}
 
-// ─────────────────────────────────────────────────────────────
+  @media (max-width: 640px) {
+    padding: 12px 16px;
+  }
+}
 
 .inner {
   width: 100%;
@@ -49,9 +45,20 @@
   border-color: var(--border-h);
   padding: 10px 22px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14);
+
+  @media (max-width: 640px) {
+    padding: 8px 16px;
+  }
 }
 
-// ─────────────────────────────────────────────────────────────
+// When mobile menu is open — nav always gets glass background
+.menuOpen .inner {
+  background: var(--nav-bg);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border-color: var(--border-h);
+  padding: 8px 16px;
+}
 
 .logo {
   display: flex;
@@ -78,6 +85,8 @@
   align-items: center;
   gap: 4px;
   list-style: none;
+
+  @media (max-width: 640px) { display: none; }
 
   a {
     display: flex;
@@ -126,6 +135,8 @@
   cursor: pointer;
   transition: color 0.2s, border-color 0.2s;
 
+  @media (max-width: 640px) { display: none; }
+
   span {
     @include font-sans;
     font-size: 12px;
@@ -137,4 +148,105 @@
     color: var(--text);
     border-color: var(--text-d);
   }
+}
+
+// ── Hamburger ────────────────────────────────────────────────
+.burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  padding: 8px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  flex-shrink: 0;
+
+  @media (max-width: 640px) { display: flex; }
+}
+
+.bLine {
+  display: block;
+  width: 20px;
+  height: 1.5px;
+  background: var(--text);
+  border-radius: 2px;
+  transform-origin: center;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.25s ease;
+}
+
+.burgerOpen .bLine:nth-child(1) {
+  transform: translateY(3.25px) rotate(45deg);
+}
+.burgerOpen .bLine:nth-child(2) {
+  transform: translateY(-3.25px) rotate(-45deg);
+}
+
+// ── Mobile full-screen overlay ────────────────────────────────
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 450;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-12px);
+  transition:
+    opacity  0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+
+  // Only show on mobile
+  @media (min-width: 641px) { display: none; }
+}
+
+.overlayOpen {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+}
+
+.overlayLinks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+}
+
+.overlayLink {
+  @include font-display;
+  font-size: clamp(36px, 12vw, 56px);
+  font-weight: 400;
+  color: var(--text-m);
+  letter-spacing: -0.02em;
+  padding: 8px 24px;
+  transition: color 0.2s;
+  display: block;
+
+  &:active { color: var(--accent); }
+}
+
+.overlayTheme {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 50px;
+  border: 1px solid var(--border-h);
+  background: var(--surface);
+  color: var(--text-m);
+  cursor: pointer;
+  @include font-sans;
+  font-size: 12px;
+  transition: color 0.2s;
+
+  svg { flex-shrink: 0; }
 }

@@ -19,6 +19,14 @@
   letter-spacing: 0.03em;
   text-align: right;
   pointer-events: none;
+
+  @media (max-width: 768px) {
+    position: static;
+    order: 2;         // appears after .content (order:1) in flex column
+    text-align: left;
+    padding: 0 20px 4px;
+    pointer-events: auto;
+  }
 }
 
 .consoleGreen {
@@ -48,6 +56,13 @@
   width: 100%;
   position: relative;
   z-index: 2;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    padding: 100px 20px 40px;
+    gap: 36px 0;
+    order: 1;
+  }
 }
 
 .left {
@@ -132,10 +147,47 @@
   display: flex;
   gap: 11px;
   margin-top: 30px;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: 10px;
+
+    .btn-wrap { width: 100%; }
+  }
+
+  // Attract animation — pulses primary button on touch devices
+  @media (pointer: coarse) {
+    :global(.btn-p) {
+      animation: btnAttract 4.5s ease-in-out infinite;
+      animation-delay: 1.8s;
+      animation-fill-mode: backwards;
+    }
+
+    :global(.btn-s) {
+      animation: btnGlow 4.5s ease-in-out infinite;
+      animation-delay: 2.8s;
+      animation-fill-mode: backwards;
+    }
+  }
+}
+
+@keyframes btnAttract {
+  0%, 100%  { transform: scale(1);    box-shadow: none; }
+  6%        { transform: scale(1.05); box-shadow: 0 6px 24px var(--accent-dim); }
+  12%       { transform: scale(0.97); }
+  18%       { transform: scale(1.02); }
+  24%       { transform: scale(1);    }
+}
+
+@keyframes btnGlow {
+  0%, 100% { border-color: var(--text-d); }
+  10%      { border-color: var(--accent); box-shadow: 0 0 12px var(--accent-dim); }
+  20%      { border-color: var(--text-d); box-shadow: none; }
 }
 
 // ── TICKER ──
 .ticker {
+  @media (max-width: 768px) { order: 3; }
   position: relative;
   z-index: 2;
   overflow: hidden;
@@ -192,6 +244,15 @@
   align-items: center;
   gap: 10px;
   z-index: 3;
+
+  @media (max-width: 768px) {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    padding: 14px 0 20px;
+    order: 4;
+  }
 }
 
 .scrollLabel {

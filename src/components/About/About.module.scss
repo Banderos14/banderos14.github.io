@@ -12,6 +12,8 @@
 // ── Header area — sits on regular page bg, above Conway ───────────────────
 .headerWrap {
   padding: 80px 0 24px;
+
+  @media (max-width: 640px) { padding: 20px 0 24px; }
 }
 
 // ── Conway block — full-width with its own bg ─────────────────────────────
@@ -101,6 +103,21 @@
 .cta {
   align-self: flex-start;
   margin-top: 4px;
+
+  // Attract animation on touch — button pulses to invite tap
+  @media (pointer: coarse) {
+    :global(.btn-p) {
+      animation: ctaAttract 4s ease-in-out infinite 3s;
+    }
+  }
+}
+
+@keyframes ctaAttract {
+  0%, 100%  { transform: scale(1);    box-shadow: none; }
+  8%        { transform: scale(1.05); box-shadow: 0 6px 24px var(--accent-dim); }
+  16%       { transform: scale(0.97); }
+  22%       { transform: scale(1.02); }
+  28%       { transform: scale(1); }
 }
 
 // ── RIGHT column ──────────────────────────────────────────────────────────

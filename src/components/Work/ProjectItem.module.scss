@@ -15,6 +15,29 @@
     transform        0.25s var(--ease),
     box-shadow       0.3s var(--ease);
 
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+    gap: 10px 0;
+    padding: 20px 12px;
+  }
+
+  // Monobank-style tap feedback
+  @media (pointer: coarse) {
+    &:active {
+      background: var(--accent-glow);
+      border-left-color: var(--accent);
+      transform: scale(0.99);
+      transition: transform 0.08s ease, background 0.08s ease;
+    }
+
+    // Auto-cycling highlight — each item glows in sequence
+    &:nth-child(1) { animation: autoHighlight 10s ease-in-out infinite 0.5s; }
+    &:nth-child(2) { animation: autoHighlight 10s ease-in-out infinite 2.5s; }
+    &:nth-child(3) { animation: autoHighlight 10s ease-in-out infinite 4.5s; }
+    &:nth-child(4) { animation: autoHighlight 10s ease-in-out infinite 6.5s; }
+    &:nth-child(5) { animation: autoHighlight 10s ease-in-out infinite 8.5s; }
+  }
+
   &::before {
     content: '';
     position: absolute;
@@ -45,6 +68,12 @@
   gap: 12px;
   align-items: flex-start;
   padding-top: 2px;
+
+  @media (max-width: 640px) {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+  }
 }
 
 .year {
@@ -117,6 +146,18 @@
   transition: all 0.25s var(--ease);
   padding-top: 4px;
 
+  // Always visible on touch devices — no hover possible
+  @media (pointer: coarse) {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 640px) {
+    flex-direction: row;
+    gap: 16px;
+    padding-top: 0;
+  }
+
   a {
     @include font-mono;
     font-size: 11px;
@@ -126,7 +167,30 @@
     align-items: center;
     gap: 5px;
     transition: color 0.2s;
+    padding: 4px 0; // bigger touch target
 
     &:hover { color: var(--accent); }
+
+    @media (pointer: coarse) {
+      &:active { color: var(--accent); }
+    }
+  }
+}
+
+// Auto-cycling highlight for touch devices
+@keyframes autoHighlight {
+  0%, 18%, 100% {
+    border-left-color: transparent;
+    background: transparent;
+  }
+  6% {
+    border-left-color: var(--accent);
+    background: var(--accent-glow);
+    box-shadow: -3px 0 0 var(--accent);
+  }
+  12% {
+    border-left-color: var(--accent);
+    background: var(--accent-glow);
+    box-shadow: -3px 0 0 var(--accent);
   }
 }
