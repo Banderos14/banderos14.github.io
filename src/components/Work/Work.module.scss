@@ -2,6 +2,8 @@
   padding: 96px 0;
   position: relative;
   z-index: 2;
+
+  @media (max-width: 640px) { padding: 64px 0; }
 }
 
 .header {
@@ -29,7 +31,87 @@
   background: var(--border);
 }
 
-.list {
+// ── Nav arrows ────────────────────────────────────────────────────────────
+.navBtns {
   display: flex;
-  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.navBtn {
+  @include font-mono;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  font-size: 14px;
+  color: var(--text-m);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+
+  &:not(:disabled):hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  &:disabled { opacity: 0.25; cursor: default; }
+}
+
+// ── Outer clip — hides cards that are off-screen ─────────────────────────
+.carouselOuter {
+  overflow: hidden;
+  // Extra vertical room for card box-shadows
+  padding: 10px 0 52px;
+  margin: -10px 0 -52px;
+}
+
+// ── Motion track — slides left/right via Framer Motion x ─────────────────
+.carouselTrack {
+  display: flex;
+  gap: 20px;
+  cursor: grab;
+  user-select: none;
+  &:active { cursor: grabbing; }
+}
+
+// ── Each slide ───────────────────────────────────────────────────────────
+.cardSlide {
+  flex: 0 0 320px;
+  align-self: stretch;
+
+  @media (max-width: 880px) { flex: 0 0 280px; }
+  @media (max-width: 640px) { flex: 0 0 calc(88vw); }
+}
+
+// ── Dot indicators (visual only) ─────────────────────────────────────────
+.dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.dot {
+  height: 6px;
+  width: 6px;
+  border-radius: 3px;
+  background: var(--border-h);
+  transition: background 0.3s var(--ease), width 0.3s var(--ease);
+  pointer-events: none;
+
+  &[data-active='true'] {
+    background: var(--accent);
+    width: 22px;
+  }
+}
+
+// ── Footer ────────────────────────────────────────────────────────────────
+.footer {
+  margin-top: 48px;
+  display: flex;
+  justify-content: center;
 }

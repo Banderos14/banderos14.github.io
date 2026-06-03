@@ -1,6 +1,6 @@
 // ── CSS vars — section background ──────────────────────────────────────────
-:root                { --about-bg: #0f1d30; }
-[data-theme='light'] { --about-bg: #ebebeb; }
+:root                { --about-bg: transparent; }
+[data-theme='light'] { --about-bg: var(--bg-2); }
 
 // ── Section wrapper — transparent, just stacks header + conwayBlock ───────
 .section {

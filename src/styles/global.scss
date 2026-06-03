@@ -206,7 +206,7 @@ section {
 }
 
 .container {
-  max-width: 980px;
+  max-width: 1080px;
   margin: 0 auto;
   padding: 0 40px;
 
@@ -266,7 +266,7 @@ section {
     }
 
     &:hover {
-      color: #1b5def;           // always Ukrainian/codedgar blue in both themes
+      color: var(--accent);     // blue in dark, gold in light — follows theme
       box-shadow: 0 4px 20px var(--accent-dim);
 
       &::before {

@@ -40,33 +40,79 @@
 }
 
 .label {
-  @include font-mono;
-  font-size: 11px;
-  color: var(--text-d);
-  letter-spacing: 0.1em;
+  @include label-mono;
 }
 
-// ── CTA row (cross + email) ───────────────────────────────────────────────
+// ── Pixel-block cross (new addition) ──────────────────────────────────────
+.crossBlock {
+  display: grid;
+  grid-template-columns: repeat(3, 22px);
+  grid-template-rows: repeat(3, 22px);
+  gap: 4px;
+  cursor: default;
+  padding: 4px 0;
+}
+
+.crossCell {
+  display: block;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+
+  // Corner cells — always hidden
+  &:nth-child(1), &:nth-child(3),
+  &:nth-child(7), &:nth-child(9) {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  // Cross cells — dim at rest
+  &:nth-child(2), &:nth-child(4),
+  &:nth-child(5), &:nth-child(6),
+  &:nth-child(8) {
+    opacity: 0.28;
+  }
+}
+
+// Animate cross cells on blockActive state
+.crossBlock[data-anim='true'] {
+  .crossCell:nth-child(2) { animation: blockPulse 1.4s ease-in-out infinite 0s;    opacity: 1; }
+  .crossCell:nth-child(4) { animation: blockPulse 1.4s ease-in-out infinite 0.12s; opacity: 1; }
+  .crossCell:nth-child(5) { animation: blockPulse 1.4s ease-in-out infinite 0.24s; opacity: 1; }
+  .crossCell:nth-child(6) { animation: blockPulse 1.4s ease-in-out infinite 0.36s; opacity: 1; }
+  .crossCell:nth-child(8) { animation: blockPulse 1.4s ease-in-out infinite 0.48s; opacity: 1; }
+}
+
+@keyframes blockPulse {
+  0%, 100% { opacity: 0.28; transform: scale(1);    box-shadow: none; }
+  50%       { opacity: 1;    transform: scale(1.28); box-shadow: 0 0 10px var(--accent-dim); }
+}
+
+// Auto-animate on touch (no hover possible)
+@media (pointer: coarse) {
+  .crossCell {
+    &:nth-child(2) { animation: blockPulse 3s ease-in-out infinite 0s; }
+    &:nth-child(4) { animation: blockPulse 3s ease-in-out infinite 0.2s; }
+    &:nth-child(5) { animation: blockPulse 3s ease-in-out infinite 0.4s; }
+    &:nth-child(6) { animation: blockPulse 3s ease-in-out infinite 0.6s; }
+    &:nth-child(8) { animation: blockPulse 3s ease-in-out infinite 0.8s; }
+  }
+}
+
+// ── Original CTA row (cross + email) ──────────────────────────────────────
 .cta {
   display: flex;
   align-items: center;
   gap: 16px;
 
   &:hover {
-    .cross {
-      transform: rotate(135deg);
-    }
-    .crossH,
-    .crossV {
-      background: var(--accent);
-    }
-    .email::after {
-      width: 100%;
-    }
+    .cross { transform: rotate(135deg); }
+    .crossH, .crossV { background: var(--accent); }
+    .email::after { width: 100%; }
   }
 }
 
-// ── Animated cross icon ────────────────────────────────────────────────────
+// Animated cross icon (original)
 .cross {
   position: relative;
   width: 28px;

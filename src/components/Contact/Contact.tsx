@@ -1,10 +1,14 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import s from './Contact.module.scss';
 
 export default function Contact() {
-  const ref   = useRef<HTMLDivElement>(null);
+  const ref    = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-60px' });
+  const [blockActive, setBlockActive] = useState(false);
+
+  const activateBlock  = () => setBlockActive(true);
+  const deactivateBlock = () => setBlockActive(false);
 
   return (
     <section className={s.section} id="contact" ref={ref}>
@@ -21,18 +25,32 @@ export default function Contact() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
         >
-          <span className={s.label}>// get in touch</span>
+          <span className={s.label}>get in touch</span>
 
-          {/* Cross icon — rotates 45° on CTA hover */}
+          {/* Blue pixel-block cross — animates on hover of itself or email */}
+          <div
+            className={s.crossBlock}
+            data-anim={blockActive}
+            onMouseEnter={activateBlock}
+            onMouseLeave={deactivateBlock}
+            aria-hidden="true"
+          >
+            {Array.from({ length: 9 }).map((_, i) => (
+              <span key={i} className={s.crossCell} />
+            ))}
+          </div>
+
+          {/* Original: rotating cross + email */}
           <div className={s.cta}>
             <div className={s.cross} aria-hidden="true">
               <span className={s.crossH} />
               <span className={s.crossV} />
             </div>
-
             <a
               className={s.email}
               href="mailto:anton.shyshenko@gmail.com"
+              onMouseEnter={activateBlock}
+              onMouseLeave={deactivateBlock}
             >
               anton.shyshenko@gmail.com
             </a>

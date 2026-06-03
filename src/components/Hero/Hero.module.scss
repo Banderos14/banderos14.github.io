@@ -2,7 +2,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
   position: relative;
   overflow: hidden;
 }
@@ -71,19 +71,8 @@
 }
 
 .label {
-  @include font-mono;
-  font-size: 11px;
-  color: var(--text-d);
-  letter-spacing: 0.1em;
+  @include label-mono;
   margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  &::before {
-    content: '// ';
-    color: var(--accent);
-  }
 }
 
 .name {
