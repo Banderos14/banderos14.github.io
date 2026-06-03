@@ -30,8 +30,14 @@ export default function Nav({ scrollY, theme, onToggleTheme }: NavProps) {
     setOpen(false);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const lenis = (window as any).__lenis;
-    if (lenis) lenis.scrollTo(`#${id}`);
-    else document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    if (lenis) {
+      lenis.scrollTo(`#${id}`, {
+        duration: 2.2,
+        easing: (t: number) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
+      });
+    } else {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (

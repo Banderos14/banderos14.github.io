@@ -5,6 +5,7 @@
   justify-content: center;
   position: relative;
   overflow: hidden;
+  background: transparent;
 }
 
 .console {
@@ -194,10 +195,9 @@
   will-change: transform;
 }
 
-// Keyframe определён локально — иначе CSS Modules его не найдёт
 @keyframes tickScroll {
   from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  to   { transform: translateX(-25%); }
 }
 
 .tickerItem {

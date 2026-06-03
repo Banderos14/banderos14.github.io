@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   border: 1px solid var(--border);
-  border-radius: 3px;
+  border-radius: 5px;
   background: var(--surface);
   cursor: pointer;
   position: relative;
@@ -45,6 +45,7 @@
   flex-shrink: 0;
   overflow: hidden;
   border-bottom: 1px solid var(--border);
+  border-radius: 4px 4px 0 0;
 }
 
 .chrome {
@@ -54,6 +55,7 @@
   padding: 7px 10px;
   background: var(--bg-3);
   border-bottom: 1px solid var(--border);
+  border-radius: 4px 4px 0 0;
 }
 
 .dots {

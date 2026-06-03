@@ -39,23 +39,16 @@
 }
 
 .scrolled .inner {
-  background: var(--nav-bg);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
   border-color: var(--border-h);
   padding: 10px 22px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14);
 
   @media (max-width: 640px) {
     padding: 8px 16px;
   }
 }
 
-// When mobile menu is open — nav always gets glass background
+// When mobile menu is open
 .menuOpen .inner {
-  background: var(--nav-bg);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
   border-color: var(--border-h);
   padding: 8px 16px;
 }

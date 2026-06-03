@@ -21,9 +21,9 @@ export default function Contact() {
 
         <motion.div
           className={s.body}
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 55 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+          transition={{ type: 'spring', stiffness: 75, damping: 18, mass: 0.9, delay: 0.05 }}
         >
           <span className={s.label}>get in touch</span>
 
@@ -49,8 +49,6 @@ export default function Contact() {
             <a
               className={s.email}
               href="mailto:anton.shyshenko@gmail.com"
-              onMouseEnter={activateBlock}
-              onMouseLeave={deactivateBlock}
             >
               anton.shyshenko@gmail.com
             </a>
@@ -75,7 +73,10 @@ export default function Contact() {
             </a>
           </div>
 
-          <p className={s.note}>usually replies within 24 hours</p>
+          <div className={s.note}>
+            <span className={s.noteDot} aria-hidden="true" />
+            usually replies within a few hours
+          </div>
         </motion.div>
       </div>
     </section>

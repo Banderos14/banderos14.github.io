@@ -1,5 +1,5 @@
 .section {
-  padding: 96px 0;
+  padding: 70px 0;
   position: relative;
   z-index: 2;
 }
@@ -227,8 +227,45 @@
 
 .note {
   @include font-mono;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-size: 11px;
-  color: var(--text-d);
+  color: rgba(74, 222, 128, 0.55);
   letter-spacing: 0.06em;
   margin-top: 8px;
+  padding: 6px 12px;
+  border: 1px solid rgba(74, 222, 128, 0.12);
+  border-radius: 3px;
+
+  [data-theme='light'] & { color: rgba(22, 163, 74, 0.65); border-color: rgba(22, 163, 74, 0.18); }
+}
+
+.noteDot {
+  position: relative;
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: rgba(74, 222, 128, 0.55);
+  animation: pulse 2.2s ease-in-out infinite;
+
+  [data-theme='light'] & { background: rgba(22, 163, 74, 0.6); }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 1px solid rgba(74, 222, 128, 0.4);
+    animation: dotRing 2.2s ease-in-out infinite;
+
+    [data-theme='light'] & { border-color: rgba(22, 163, 74, 0.4); }
+  }
+}
+
+@keyframes dotRing {
+  0%       { transform: scale(0.6); opacity: 0.8; }
+  70%, 100% { transform: scale(1.8); opacity: 0; }
 }

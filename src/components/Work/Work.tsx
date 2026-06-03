@@ -4,22 +4,12 @@ import { projects } from '@/data/projects';
 import ProjectItem from './ProjectItem';
 import s from './Work.module.scss';
 
-const AUTO_MS       = 5000;
-const AUTO_DELAY_MS = 5000;
-
 export default function Work() {
   const trackRef   = useRef<HTMLDivElement>(null);
   const outerRef   = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
-  const userActRef = useRef(false);
-  const pauseRef   = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const dirRef     = useRef(1);
-  // live ref so the interval always sees the current max scroll
-  const maxScrollRef = useRef(0);
 
   const [revealed,       setRevealed]       = useState(false);
-  const [autoReady,      setAutoReady]      = useState(false);
-  const [anyHovered,     setAnyHovered]     = useState(false);
   const [activeIndex,    setActiveIndex]    = useState(0);
   const [cardWidth,      setCardWidth]      = useState(320);
   const [containerWidth, setContainerWidth] = useState(900);
@@ -36,8 +26,6 @@ export default function Work() {
   // Number of unique scroll positions (fewer than projects when last cards are flush)
   const dotCount    = maxScrollPx > 0 ? Math.floor(maxScrollPx / step) + 1 : 1;
   const activeDot   = Math.min(Math.round(scrollX / step), dotCount - 1);
-
-  maxScrollRef.current = maxScrollPx;
 
   // Measure card width
   useEffect(() => {
@@ -71,50 +59,17 @@ export default function Work() {
     return () => io.disconnect();
   }, []);
 
-  // Arm auto-scroll after delay
-  useEffect(() => {
-    if (!revealed) return;
-    const t = setTimeout(() => setAutoReady(true), AUTO_DELAY_MS);
-    return () => clearTimeout(t);
-  }, [revealed]);
-
-  const markUserAct = useCallback(() => {
-    userActRef.current = true;
-    if (pauseRef.current) clearTimeout(pauseRef.current);
-    pauseRef.current = setTimeout(() => { userActRef.current = false; }, 2500);
+  const nextCard = useCallback(() => {
+    setActiveIndex(i => Math.min(i + 1, projects.length - 1));
   }, []);
 
-  const nextCard = useCallback(() => {
-    markUserAct();
-    setActiveIndex(i => Math.min(i + 1, projects.length - 1));
-  }, [markUserAct]);
-
   const prevCard = useCallback(() => {
-    markUserAct();
     setActiveIndex(i => Math.max(i - 1, 0));
-  }, [markUserAct]);
-
-  // Ping-pong: reverse when we hit the real scroll boundary (no empty space)
-  useEffect(() => {
-    if (!autoReady || anyHovered) return;
-    const tick = setInterval(() => {
-      if (userActRef.current) return;
-      setActiveIndex(i => {
-        const n = i + dirRef.current;
-        const wouldScroll = n * step;
-        // Reverse at actual end (flush edge) or at card 0
-        if (wouldScroll >= maxScrollRef.current || n >= projects.length - 1) dirRef.current = -1;
-        if (n <= 0) dirRef.current = 1;
-        return Math.max(0, Math.min(n, projects.length - 1));
-      });
-    }, AUTO_MS);
-    return () => clearInterval(tick);
-  }, [autoReady, anyHovered, step]);
+  }, []);
 
   const handleDragEnd = (_: unknown, info: PanInfo) => {
     const swipe = Math.abs(info.offset.x) > 50 || Math.abs(info.velocity.x) > 300;
     if (swipe) info.offset.x < 0 ? nextCard() : prevCard();
-    markUserAct();
   };
 
   const atStart = activeIndex === 0;
@@ -126,9 +81,9 @@ export default function Work() {
       <div className="container">
         <motion.div
           className={s.header}
-          initial={{ opacity: 0, y: 14 }}
-          animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
-          transition={{ duration: 0.5 }}
+          initial={{ opacity: 0, y: 45 }}
+          animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 45 }}
+          transition={{ type: 'spring', stiffness: 75, damping: 18, mass: 0.9 }}
         >
           <span className={s.num}>02</span>
           <span className={s.title}>work</span>
@@ -158,14 +113,14 @@ export default function Work() {
                 key={project.name}
                 data-slide
                 className={s.cardSlide}
-                initial={{ opacity: 0, y: 24 }}
-                animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-                transition={{ duration: 0.65, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                initial={{ opacity: 0, y: 60 }}
+                animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
+                transition={{ type: 'spring', stiffness: 72, damping: 17, mass: 0.9, delay: i * 0.1 }}
               >
                 <ProjectItem
                   project={project}
                   index={i}
-                  onHover={setAnyHovered}
+                  onHover={() => {}}
                   revealed={revealed}
                 />
               </motion.div>
@@ -180,7 +135,7 @@ export default function Work() {
           className={s.dots}
           initial={{ opacity: 0 }}
           animate={revealed ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.4, delay: projects.length * 0.15 + 0.2 }}
+          transition={{ duration: 0.5, delay: projects.length * 0.1 + 0.2 }}
         >
           {Array.from({ length: dotCount }).map((_, i) => (
             <span key={i} className={s.dot} data-active={i === activeDot} />
@@ -189,9 +144,9 @@ export default function Work() {
 
         <motion.div
           className={s.footer}
-          initial={{ opacity: 0, y: 16 }}
-          animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-          transition={{ duration: 0.5, delay: projects.length * 0.15 + 0.4 }}
+          initial={{ opacity: 0, y: 40 }}
+          animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+          transition={{ type: 'spring', stiffness: 75, damping: 18, mass: 0.9, delay: projects.length * 0.1 + 0.25 }}
         >
           <div className="btn-wrap">
             <a href="https://github.com/Banderos14" target="_blank" rel="noopener noreferrer" className="btn btn-p">

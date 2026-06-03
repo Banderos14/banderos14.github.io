@@ -115,9 +115,10 @@ export default function Hero() {
       {/* ── TICKER ── */}
       <div className={s.ticker}>
         <div className={s.tickerTrack}>
-          {[...SKILLS, ...SKILLS].map((skill, i) => (
+          {[...SKILLS, ...SKILLS, ...SKILLS, ...SKILLS].map((skill, i) => (
             <span key={i} className={s.tickerItem}>
               <span>{skill}</span>
+              <span className={s.tickerSep} aria-hidden="true">·</span>
             </span>
           ))}
         </div>
