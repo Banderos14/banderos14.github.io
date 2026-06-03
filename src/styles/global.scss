@@ -132,7 +132,7 @@ body {
   color: var(--text);
   background: var(--bg);
   overflow-x: hidden;
-  transition: background 0.4s ease, color 0.4s ease;
+  transition: color 0.4s ease;
 }
 
 // Custom cursor only on pointer:fine (mouse) devices
@@ -201,12 +201,13 @@ section {
   padding: 96px 0;
   position: relative;
   z-index: 2;
+  background: var(--bg);
 
   @media (max-width: 640px) { padding: 64px 0; }
 }
 
 .container {
-  max-width: 980px;
+  max-width: 1080px;
   margin: 0 auto;
   padding: 0 40px;
 
@@ -266,7 +267,7 @@ section {
     }
 
     &:hover {
-      color: #1b5def;           // always Ukrainian/codedgar blue in both themes
+      color: var(--accent);     // blue in dark, gold in light — follows theme
       box-shadow: 0 4px 20px var(--accent-dim);
 
       &::before {

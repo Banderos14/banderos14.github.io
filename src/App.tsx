@@ -124,12 +124,17 @@ export default function App() {
     const keys: string[] = [];
     let timer: ReturnType<typeof setTimeout>;
 
+    const smoothEase = (t: number) =>
+      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const lenisTo = (target: string | number) => (window as any).__lenis?.scrollTo(target)
-      ?? (() => {
-           if (typeof target === 'number') window.scrollTo({ top: target });
-           else document.querySelector(target)?.scrollIntoView();
-         })();
+    const lenisTo = (target: string | number) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const lenis = (window as any).__lenis;
+      if (lenis) lenis.scrollTo(target, { duration: 2.2, easing: smoothEase });
+      else if (typeof target === 'number') window.scrollTo({ top: target, behavior: 'smooth' });
+      else document.querySelector(String(target))?.scrollIntoView({ behavior: 'smooth' });
+    };
 
     const onKey = (e: KeyboardEvent) => {
       if ((e.target as HTMLElement).tagName === 'INPUT') return;

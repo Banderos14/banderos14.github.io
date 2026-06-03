@@ -72,18 +72,18 @@ export default function About() {
           <div className={s.left}>
             <motion.h2
               className={s.heading}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 55 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.1 }}
+              transition={{ type: 'spring', stiffness: 75, damping: 18, mass: 0.9, delay: 0.05 }}
             >
               Who I Am
             </motion.h2>
 
             <motion.div
               className={s.text}
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 50 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ type: 'spring', stiffness: 75, damping: 18, mass: 0.9, delay: 0.15 }}
             >
               <p>
                 I'm a <strong>frontend developer</strong> based in{' '}
@@ -103,9 +103,9 @@ export default function About() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 40 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.35 }}
+              transition={{ type: 'spring', stiffness: 75, damping: 18, mass: 0.9, delay: 0.25 }}
               className={s.cta}
             >
               <div className="btn-wrap">
@@ -125,9 +125,9 @@ export default function About() {
             {/* Stats 2×2 grid */}
             <motion.div
               className={s.statsCard}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 55 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.25 }}
+              transition={{ type: 'spring', stiffness: 75, damping: 18, mass: 0.9, delay: 0.1 }}
             >
               {STATS.map(({ val, suffix, label }, i) => (
                 <div key={label} className={`${s.statCell} ${i < 2 ? s.statCellTop : ''}`}>
@@ -150,9 +150,9 @@ export default function About() {
             {/* Code object card */}
             <motion.div
               className={s.codeCard}
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 50 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.55, delay: 0.38 }}
+              transition={{ type: 'spring', stiffness: 75, damping: 18, mass: 0.9, delay: 0.22 }}
             >
               <pre className={s.code}>
                 <span className={s.ckw}>const</span>{' '}
@@ -177,6 +177,7 @@ export default function About() {
         </div>
       </div>{/* end .inner */}
       </div>{/* end .conwayBlock */}
+      <div style={{ height: 50, background: 'var(--bg)' }} aria-hidden="true" />
     </section>
   );
 }

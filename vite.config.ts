@@ -18,7 +18,7 @@ $ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @mixin container {
-  max-width: 980px;
+  max-width: 1080px;
   margin: 0 auto;
   padding: 0 40px;
 }
@@ -28,6 +28,21 @@ $ease: cubic-bezier(0.16, 1, 0.3, 1);
   align-items: center;
   gap: 16px;
   margin-bottom: 48px;
+}
+
+@mixin label-mono {
+  @include font-mono;
+  font-size: 11px;
+  color: var(--text-d);
+  letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &::before {
+    content: '// ';
+    color: var(--accent);
+  }
 }
 `
 

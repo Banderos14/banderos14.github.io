@@ -1,17 +1,18 @@
 // ── CSS vars — section background ──────────────────────────────────────────
-:root                { --about-bg: #0f1d30; }
-[data-theme='light'] { --about-bg: #ebebeb; }
+:root                { --about-bg: transparent; }
+[data-theme='light'] { --about-bg: var(--bg-2); }
 
-// ── Section wrapper — transparent, just stacks header + conwayBlock ───────
+// ── Section wrapper ────────────────────────────────────────────────────────
 .section {
   position: relative;
   z-index: 2;
   padding: 0;
+  background: var(--bg);
 }
 
-// ── Header area — sits on regular page bg, above Conway ───────────────────
+// ── Header area ───────────────────────────────────────────────────────────
 .headerWrap {
-  padding: 80px 0 24px;
+  padding: 24px 0;
 
   @media (max-width: 640px) { padding: 20px 0 24px; }
 }

@@ -21,29 +21,6 @@ export function useGsapReveal() {
 
     const triggers: ScrollTrigger[] = [];
 
-    // ── Section stacking: each section shrinks/fades as next one scrolls in
-    const sections = document.querySelectorAll<HTMLElement>('section[id]');
-    sections.forEach((section, i) => {
-      if (i >= sections.length - 1) return;
-      const inner = section.querySelector<HTMLElement>('.container');
-      if (!inner) return;
-
-      const st = gsap.to(inner, {
-        yPercent: -5,
-        opacity:  0.6,
-        scale:    0.98,
-        ease:     'none',
-        scrollTrigger: {
-          trigger:  section,
-          start:    'bottom 72%',
-          end:      'bottom 10%',
-          scrub:    1.4,
-        },
-      }).scrollTrigger;
-
-      if (st) triggers.push(st);
-    });
-
     // ── Individual reveal elements
     document.querySelectorAll<HTMLElement>('[data-reveal]').forEach(el => {
       const type  = el.dataset.reveal || 'up';

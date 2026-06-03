@@ -1,5 +1,5 @@
 .section {
-  padding: 96px 0;
+  padding: 70px 0;
   position: relative;
   z-index: 2;
 }
@@ -40,33 +40,79 @@
 }
 
 .label {
-  @include font-mono;
-  font-size: 11px;
-  color: var(--text-d);
-  letter-spacing: 0.1em;
+  @include label-mono;
 }
 
-// ── CTA row (cross + email) ───────────────────────────────────────────────
+// ── Pixel-block cross (new addition) ──────────────────────────────────────
+.crossBlock {
+  display: grid;
+  grid-template-columns: repeat(3, 22px);
+  grid-template-rows: repeat(3, 22px);
+  gap: 4px;
+  cursor: default;
+  padding: 4px 0;
+}
+
+.crossCell {
+  display: block;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+
+  // Corner cells — always hidden
+  &:nth-child(1), &:nth-child(3),
+  &:nth-child(7), &:nth-child(9) {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  // Cross cells — dim at rest
+  &:nth-child(2), &:nth-child(4),
+  &:nth-child(5), &:nth-child(6),
+  &:nth-child(8) {
+    opacity: 0.28;
+  }
+}
+
+// Animate cross cells on blockActive state
+.crossBlock[data-anim='true'] {
+  .crossCell:nth-child(2) { animation: blockPulse 1.4s ease-in-out infinite 0s;    opacity: 1; }
+  .crossCell:nth-child(4) { animation: blockPulse 1.4s ease-in-out infinite 0.12s; opacity: 1; }
+  .crossCell:nth-child(5) { animation: blockPulse 1.4s ease-in-out infinite 0.24s; opacity: 1; }
+  .crossCell:nth-child(6) { animation: blockPulse 1.4s ease-in-out infinite 0.36s; opacity: 1; }
+  .crossCell:nth-child(8) { animation: blockPulse 1.4s ease-in-out infinite 0.48s; opacity: 1; }
+}
+
+@keyframes blockPulse {
+  0%, 100% { opacity: 0.28; transform: scale(1);    box-shadow: none; }
+  50%       { opacity: 1;    transform: scale(1.28); box-shadow: 0 0 10px var(--accent-dim); }
+}
+
+// Auto-animate on touch (no hover possible)
+@media (pointer: coarse) {
+  .crossCell {
+    &:nth-child(2) { animation: blockPulse 3s ease-in-out infinite 0s; }
+    &:nth-child(4) { animation: blockPulse 3s ease-in-out infinite 0.2s; }
+    &:nth-child(5) { animation: blockPulse 3s ease-in-out infinite 0.4s; }
+    &:nth-child(6) { animation: blockPulse 3s ease-in-out infinite 0.6s; }
+    &:nth-child(8) { animation: blockPulse 3s ease-in-out infinite 0.8s; }
+  }
+}
+
+// ── Original CTA row (cross + email) ──────────────────────────────────────
 .cta {
   display: flex;
   align-items: center;
   gap: 16px;
 
   &:hover {
-    .cross {
-      transform: rotate(135deg);
-    }
-    .crossH,
-    .crossV {
-      background: var(--accent);
-    }
-    .email::after {
-      width: 100%;
-    }
+    .cross { transform: rotate(135deg); }
+    .crossH, .crossV { background: var(--accent); }
+    .email::after { width: 100%; }
   }
 }
 
-// ── Animated cross icon ────────────────────────────────────────────────────
+// Animated cross icon (original)
 .cross {
   position: relative;
   width: 28px;
@@ -181,8 +227,45 @@
 
 .note {
   @include font-mono;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-size: 11px;
-  color: var(--text-d);
+  color: rgba(74, 222, 128, 0.55);
   letter-spacing: 0.06em;
   margin-top: 8px;
+  padding: 6px 12px;
+  border: 1px solid rgba(74, 222, 128, 0.12);
+  border-radius: 3px;
+
+  [data-theme='light'] & { color: rgba(22, 163, 74, 0.65); border-color: rgba(22, 163, 74, 0.18); }
+}
+
+.noteDot {
+  position: relative;
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: rgba(74, 222, 128, 0.55);
+  animation: pulse 2.2s ease-in-out infinite;
+
+  [data-theme='light'] & { background: rgba(22, 163, 74, 0.6); }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 1px solid rgba(74, 222, 128, 0.4);
+    animation: dotRing 2.2s ease-in-out infinite;
+
+    [data-theme='light'] & { border-color: rgba(22, 163, 74, 0.4); }
+  }
+}
+
+@keyframes dotRing {
+  0%       { transform: scale(0.6); opacity: 0.8; }
+  70%, 100% { transform: scale(1.8); opacity: 0; }
 }
