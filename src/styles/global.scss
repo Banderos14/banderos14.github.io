@@ -36,7 +36,7 @@
   --ease:         cubic-bezier(0.16, 1, 0.3, 1);
   --nav-bg:       rgba(8, 12, 16, 0.9);
 
-  // Spacing — codedgar tokens
+  // Spacing
   --space-xs: 6px;
   --space-sm: 16px;
   --space-md: 32px;
@@ -122,7 +122,7 @@ ul, ol {
 ::-webkit-scrollbar-thumb { background: var(--border-h); }
 
 // =========================================================
-// TYPOGRAPHY — codedgar scale
+// TYPOGRAPHY
 // =========================================================
 body {
   font-family: var(--font-s);
@@ -215,10 +215,10 @@ section {
 }
 
 // =========================================================
-// BUTTONS — exact codedgar implementation
+// BUTTONS
 // =========================================================
 
-// Wrapper — positioned context for corner brackets (OUTSIDE the <a>)
+// Wrapper — positioned context for corner brackets (sits outside <a> so they aren't clipped)
 .btn-wrap {
   position: relative;
   display: inline-flex;
@@ -242,7 +242,7 @@ section {
   text-decoration: none;
   white-space: nowrap;
   position: relative;
-  overflow: hidden;       // clips ::before pseudo-element animation
+  overflow: hidden;
   isolation: isolate;     // stacking context so z-index:-1 works on ::before
   transition:
     color 0.16s var(--ease),
@@ -259,11 +259,11 @@ section {
       content: '';
       position: absolute;
       inset: 0;
-      background: var(--bg);    // slides in from right (page background color)
+      background: var(--bg);
       transform: scaleX(0);
       transform-origin: right;
       transition: transform 0.3s var(--ease);
-      z-index: -1;              // behind text (within isolation context)
+      z-index: -1;
     }
 
     &:hover {
@@ -295,7 +295,7 @@ section {
         transparent 100%
       );
       background-size: 200% 100%;
-      background-position: 100% 0;   // starts hidden (right side)
+      background-position: 100% 0;
       transition: background-position 0.4s var(--ease);
       z-index: -1;
       opacity: 0;
@@ -306,7 +306,7 @@ section {
       color: var(--text);
 
       &::before {
-        background-position: 0 0;    // slides to left (visible)
+        background-position: 0 0;
         opacity: 0.12;
       }
     }
@@ -346,8 +346,7 @@ section {
   }
 }
 
-// ── Corner brackets — positioned on .btn-wrap (OUTSIDE the <a> element) ─────
-// They appear at button corners but are NOT clipped by the button's overflow:hidden
+// Corner brackets — on .btn-wrap so they're not clipped by button's overflow:hidden
 .btn-c {
   position: absolute;
   width: 18px;

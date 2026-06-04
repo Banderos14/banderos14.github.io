@@ -8,7 +8,6 @@ const IFRAME_H = 720;
 interface Props {
   project:  Project;
   index:    number;
-  onHover:  (hovered: boolean) => void;
   revealed: boolean;
 }
 
@@ -19,7 +18,7 @@ function displayUrl(url: string): string {
   } catch { return url; }
 }
 
-export default function ProjectItem({ project, index, onHover, revealed }: Props) {
+export default function ProjectItem({ project, index, revealed }: Props) {
   const [hovered,   setHovered]   = useState(false);
   const [scale,     setScale]     = useState(0.24);
   const [ifrSrc,    setIfrSrc]    = useState('');
@@ -32,8 +31,8 @@ export default function ProjectItem({ project, index, onHover, revealed }: Props
   // Placeholder fades when either the local screenshot or live iframe is ready
   const showContent = ifrLoaded || imgLoaded;
 
-  const handleMouseEnter = () => { setHovered(true);  onHover(true);  };
-  const handleMouseLeave = () => { setHovered(false); onHover(false); };
+  const handleMouseEnter = () => setHovered(true);
+  const handleMouseLeave = () => setHovered(false);
 
   // Scale iframe to fit the card width
   useEffect(() => {

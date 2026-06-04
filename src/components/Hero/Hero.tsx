@@ -2,14 +2,12 @@ import React, { useState, useEffect } from 'react';
 import HeroPhoto from './HeroPhoto';
 import s from './Hero.module.scss';
 
-// Список скиллов для бегущей строки внизу Hero
 const SKILLS = [
   'React', 'TypeScript', 'SCSS', 'Vite', 'Next.js', 'Firebase',
   'Framer Motion', 'GSAP', 'i18n', 'Git', 'Figma', 'REST API',
 ];
 
 export default function Hero() {
-  // on = true как только страница загрузилась → запускает CSS-переходы
   const [on, setOn] = useState(false);
 
   useEffect(() => {
@@ -17,14 +15,13 @@ export default function Hero() {
     return () => cancelAnimationFrame(id);
   }, []);
 
-  // Плавное появление снизу-вверх с задержкой (delay в секундах)
   const fade = (delay: number): React.CSSProperties => ({
     opacity: on ? 1 : 0,
     transform: on ? 'none' : 'translateY(14px)',
     transition: `opacity 0.55s ease ${delay}s, transform 0.55s ease ${delay}s`,
   });
 
-  // Выезд строки текста снизу (для имени Anton / Shyshenko)
+  // Text line slides up from below its own clip container
   const slide = (delay: number): React.CSSProperties => ({
     display: 'block',
     transform: on ? 'none' : 'translateY(112%)',
@@ -42,7 +39,6 @@ export default function Hero() {
   return (
     <section className={s.hero} id="hero">
 
-      {/* Декоративный блок кода в правом верхнем углу */}
       <div className={s.console} style={fade(1.2)}>
         <div>
           <span className={s.consoleGreen}>const</span>{' '}
@@ -59,14 +55,12 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Основной контент: текст слева + фото справа */}
       <div className={s.content}>
         <div className={s.left}>
           <p className={s.label} style={fade(0.2)}>
             frontend developer
           </p>
 
-          {/* Имя с анимацией выезда строк снизу */}
           <h1 className={s.name}>
             <span className={s.lineClip}>
               <span style={slide(0)}>Anton</span>
@@ -112,7 +106,6 @@ export default function Hero() {
         <HeroPhoto visible={on} />
       </div>
 
-      {/* ── TICKER ── */}
       <div className={s.ticker}>
         <div className={s.tickerTrack}>
           {[...SKILLS, ...SKILLS, ...SKILLS, ...SKILLS].map((skill, i) => (
@@ -124,7 +117,6 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Scroll-индикатор центр */}
       <div className={s.scrollHint} style={fade(1.6)}>
         <span className={s.scrollLabel}>my work</span>
         <span className={s.scrollArrow}>↓</span>

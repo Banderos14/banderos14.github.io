@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -18,7 +18,6 @@ export default function About() {
   const ref    = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
 
-  // GSAP counter for stat numbers
   useEffect(() => {
     const triggers: ScrollTrigger[] = [];
     document.querySelectorAll<HTMLElement>('[data-count]').forEach(el => {
@@ -46,7 +45,6 @@ export default function About() {
   return (
     <section className={s.section} id="about" ref={ref}>
 
-      {/* ── Header sits on page bg (above Conway block) ── */}
       <div className={s.headerWrap}>
         <div className="container">
           <div className={s.header}>
@@ -57,7 +55,6 @@ export default function About() {
         </div>
       </div>
 
-      {/* ── Conway block — separate visual block below header ── */}
       <div className={s.conwayBlock}>
         <ConwayBg opacity={0.9} />
         <div className={s.fadeTop}    aria-hidden="true" />
@@ -65,10 +62,7 @@ export default function About() {
 
         <div className={s.inner}>
 
-        {/* ── 2-column layout ───────────────────────────────────── */}
         <div className={s.layout}>
-
-          {/* LEFT — text */}
           <div className={s.left}>
             <motion.h2
               className={s.heading}
@@ -120,9 +114,7 @@ export default function About() {
             </motion.div>
           </div>
 
-          {/* RIGHT — stats + code */}
           <div className={s.right}>
-            {/* Stats 2×2 grid */}
             <motion.div
               className={s.statsCard}
               initial={{ opacity: 0, y: 55 }}
@@ -147,7 +139,6 @@ export default function About() {
               ))}
             </motion.div>
 
-            {/* Code object card */}
             <motion.div
               className={s.codeCard}
               initial={{ opacity: 0, y: 50 }}

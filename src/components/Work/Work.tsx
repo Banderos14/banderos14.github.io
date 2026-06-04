@@ -120,7 +120,6 @@ export default function Work() {
                 <ProjectItem
                   project={project}
                   index={i}
-                  onHover={() => {}}
                   revealed={revealed}
                 />
               </motion.div>

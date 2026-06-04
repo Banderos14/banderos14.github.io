@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import s from './TronGridFooter.module.scss';
 
-// ── Constants (ported from codedgar.com) ────────────────────────────────────
 const CELL      = 90;
 const GRID_A    = 0.06;
 const MAX_ALIVE = 10;

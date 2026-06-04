@@ -1,4 +1,4 @@
-// ── Card ──────────────────────────────────────────────────────────────────
+// ── Card ──
 .card {
   display: flex;
   flex-direction: column;
@@ -38,7 +38,7 @@
   }
 }
 
-// ── Browser chrome ────────────────────────────────────────────────────────
+// ── Browser chrome ──
 .mockup {
   display: block;
   text-decoration: none;
@@ -90,7 +90,7 @@
   [data-theme='light'] & { background: rgba(0, 0, 0, 0.03); }
 }
 
-// ── Screen — clip container ───────────────────────────────────────────────
+// ── Screen — clip container ──
 .screen {
   aspect-ratio: 16 / 9;
   position: relative;
@@ -98,7 +98,7 @@
   isolation: isolate;
 }
 
-// ── screenInner — zooms on hover, clipped by .screen ─────────────────────
+// ── screenInner — zooms on hover, clipped by .screen ──
 .screenInner {
   position: absolute;
   inset: 0;
@@ -107,7 +107,7 @@
   transform-origin: top center;
 }
 
-// ── Layer 1: Microlink/user screenshot (static, always loads) ─────────────
+// ── Layer 1: Microlink/user screenshot (static, always loads) ──
 .fallbackImg {
   position: absolute;
   inset: 0;
@@ -119,7 +119,7 @@
   display: block;
 }
 
-// ── Layer 2: Live iframe (real running site — animations work!) ───────────
+// ── Layer 2: Live iframe (real running site — animations work!) ──
 .iframe {
   position: absolute;
   top: 0;
@@ -135,7 +135,7 @@
   &[data-loaded='true'] { opacity: 1; }
 }
 
-// ── Layer 3: Accent glow from bottom (hover effect) ───────────────────────
+// ── Layer 3: Accent glow from bottom (hover effect) ──
 .screenGlow {
   position: absolute;
   bottom: 0;
@@ -149,7 +149,7 @@
   transition: opacity 0.4s var(--ease);
 }
 
-// ── Placeholder — on top of all layers, fades when something loads ─────────
+// ── Placeholder — on top of all layers, fades when something loads ──
 .placeholder {
   position: absolute;
   inset: 0;
@@ -199,7 +199,7 @@
   50%       { opacity: 0.9; }
 }
 
-// ── Card body ─────────────────────────────────────────────────────────────
+// ── Card body ──
 .body {
   display: flex;
   flex-direction: column;
