@@ -14,9 +14,14 @@ export default function HeroPhoto({ visible }: HeroPhotoProps) {
     >
       <div className={s.photo}>
         <img
-          src="/img/photo_2024-09-17_09-50-42.jpg"
+          src="/img/hero.webp"
           alt="Anton Shyshenko"
           className={s.img}
+          width={1280}
+          height={848}
+          loading="eager"
+          decoding="async"
+          fetchPriority="high"
         />
         <span className={`${s.corner} ${s.tl}`} />
         <span className={`${s.corner} ${s.tr}`} />
