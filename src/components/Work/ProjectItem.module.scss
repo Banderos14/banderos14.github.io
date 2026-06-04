@@ -9,31 +9,47 @@
   position: relative;
   height: 100%;
   overflow: visible;
+  // Prevent text selection during carousel swipe
+  user-select: none;
   transition:
-    border-color 0.3s var(--ease),
-    background   0.35s var(--ease),
-    box-shadow   0.35s var(--ease);
+    border-color  0.35s var(--ease),
+    background    0.35s var(--ease),
+    box-shadow    0.45s var(--ease);
 
-  &[data-hovered='true'] {
-    border-color: var(--accent);
-    background: var(--accent-glow);
-    box-shadow:
-      0 0 0 1px var(--accent),
-      0 8px 28px var(--accent-dim),
-      0 4px 12px rgba(0, 0, 0, 0.28);
+  @media (hover: hover) and (pointer: fine) {
+    &[data-hovered='true'] {
+      border-color: var(--accent);
+      background:   var(--accent-glow);
 
-    .name        { color: var(--accent); }
-    .screenInner { transform: scale(1.03); }
-    .screenGlow  { opacity: 0.2; }
-    .cta         { transform: translateY(-6px); }
-    .ghLink      { transform: translateY(-6px); color: var(--text); }
+      // Ambient glow rising from the bottom of the card
+      box-shadow:
+        0 0 0 1px var(--accent),
+        0 24px 48px -12px var(--accent-dim),
+        0 6px 18px -4px rgba(0, 0, 0, 0.28);
+
+      .name       { color: var(--accent); }
+      .screenInner {
+        transform: scale(1.02);
+        filter: brightness(1.05) contrast(1.06);
+      }
+      .overlay    { opacity: 0.05; }
+      .screenGlow { opacity: 0.22; }
+      .cta        { transform: translateY(-6px); }
+      .ghLink     { transform: translateY(-6px); color: var(--text); }
+    }
   }
 
   [data-theme='light'] & {
     background: #fff;
-    &[data-hovered='true'] {
-      background: var(--accent-glow);
-      box-shadow: 0 0 0 1px var(--accent), 0 8px 28px var(--accent-dim);
+
+    @media (hover: hover) and (pointer: fine) {
+      &[data-hovered='true'] {
+        background: var(--accent-glow);
+        box-shadow:
+          0 0 0 1px var(--accent),
+          0 24px 48px -12px var(--accent-dim),
+          0 6px 16px -4px rgba(0, 0, 0, 0.1);
+      }
     }
   }
 }
@@ -69,8 +85,8 @@
     height: 8px;
     border-radius: 50%;
     &:nth-child(1) { background: rgba(248, 113, 113, 0.7); }
-    &:nth-child(2) { background: rgba(251, 191, 36, 0.7);  }
-    &:nth-child(3) { background: rgba(52, 211, 153, 0.7);  }
+    &:nth-child(2) { background: rgba(251, 191, 36,  0.7); }
+    &:nth-child(3) { background: rgba(52,  211, 153, 0.7); }
   }
 }
 
@@ -90,7 +106,7 @@
   [data-theme='light'] & { background: rgba(0, 0, 0, 0.03); }
 }
 
-// ── Screen — clip container ──
+// ── Screen clip container ──
 .screen {
   aspect-ratio: 16 / 9;
   position: relative;
@@ -98,71 +114,72 @@
   isolation: isolate;
 }
 
-// ── screenInner — zooms on hover, clipped by .screen ──
+// ── screenInner: zooms subtly on hover, clipped by .screen ──
 .screenInner {
   position: absolute;
   inset: 0;
   z-index: 1;
-  transition: transform 0.55s var(--ease);
   transform-origin: top center;
+  transition:
+    transform 0.5s var(--ease),
+    filter    0.5s var(--ease);
 }
 
-// ── Layer 1: Microlink/user screenshot (static, always loads) ──
-.fallbackImg {
+// ── Screenshot image ──
+.screenImg {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: top center;
-  z-index: 1;
   display: block;
+  // Prevent browser ghost-image drag on the screenshot
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none; // clicks pass through to parent <a>
 }
 
-// ── Layer 2: Live iframe (real running site — animations work!) ──
-.iframe {
+// ── Subtle persistent overlay to tie screenshot into the design language ──
+.overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 1280px; // matches IFRAME_W; scaled down via inline transform
-  border: 0;
-  pointer-events: none;
-  transform-origin: top left;
+  inset: 0;
   z-index: 2;
-  opacity: 0;
-  transition: opacity 0.6s ease;
+  pointer-events: none;
+  // Very light gradient + noise-like texture from border
+  background:
+    linear-gradient(to bottom, transparent 55%, rgba(0, 0, 0, 0.18) 100%);
+  opacity: 0.55;
+  transition: opacity 0.45s var(--ease);
 
-  &[data-loaded='true'] { opacity: 1; }
+  [data-theme='light'] & {
+    background: linear-gradient(to bottom, transparent 55%, rgba(0, 0, 0, 0.08) 100%);
+    opacity: 0.6;
+  }
 }
 
-// ── Layer 3: Accent glow from bottom (hover effect) ──
+// ── Accent glow rising from the bottom on hover ──
 .screenGlow {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 55%;
+  height: 50%;
   z-index: 3;
   pointer-events: none;
   background: linear-gradient(to top, var(--accent) 0%, transparent 100%);
   opacity: 0;
-  transition: opacity 0.4s var(--ease);
+  transition: opacity 0.45s var(--ease);
 }
 
-// ── Placeholder — on top of all layers, fades when something loads ──
+// ── Fallback placeholder (shown only when screenshot prop is absent) ──
 .placeholder {
   position: absolute;
   inset: 0;
-  z-index: 10;
-  pointer-events: none;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  transition: opacity 0.5s ease;
-
-  &[data-loaded='true'] { opacity: 0; }
+  padding: 16px;
 }
 
 .card[data-index='0'] .placeholder { background: linear-gradient(140deg, #0d1b2a 0%, #160d40 100%); }
@@ -172,7 +189,7 @@
 .card[data-index='4'] .placeholder { background: linear-gradient(140deg, #0a0f1a 0%, #1a0a2e 100%); }
 
 [data-theme='light'] .placeholder {
-  background: linear-gradient(140deg, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0.1) 100%);
+  background: linear-gradient(140deg, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0.10) 100%) !important;
 }
 
 .phName {
@@ -181,22 +198,8 @@
   color: rgba(255, 255, 255, 0.5);
   letter-spacing: -0.01em;
   text-align: center;
-  padding: 0 16px;
 
   [data-theme='light'] & { color: rgba(0, 0, 0, 0.32); }
-}
-
-.phLoading {
-  @include font-mono;
-  font-size: 9px;
-  color: rgba(255, 255, 255, 0.25);
-  letter-spacing: 0.1em;
-  animation: loadingPulse 1.8s ease-in-out infinite;
-}
-
-@keyframes loadingPulse {
-  0%, 100% { opacity: 0.3; }
-  50%       { opacity: 0.9; }
 }
 
 // ── Card body ──
@@ -245,7 +248,7 @@
     transition: width 0.4s var(--ease);
   }
 
-  &:hover::after { width: 100%; }
+  @media (hover: hover) { &:hover::after { width: 100%; } }
 }
 
 .name {
@@ -264,8 +267,9 @@
   line-height: 1.75;
   flex: 1;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
   overflow: hidden;
 }
 
@@ -285,9 +289,11 @@
   letter-spacing: 0.05em;
   transition: border-color 0.25s, color 0.25s;
 
-  .card[data-hovered='true'] & {
-    border-color: var(--border-h);
-    color: var(--text-m);
+  @media (hover: hover) and (pointer: fine) {
+    .card[data-hovered='true'] & {
+      border-color: var(--border-h);
+      color: var(--text-m);
+    }
   }
 }
 
@@ -309,7 +315,9 @@
   letter-spacing: 0.06em;
   text-decoration: none;
   transform: translateY(0);
-  transition: transform 0.3s var(--ease), opacity 0.2s;
+  transition:
+    transform 0.3s var(--ease),
+    opacity   0.2s var(--ease);
 
   &:hover { opacity: 0.7; }
 }
@@ -326,7 +334,10 @@
   color: var(--text-d);
   letter-spacing: 0.06em;
   text-decoration: none;
-  transition: color 0.3s var(--ease), transform 0.3s var(--ease), text-shadow 0.3s var(--ease);
+  transition:
+    color      0.3s var(--ease),
+    transform  0.3s var(--ease),
+    text-shadow 0.3s var(--ease);
 
   &:hover {
     text-shadow: 0 0 12px rgba(221, 228, 236, 0.45);

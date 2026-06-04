@@ -102,7 +102,7 @@
   border-radius: 3px;
   background: var(--border-h);
   transition: background 0.3s var(--ease), width 0.3s var(--ease);
-  pointer-events: none;
+  cursor: pointer;
 
   &[data-active='true'] {
     background: var(--accent);

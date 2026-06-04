@@ -1,12 +1,11 @@
 export interface Project {
+  /** Key into translation files — t.projects[slug] holds name/role/desc */
+  slug: string;
   year: number;
-  role: string;
-  name: string;
   tags: string[];
-  desc: string;
   live: string;
   github: string;
-  screenshot?: string; // path relative to public/, e.g. '/img/theatre.png'
+  screenshot?: string;
 }
 
 export type Theme = 'dark' | 'light';

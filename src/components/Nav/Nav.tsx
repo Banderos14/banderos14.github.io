@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import type { Theme } from '@/types';
+import { useLocale } from '@/i18n';
+import LangSwitcher from '@/components/LangSwitcher/LangSwitcher';
 import s from './Nav.module.scss';
 
 interface NavProps {
@@ -15,15 +17,16 @@ const ContrastIcon = () => (
   </svg>
 );
 
-const sections = [
-  { id: 'work',    label: 'Work' },
-  { id: 'about',   label: 'About' },
-  { id: 'contact', label: 'Contact' },
-];
-
 export default function Nav({ scrollY, theme, onToggleTheme }: NavProps) {
+  const { t } = useLocale();
   const scrolled = scrollY > 60;
   const [open, setOpen] = useState(false);
+
+  const sections = [
+    { id: 'work',    label: t.nav.work },
+    { id: 'about',   label: t.nav.about },
+    { id: 'contact', label: t.nav.contact },
+  ];
 
   const scrollTo = (id: string) => (e: React.MouseEvent) => {
     e.preventDefault();
@@ -60,12 +63,15 @@ export default function Nav({ scrollY, theme, onToggleTheme }: NavProps) {
               ))}
             </ul>
 
+            <div className={s.langBar}>
+              <LangSwitcher />
+            </div>
+
             <button className={s.themeBtn} onClick={onToggleTheme} aria-label="Toggle theme">
               <ContrastIcon />
-              <span>{theme === 'dark' ? 'Dark' : 'Light'}</span>
+              <span>{theme === 'dark' ? t.nav.theme_dark : t.nav.theme_light}</span>
             </button>
 
-            {/* Hamburger — visible only on mobile */}
             <button
               className={`${s.burger} ${open ? s.burgerOpen : ''}`}
               onClick={() => setOpen(o => !o)}
@@ -89,9 +95,10 @@ export default function Nav({ scrollY, theme, onToggleTheme }: NavProps) {
             </li>
           ))}
         </ul>
+        <LangSwitcher large onSelect={() => setOpen(false)} />
         <button className={s.overlayTheme} onClick={onToggleTheme}>
           <ContrastIcon />
-          <span>{theme === 'dark' ? 'Dark' : 'Light'}</span>
+          <span>{theme === 'dark' ? t.nav.theme_dark : t.nav.theme_light}</span>
         </button>
       </div>
     </>

@@ -56,9 +56,11 @@
 .logo {
   display: flex;
   align-items: center;
-  transition: opacity 0.2s;
+  transition: opacity 0.26s var(--ease);
 
-  &:hover { opacity: 0.7; }
+  @media (hover: hover) and (pointer: fine) {
+    &:hover { opacity: 0.7; }
+  }
 }
 
 .logoImg {
@@ -71,6 +73,14 @@
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+// LangSwitcher is visible in the navbar only on desktop; mobile uses the overlay instead
+.langBar {
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 640px) { display: none; }
 }
 
 .links {
@@ -89,11 +99,13 @@
     padding: 5px 12px;
     color: var(--text-m);
     cursor: pointer;
-    transition: color 0.22s;
+    transition: color 0.26s var(--ease);
 
-    &:hover {
-      color: var(--text);
-      .linkLine { transform: scaleX(1); }
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        color: var(--text);
+        .linkLine { transform: scaleX(1); }
+      }
     }
   }
 }
@@ -126,7 +138,7 @@
   background: var(--surface);
   color: var(--text-m);
   cursor: pointer;
-  transition: color 0.2s, border-color 0.2s;
+  transition: color 0.26s var(--ease), border-color 0.26s var(--ease);
 
   @media (max-width: 640px) { display: none; }
 
@@ -137,9 +149,11 @@
     letter-spacing: 0.04em;
   }
 
-  &:hover {
-    color: var(--text);
-    border-color: var(--text-d);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      color: var(--text);
+      border-color: var(--text-d);
+    }
   }
 }
 
@@ -221,10 +235,14 @@
   color: var(--text-m);
   letter-spacing: -0.02em;
   padding: 8px 24px;
-  transition: color 0.2s;
+  transition: color 0.26s var(--ease);
   display: block;
 
   &:active { color: var(--accent); }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover { color: var(--text); }
+  }
 }
 
 .overlayTheme {
@@ -239,7 +257,11 @@
   cursor: pointer;
   @include font-sans;
   font-size: 12px;
-  transition: color 0.2s;
+  transition: color 0.26s var(--ease), border-color 0.26s var(--ease);
 
   svg { flex-shrink: 0; }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover { color: var(--text); }
+  }
 }

@@ -245,9 +245,10 @@ section {
   overflow: hidden;
   isolation: isolate;     // stacking context so z-index:-1 works on ::before
   transition:
-    color 0.16s var(--ease),
-    border-color 0.16s var(--ease),
-    box-shadow 0.16s var(--ease);
+    color       0.26s var(--ease),
+    border-color 0.26s var(--ease),
+    box-shadow  0.3s  var(--ease),
+    opacity     0.26s var(--ease);
 
   // Primary — accent bg, page-bg fill slides in, text turns blue
   &-p {
@@ -262,17 +263,19 @@ section {
       background: var(--bg);
       transform: scaleX(0);
       transform-origin: right;
-      transition: transform 0.3s var(--ease);
+      transition: transform 0.32s var(--ease);
       z-index: -1;
     }
 
-    &:hover {
-      color: var(--accent);     // blue in dark, gold in light — follows theme
-      box-shadow: 0 4px 20px var(--accent-dim);
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        color: var(--accent);     // blue in dark, gold in light — follows theme
+        box-shadow: 0 4px 20px var(--accent-dim);
 
-      &::before {
-        transform: scaleX(1);
-        transform-origin: left;
+        &::before {
+          transform: scaleX(1);
+          transform-origin: left;
+        }
       }
     }
   }
@@ -301,32 +304,36 @@ section {
       opacity: 0;
     }
 
-    &:hover {
-      border-color: var(--accent);
-      color: var(--text);
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        border-color: var(--accent);
+        color: var(--text);
 
-      &::before {
-        background-position: 0 0;
-        opacity: 0.12;
+        &::before {
+          background-position: 0 0;
+          opacity: 0.12;
+        }
       }
     }
   }
 
   &-arr {
-    transition: transform 0.25s;
+    transition: transform 0.28s var(--ease);
     display: inline-block;
   }
 
-  &:hover .btn-arr {
-    transform: translate(2px, -2px);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover .btn-arr {
+      transform: translate(2px, -2px);
+    }
   }
 
-  // Monobank-style press feedback on touch
+  // Gentle press feedback on touch — subtle scale, no jarring jump
   @media (pointer: coarse) {
     &:active {
-      transform: scale(0.95);
-      opacity: 0.88;
-      transition: transform 0.08s ease, opacity 0.08s ease !important;
+      transform: scale(0.97);
+      opacity: 0.85;
+      transition: transform 0.12s ease, opacity 0.12s ease !important;
     }
   }
 }
@@ -356,7 +363,7 @@ section {
   border-width: 0;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.28s var(--ease);
 
   &--tl { top: -6px;    left: -6px;   border-top-width: 2px;    border-left-width: 2px; }
   &--tr { top: -6px;    right: -6px;  border-top-width: 2px;    border-right-width: 2px; }
@@ -364,7 +371,9 @@ section {
   &--br { bottom: -6px; right: -6px;  border-bottom-width: 2px; border-right-width: 2px; }
 }
 
-// Reveal on wrapper hover (works for both btn-p and btn-s)
-.btn-wrap:hover .btn-c {
-  opacity: 1;
+// Reveal on wrapper hover — pointer:fine only so touch devices don't flicker
+@media (hover: hover) and (pointer: fine) {
+  .btn-wrap:hover .btn-c {
+    opacity: 1;
+  }
 }

@@ -1,8 +1,10 @@
 import { useEffect, useRef } from 'react';
 
-const SPACING     = 36;
+const IS_TOUCH    = !window.matchMedia('(pointer: fine)').matches;
+// Mobile: larger grid spacing (~4× fewer dots) and no parallax to avoid scroll jank
+const SPACING     = IS_TOUCH ? 72 : 36;
 const DOT_R       = 1.1;
-const PARALLAX    = 0.07;
+const PARALLAX    = IS_TOUCH ? 0  : 0.07;
 const SCROLL_LERP = 0.12;
 
 interface Dot {
@@ -91,13 +93,13 @@ export default function BgCanvas() {
     rafId = requestAnimationFrame(tick);
 
     window.addEventListener('resize', onResize, { passive: true });
-    window.addEventListener('scroll', onScroll, { passive: true });
+    if (!IS_TOUCH) window.addEventListener('scroll', onScroll, { passive: true });
 
     return () => {
       cancelAnimationFrame(rafId);
       themeObs.disconnect();
       window.removeEventListener('resize', onResize);
-      window.removeEventListener('scroll', onScroll);
+      if (!IS_TOUCH) window.removeEventListener('scroll', onScroll);
     };
   }, []);
 

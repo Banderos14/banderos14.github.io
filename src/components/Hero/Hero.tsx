@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useLocale } from '@/i18n';
 import HeroPhoto from './HeroPhoto';
 import s from './Hero.module.scss';
 
-const SKILLS = [
-  'React', 'TypeScript', 'SCSS', 'Vite', 'Next.js', 'Firebase',
-  'Framer Motion', 'GSAP', 'i18n', 'Git', 'Figma', 'REST API',
-];
-
 export default function Hero() {
+  const { t } = useLocale();
   const [on, setOn] = useState(false);
 
   useEffect(() => {
@@ -36,6 +33,12 @@ export default function Hero() {
     else document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  // Duplicate 4× so the ticker never shows a gap
+  const tickerItems = [...Array(4)].flatMap(() =>
+    ['React', 'TypeScript', 'SCSS', 'Vite', 'Next.js', 'Firebase',
+     'Framer Motion', 'GSAP', 'i18n', 'Git', 'Figma', 'REST API']
+  );
+
   return (
     <section className={s.hero} id="hero">
 
@@ -58,7 +61,7 @@ export default function Hero() {
       <div className={s.content}>
         <div className={s.left}>
           <p className={s.label} style={fade(0.2)}>
-            frontend developer
+            {t.hero.label}
           </p>
 
           <h1 className={s.name}>
@@ -71,20 +74,18 @@ export default function Hero() {
           </h1>
 
           <div className={s.sub} style={fade(0.5)}>
-            <span className={s.subFr}>Based in France — building digital experiences</span>
-            <span className={s.subMono}>// react · typescript · scss · motion</span>
+            <span className={s.subFr}>{t.hero.sub}</span>
+            <span className={s.subMono}>{t.hero.sub_mono}</span>
           </div>
 
           <p className={s.desc} style={fade(0.65)}>
-            I craft clean, performant interfaces with attention to detail,
-            smooth interactions, and thoughtful UX. Passionate about design
-            systems and the craft of frontend engineering.
+            {t.hero.desc}
           </p>
 
           <div className={s.cta} style={fade(0.8)}>
             <div className="btn-wrap">
               <a href="#work" className="btn btn-p" onClick={scrollTo('work')}>
-                view work <span className="btn-arr">↗</span>
+                {t.hero.cta_work} <span className="btn-arr">↗</span>
               </a>
               <span className="btn-c btn-c--tl" aria-hidden="true" />
               <span className="btn-c btn-c--tr" aria-hidden="true" />
@@ -93,7 +94,7 @@ export default function Hero() {
             </div>
             <div className="btn-wrap">
               <a href="#contact" className="btn btn-s" onClick={scrollTo('contact')}>
-                get in touch
+                {t.hero.cta_contact}
               </a>
               <span className="btn-c btn-c--tl" aria-hidden="true" />
               <span className="btn-c btn-c--tr" aria-hidden="true" />
@@ -108,7 +109,7 @@ export default function Hero() {
 
       <div className={s.ticker}>
         <div className={s.tickerTrack}>
-          {[...SKILLS, ...SKILLS, ...SKILLS, ...SKILLS].map((skill, i) => (
+          {tickerItems.map((skill, i) => (
             <span key={i} className={s.tickerItem}>
               <span>{skill}</span>
               <span className={s.tickerSep} aria-hidden="true">·</span>
@@ -118,7 +119,7 @@ export default function Hero() {
       </div>
 
       <div className={s.scrollHint} style={fade(1.6)}>
-        <span className={s.scrollLabel}>my work</span>
+        <span className={s.scrollLabel}>{t.hero.scroll}</span>
         <span className={s.scrollArrow}>↓</span>
       </div>
 

@@ -6,6 +6,13 @@
   position: relative;
   overflow: hidden;
   background: transparent;
+
+  // On mobile: flow from top (not centered) so content sits below the fixed nav
+  @media (max-width: 768px) {
+    justify-content: flex-start;
+    padding-top: 72px;
+    padding-bottom: 40px;
+  }
 }
 
 .console {
@@ -23,10 +30,14 @@
 
   @media (max-width: 768px) {
     position: static;
-    order: 2;         // appears after .content (order:1) in flex column
+    order: 0;         // first in flex column — above photo and text
     text-align: left;
-    padding: 0 20px 4px;
+    padding: 8px 20px 4px;
     pointer-events: auto;
+    // Override JS-driven fade so this top element isn't delayed
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 }
 
@@ -60,8 +71,8 @@
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    padding: 100px 20px 40px;
-    gap: 36px 0;
+    padding: 20px 20px 32px;  // nav clearance now handled by .hero padding-top
+    gap: 28px 0;
     order: 1;
   }
 }
@@ -69,6 +80,11 @@
 .left {
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 768px) {
+    align-items: center;
+    text-align: center;
+  }
 }
 
 .label {
@@ -110,6 +126,10 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+
+  @media (max-width: 768px) {
+    align-items: center;
+  }
 }
 
 .subFr {
@@ -131,6 +151,10 @@
   color: var(--text-m);
   line-height: 1.75;
   max-width: 420px;
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
 }
 
 .cta {
@@ -138,8 +162,14 @@
   gap: 11px;
   margin-top: 30px;
 
+  @media (max-width: 768px) {
+    justify-content: center;
+    width: 100%;
+  }
+
   @media (max-width: 480px) {
     flex-direction: column;
+    align-items: center;
     gap: 10px;
 
     .btn-wrap { width: 100%; }
@@ -239,8 +269,9 @@
     bottom: auto;
     left: auto;
     transform: none;
-    padding: 14px 0 20px;
+    padding: 20px 0 24px;
     order: 4;
+    align-items: center;  // keep centred in the flex-column hero
   }
 }
 
