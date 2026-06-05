@@ -107,6 +107,13 @@ export default function ProjectItem({ project, index }: Props) {
           <span className={s.role}>{role}</span>
         </div>
 
+        {project.activelyDeveloped && (
+          <div className={s.activeBadge}>
+            <span className={s.activeDot} aria-hidden="true" />
+            {t.work.active_dev}
+          </div>
+        )}
+
         <a href={project.live} target="_blank" rel="noopener noreferrer"
            className={s.nameLink} draggable={false} onClick={preventIfDrag}>
           <h3 className={s.name}>{name}</h3>

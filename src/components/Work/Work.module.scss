@@ -52,7 +52,7 @@
   border: 1px solid var(--border);
   border-radius: 4px;
   cursor: pointer;
-  transition: color 0.2s, border-color 0.2s;
+  transition: color 0.2s, border-color 0.2s, box-shadow 0.3s;
 
   &:not(:disabled):hover {
     color: var(--accent);
@@ -115,4 +115,40 @@
   margin-top: 48px;
   display: flex;
   justify-content: center;
+}
+
+// ── Nav arrow hint animation ──
+@keyframes arrowGlow {
+  0%, 100% {
+    color: var(--text-m);
+    border-color: var(--border);
+    box-shadow: none;
+  }
+  35%, 65% {
+    color: var(--accent);
+    border-color: var(--accent-dim);
+    box-shadow: 0 0 0 2px var(--accent-dim), 0 0 14px 2px var(--accent-dim);
+  }
+}
+
+@keyframes nudgeLeft {
+  0%, 100% { transform: translateX(0); }
+  40%, 60%  { transform: translateX(-3px); }
+}
+
+@keyframes nudgeRight {
+  0%, 100% { transform: translateX(0); }
+  40%, 60%  { transform: translateX(3px); }
+}
+
+.navBtns[data-revealed='true'] .navBtn:nth-child(1):not(:disabled) {
+  animation: arrowGlow 2.2s ease-in-out 0.8s 2, nudgeLeft 2.2s ease-in-out 0.8s 2;
+}
+
+.navBtns[data-revealed='true'] .navBtn:nth-child(2):not(:disabled) {
+  animation: arrowGlow 2.2s ease-in-out 0.8s 2, nudgeRight 2.2s ease-in-out 0.8s 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navBtns .navBtn { animation: none !important; }
 }

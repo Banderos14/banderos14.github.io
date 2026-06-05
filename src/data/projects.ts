@@ -8,6 +8,7 @@ export const projects: Project[] = [
     live: 'https://tete-a-tete-theatre.vercel.app/',
     github: 'https://github.com/Banderos14/tete-a-tete-theatre',
     screenshot: '/img/projects/tete_a_tete.webp',
+    activelyDeveloped: true,
   },
   {
     slug: 'nice_cafe',
@@ -19,7 +20,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'mibike',
-    year: 2025,
+    year: 2026,
     tags: ['HTML', 'SCSS', 'JavaScript'],
     live: 'https://banderos14.github.io/layout_landing-page/',
     github: 'https://github.com/Banderos14/layout_landing-page/tree/develop',

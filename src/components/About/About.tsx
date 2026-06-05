@@ -9,7 +9,7 @@ import s from './About.module.scss';
 gsap.registerPlugin(ScrollTrigger);
 
 // Numeric values are not translatable — only labels/suffixes come from translations
-const STAT_VALS = [3, 20, 2, 99] as const;
+const STAT_VALS = [2, 20, 5, 'Open'] as const;
 
 export default function About() {
   const { t } = useLocale();
@@ -21,6 +21,11 @@ export default function About() {
     document.querySelectorAll<HTMLElement>('[data-count]').forEach(el => {
       const target = parseInt(el.dataset.count || '0', 10);
       const suffix = el.dataset.suffix || '';
+      // Non-numeric labels (e.g. "Open") are shown as-is without animation
+      if (isNaN(target)) {
+        el.textContent = el.dataset.count || '';
+        return;
+      }
       const obj    = { val: 0 };
       const tw = gsap.to(obj, {
         val: target, duration: 1.8, ease: 'power3.out',
@@ -136,16 +141,17 @@ export default function About() {
                   <span className={s.cid}>me</span>{' '}
                   <span className={s.cop}>=</span>{' '}{'{'}
                   {'\n'}
-                  {'  '}<span className={s.ckey}>stack</span><span className={s.cop}>:</span>
-                  {'   ['}<span className={s.cstr}>"React"</span>{', '}
-                  <span className={s.cstr}>"TS"</span>{', '}
-                  <span className={s.cstr}>"GSAP"</span>{'],'}
+                  {'  '}<span className={s.ckey}>from</span><span className={s.cop}>:</span>
+                  {' '}<span className={s.cstr}>"Ukraine"</span>{','}
                   {'\n'}
-                  {'  '}<span className={s.ckey}>location</span><span className={s.cop}>:</span>
-                  {' '}<span className={s.cstr}>{t.about.code_location}</span>{','}
+                  {'  '}<span className={s.ckey}>based</span><span className={s.cop}>:</span>
+                  {' '}<span className={s.cstr}>"France"</span>{','}
+                  {'\n'}
+                  {'  '}<span className={s.ckey}>building</span><span className={s.cop}>:</span>
+                  {' '}<span className={s.cstr}>"Web projects"</span>{','}
                   {'\n'}
                   {'  '}<span className={s.ckey}>openToWork</span><span className={s.cop}>:</span>
-                  {' '}<span className={s.cbool}>true</span>{','}
+                  {' '}<span className={s.cbool}>true</span>
                   {'\n'}
                   {'}'}
                 </pre>
