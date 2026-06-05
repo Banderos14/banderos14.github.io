@@ -31,7 +31,7 @@ export const en = {
       { suffix: '+', label: 'Years\nlearning' },
       { suffix: '+', label: 'Practice\nprojects' },
       { suffix: '+', label: 'Real\nprojects' },
-      { suffix: '',  label: 'To\nwork' },
+      { suffix: '',  label: 'To work' },
     ],
   },
   work: {

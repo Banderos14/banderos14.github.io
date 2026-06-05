@@ -36,6 +36,7 @@ export default function Nav({ scrollY, theme, onToggleTheme }: NavProps) {
     if (lenis) {
       lenis.scrollTo(`#${id}`, {
         duration: 2.2,
+        offset: (window.innerWidth <= 640 && id === 'work') ? -96 : 0,
         easing: (t: number) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
       });
     } else {

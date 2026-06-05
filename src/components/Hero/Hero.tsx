@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocale } from '@/i18n';
 import HeroPhoto from './HeroPhoto';
 import s from './Hero.module.scss';
@@ -6,6 +6,13 @@ import s from './Hero.module.scss';
 export default function Hero() {
   const { t } = useLocale();
   const [on, setOn] = useState(false);
+
+  // Compute once at mount — does not change during the session
+  const ctaDelay = useRef(
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0
+    : window.matchMedia('(pointer: coarse)').matches          ? 1.5
+    : 0.8
+  ).current;
 
   useEffect(() => {
     const id = requestAnimationFrame(() => setOn(true));
@@ -32,6 +39,7 @@ export default function Hero() {
     if (lenis) {
       lenis.scrollTo(`#${id}`, {
         duration: 2.2,
+        offset: (window.innerWidth <= 640 && id === 'work') ? -24 : 0,
         easing: (t: number) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
       });
     } else {
@@ -88,7 +96,7 @@ export default function Hero() {
             {t.hero.desc}
           </p>
 
-          <div className={s.cta} style={fade(0.8)}>
+          <div className={s.cta} style={fade(ctaDelay)}>
             <div className="btn-wrap">
               <a href="#work" className="btn btn-p" onClick={scrollTo('work')}>
                 {t.hero.cta_work} <span className="btn-arr">↗</span>

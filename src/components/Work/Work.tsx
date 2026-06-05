@@ -15,6 +15,8 @@ export default function Work() {
   const [activeIndex,    setActiveIndex]    = useState(0);
   const [cardWidth,      setCardWidth]      = useState(320);
   const [containerWidth, setContainerWidth] = useState(900);
+  // Tracks first user interaction — disables mobile arrow hint after that
+  const [hinted, setHinted] = useState(false);
 
   const gap  = 20;
   const step = cardWidth + gap;
@@ -63,16 +65,21 @@ export default function Work() {
   }, []);
 
   const nextCard = useCallback(() => {
+    setHinted(true);
     setActiveIndex(i => Math.min(i + 1, projects.length - 1));
   }, []);
 
   const prevCard = useCallback(() => {
+    setHinted(true);
     setActiveIndex(i => Math.max(i - 1, 0));
   }, []);
 
   const handleDragEnd = (_: unknown, info: PanInfo) => {
     const swipe = Math.abs(info.offset.x) > 50 || Math.abs(info.velocity.x) > 300;
-    if (swipe) info.offset.x < 0 ? nextCard() : prevCard();
+    if (swipe) {
+      setHinted(true);
+      info.offset.x < 0 ? nextCard() : prevCard();
+    }
   };
 
   const atStart = activeIndex === 0;
@@ -92,7 +99,13 @@ export default function Work() {
           <span className={s.line} />
           <div className={s.navBtns} data-revealed={revealed}>
             <button className={s.navBtn} onClick={prevCard} disabled={atStart} aria-label="Previous">←</button>
-            <button className={s.navBtn} onClick={nextCard} disabled={atEnd}   aria-label="Next">→</button>
+            <button
+              className={s.navBtn}
+              onClick={nextCard}
+              disabled={atEnd}
+              aria-label="Next"
+              data-mobile-hint={!hinted && revealed && !atEnd ? 'true' : undefined}
+            >→</button>
           </div>
         </motion.div>
       </div>

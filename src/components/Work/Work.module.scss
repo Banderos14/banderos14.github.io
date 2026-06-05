@@ -4,7 +4,11 @@
   z-index: 2;
   background: transparent;
 
-  @media (max-width: 640px) { padding: 64px 0 72px; }
+  @media (max-width: 640px) {
+    padding: 64px 0 72px;
+    // Keeps navbar clear (≈68px nav + 20px gap) when scrolled to this section via native scroll
+    scroll-margin-top: 24px;
+  }
 }
 
 .header {
@@ -120,7 +124,7 @@
   }
 }
 
-// ── Nav arrow hint animation ──
+// ── Nav arrow hint animation (desktop) ──
 @keyframes arrowGlow {
   0%, 100% {
     color: var(--text-m);
@@ -150,6 +154,55 @@
 
 .navBtns[data-revealed='true'] .navBtn:nth-child(2):not(:disabled) {
   animation: arrowGlow 2.2s ease-in-out 0.8s 2, nudgeRight 2.2s ease-in-out 0.8s 2;
+}
+
+// ── Mobile: stronger hint on right arrow ──
+// Double-nudge fires in first ~22% of 5s cycle, then rests — 3 iterations, 2.5s initial delay
+@keyframes mobileArrowHint {
+  0%, 22%, 100% {
+    color: var(--text-m);
+    border-color: var(--border);
+    box-shadow: none;
+    transform: translateX(0) scale(1);
+  }
+  6% {
+    color: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 5px var(--accent-dim), 0 0 24px 6px var(--accent-dim);
+    transform: translateX(9px) scale(1.18);
+  }
+  12% {
+    color: var(--accent);
+    border-color: var(--accent-dim);
+    box-shadow: 0 0 0 2px var(--accent-dim);
+    transform: translateX(3px) scale(1.06);
+  }
+  17% {
+    color: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-dim);
+    transform: translateX(8px) scale(1.12);
+  }
+}
+
+@media (max-width: 640px) {
+  // Enlarge hit area for thumb comfort
+  .navBtn {
+    width: 44px;
+    height: 44px;
+    font-size: 16px;
+  }
+
+  // Suppress desktop 2-iteration hint — replaced by mobile version
+  .navBtns[data-revealed='true'] .navBtn:nth-child(1),
+  .navBtns[data-revealed='true'] .navBtn:nth-child(2) {
+    animation: none;
+  }
+
+  // Stronger mobile hint — right arrow only, 3 cycles, starts 2.5s after reveal
+  .navBtn[data-mobile-hint='true']:not(:disabled) {
+    animation: mobileArrowHint 5s ease-in-out 2.5s 3;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

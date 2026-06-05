@@ -31,7 +31,7 @@ export const fr = {
       { suffix: '+', label: "Années\nd'apprentissage" },
       { suffix: '+', label: 'Projets\npratiques' },
       { suffix: '+', label: 'Projets\nréels' },
-      { suffix: '',  label: 'Aux\noffres' },
+      { suffix: '',  label: 'Aux offres' },
     ],
   },
   work: {

@@ -44,6 +44,7 @@ export default function About() {
     if (lenis) {
       lenis.scrollTo('#work', {
         duration: 2.2,
+        offset: window.innerWidth <= 640 ? -24 : 0,
         easing: (t: number) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
       });
     } else {

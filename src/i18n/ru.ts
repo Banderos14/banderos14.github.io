@@ -31,7 +31,7 @@ export const ru = {
       { suffix: '+', label: 'Года\nобучения' },
       { suffix: '+', label: 'Учебных\nпроектов' },
       { suffix: '+', label: 'Реальных\nпроектов' },
-      { suffix: '',  label: 'К\nработе' },
+      { suffix: '',  label: 'К работе' },
     ],
   },
   work: {

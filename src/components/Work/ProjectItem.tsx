@@ -30,9 +30,8 @@ export default function ProjectItem({ project, index }: Props) {
   const [hovered, setHovered] = useState(false);
 
   // Track pointer movement to distinguish click from carousel drag.
-  // If the pointer travels more than DRAG_THRESHOLD px before release,
-  // we treat it as a drag and suppress the resulting click on any child link.
-  const DRAG_THRESHOLD = 6;
+  // Touch devices get a larger threshold (10px) so micro-movements don't block taps.
+  const DRAG_THRESHOLD = IS_TOUCH ? 10 : 6;
   const dragOrigin = useRef({ x: 0, y: 0, moved: false });
 
   const onPointerDown = (e: React.PointerEvent) => {
