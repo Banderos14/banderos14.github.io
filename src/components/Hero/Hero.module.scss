@@ -176,16 +176,17 @@
   }
 
   // Attract animation — pulses primary button on touch devices
+  // Delays are offset by +0.7s relative to the 1.5s CTA fade-in
   @media (pointer: coarse) {
     :global(.btn-p) {
       animation: btnAttract 4.5s ease-in-out infinite;
-      animation-delay: 1.8s;
+      animation-delay: 2.3s;
       animation-fill-mode: backwards;
     }
 
     :global(.btn-s) {
       animation: btnGlow 4.5s ease-in-out infinite;
-      animation-delay: 2.8s;
+      animation-delay: 3.1s;
       animation-fill-mode: backwards;
     }
   }
@@ -269,7 +270,8 @@
     bottom: auto;
     left: auto;
     transform: none;
-    padding: 20px 0 24px;
+    padding: 20px 0 10px;
+    margin-top: 20px;
     order: 4;
     align-items: center;  // keep centred in the flex-column hero
   }

@@ -375,6 +375,27 @@
   .activeDot::after { animation: none !important; }
 }
 
+// ── Archived concept status badge ──
+.archivedBadge {
+  @include font-mono;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  color: var(--text-d);
+  opacity: 0.7;
+}
+
+.archivedDot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+}
+
 .ghLink {
   @include font-mono;
   font-size: 10px;

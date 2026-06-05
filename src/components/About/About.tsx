@@ -41,8 +41,15 @@ export default function About() {
     e.preventDefault();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const lenis = (window as any).__lenis;
-    if (lenis) lenis.scrollTo('#work');
-    else document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' });
+    if (lenis) {
+      lenis.scrollTo('#work', {
+        duration: 2.2,
+        offset: window.innerWidth <= 640 ? -24 : 0,
+        easing: (t: number) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
+      });
+    } else {
+      document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (

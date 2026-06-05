@@ -31,17 +31,17 @@ export const fr = {
       { suffix: '+', label: "Années\nd'apprentissage" },
       { suffix: '+', label: 'Projets\npratiques' },
       { suffix: '+', label: 'Projets\nréels' },
-      { suffix: '',  label: 'Aux\noffres' },
+      { suffix: '',  label: 'Aux offres' },
     ],
   },
   work: {
     num: '02',
     title: 'projets',
-    cta: 'Voir tous les projets',
     loading: 'chargement…',
     view_project: 'Voir le projet',
     github: '↗ GitHub',
     active_dev: 'En développement',
+    archived_concept: 'Concept archivé',
   },
   contact: {
     num: '03',
@@ -77,6 +77,11 @@ export const fr = {
       name: 'Nice Gadgets — Catalogue',
       role: 'Développeur',
       desc: 'Catalogue e-commerce pour téléphones, tablettes et accessoires. Filtres, favoris, panier et routage dynamique sur une vraie REST API.',
+    },
+    coffee_shop: {
+      name: 'Coffee Shop — E-commerce Website',
+      role: 'Designer & Développeur',
+      desc: 'Design Figma personnalisé et développement. Site de café créé de zéro avec catalogue produits, panier, carte interactive et interface responsive.',
     },
   },
 };

@@ -42,4 +42,13 @@ export const projects: Project[] = [
     github: 'https://github.com/Banderos14/react_phone-catalog',
     screenshot: '/img/projects/nice_gadgets.webp',
   },
+  {
+    slug: 'coffee_shop',
+    year: 2025,
+    tags: ['React', 'JavaScript', 'React Router', 'SCSS', 'Vite', 'Mapbox'],
+    live: 'https://banderos14.github.io/Coffee-shop/',
+    github: 'https://github.com/Banderos14/Coffee-shop',
+    screenshot: '/img/projects/coffee_shop.webp',
+    archivedConcept: true,
+  },
 ];

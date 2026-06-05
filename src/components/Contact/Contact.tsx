@@ -52,7 +52,7 @@ export default function Contact() {
             <a href="https://github.com/Banderos14" target="_blank" rel="noopener noreferrer" className={s.social}>
               ↗ github
             </a>
-            <a href="https://www.linkedin.com/in/anton-shyshenko" target="_blank" rel="noopener noreferrer" className={s.social}>
+            <a href="https://www.linkedin.com/in/anton-shyshenko-82798b310/?enhance=null" target="_blank" rel="noopener noreferrer" className={s.social}>
               ↗ linkedin
             </a>
           </div>

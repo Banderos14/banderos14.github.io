@@ -11,7 +11,8 @@ interface Props {
   index:   number;
 }
 
-function displayUrl(url: string): string {
+function displayUrl(url: string | undefined): string {
+  if (!url) return '';
   try {
     const u = new URL(url);
     return u.hostname + u.pathname.replace(/\/$/, '');
@@ -29,9 +30,8 @@ export default function ProjectItem({ project, index }: Props) {
   const [hovered, setHovered] = useState(false);
 
   // Track pointer movement to distinguish click from carousel drag.
-  // If the pointer travels more than DRAG_THRESHOLD px before release,
-  // we treat it as a drag and suppress the resulting click on any child link.
-  const DRAG_THRESHOLD = 6;
+  // Touch devices get a larger threshold (10px) so micro-movements don't block taps.
+  const DRAG_THRESHOLD = IS_TOUCH ? 10 : 6;
   const dragOrigin = useRef({ x: 0, y: 0, moved: false });
 
   const onPointerDown = (e: React.PointerEvent) => {
@@ -64,7 +64,7 @@ export default function ProjectItem({ project, index }: Props) {
       onMouseLeave={IS_TOUCH ? undefined : () => setHovered(false)}
     >
       <a
-        href={project.live}
+        href={project.live ?? project.github}
         target="_blank"
         rel="noopener noreferrer"
         className={s.mockup}
@@ -114,7 +114,14 @@ export default function ProjectItem({ project, index }: Props) {
           </div>
         )}
 
-        <a href={project.live} target="_blank" rel="noopener noreferrer"
+        {project.archivedConcept && (
+          <div className={s.archivedBadge}>
+            <span className={s.archivedDot} aria-hidden="true" />
+            {t.work.archived_concept}
+          </div>
+        )}
+
+        <a href={project.live ?? project.github} target="_blank" rel="noopener noreferrer"
            className={s.nameLink} draggable={false} onClick={preventIfDrag}>
           <h3 className={s.name}>{name}</h3>
         </a>
@@ -128,14 +135,16 @@ export default function ProjectItem({ project, index }: Props) {
         </div>
 
         <div className={s.links}>
-          <a href={project.live} target="_blank" rel="noopener noreferrer"
+          <a href={project.live ?? project.github} target="_blank" rel="noopener noreferrer"
              className={s.cta} draggable={false} onClick={preventIfDrag}>
             {t.work.view_project} <span className={s.arr}>→</span>
           </a>
-          <a href={project.github} target="_blank" rel="noopener noreferrer"
-             className={s.ghLink} draggable={false} onClick={preventIfDrag}>
-            {t.work.github}
-          </a>
+          {project.live && (
+            <a href={project.github} target="_blank" rel="noopener noreferrer"
+               className={s.ghLink} draggable={false} onClick={preventIfDrag}>
+              {t.work.github}
+            </a>
+          )}
         </div>
       </div>
     </article>

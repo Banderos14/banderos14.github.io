@@ -15,6 +15,8 @@ export default function Work() {
   const [activeIndex,    setActiveIndex]    = useState(0);
   const [cardWidth,      setCardWidth]      = useState(320);
   const [containerWidth, setContainerWidth] = useState(900);
+  // Tracks first user interaction — disables mobile arrow hint after that
+  const [hinted, setHinted] = useState(false);
 
   const gap  = 20;
   const step = cardWidth + gap;
@@ -63,16 +65,21 @@ export default function Work() {
   }, []);
 
   const nextCard = useCallback(() => {
+    setHinted(true);
     setActiveIndex(i => Math.min(i + 1, projects.length - 1));
   }, []);
 
   const prevCard = useCallback(() => {
+    setHinted(true);
     setActiveIndex(i => Math.max(i - 1, 0));
   }, []);
 
   const handleDragEnd = (_: unknown, info: PanInfo) => {
     const swipe = Math.abs(info.offset.x) > 50 || Math.abs(info.velocity.x) > 300;
-    if (swipe) info.offset.x < 0 ? nextCard() : prevCard();
+    if (swipe) {
+      setHinted(true);
+      info.offset.x < 0 ? nextCard() : prevCard();
+    }
   };
 
   const atStart = activeIndex === 0;
@@ -92,12 +99,18 @@ export default function Work() {
           <span className={s.line} />
           <div className={s.navBtns} data-revealed={revealed}>
             <button className={s.navBtn} onClick={prevCard} disabled={atStart} aria-label="Previous">←</button>
-            <button className={s.navBtn} onClick={nextCard} disabled={atEnd}   aria-label="Next">→</button>
+            <button
+              className={s.navBtn}
+              onClick={nextCard}
+              disabled={atEnd}
+              aria-label="Next"
+              data-mobile-hint={!hinted && revealed && !atEnd ? 'true' : undefined}
+            >→</button>
           </div>
         </motion.div>
       </div>
 
-      <div className="container">
+      <div className={s.workContainer}>
         <div className={s.carouselOuter} ref={outerRef}>
           <motion.div
             ref={trackRef}
@@ -125,7 +138,7 @@ export default function Work() {
         </div>
       </div>
 
-      <div className="container">
+      <div className={s.workContainer}>
         <motion.div
           className={s.dots}
           initial={{ opacity: 0 }}
@@ -142,23 +155,6 @@ export default function Work() {
               aria-label={`Go to project ${i + 1}`}
             />
           ))}
-        </motion.div>
-
-        <motion.div
-          className={s.footer}
-          initial={{ opacity: 0, y: 40 }}
-          animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-          transition={{ type: 'spring', stiffness: 75, damping: 18, mass: 0.9, delay: projects.length * 0.1 + 0.25 }}
-        >
-          <div className="btn-wrap">
-            <a href="https://github.com/Banderos14" target="_blank" rel="noopener noreferrer" className="btn btn-p">
-              {t.work.cta} <span className="btn-arr">↗</span>
-            </a>
-            <span className="btn-c btn-c--tl" aria-hidden="true" />
-            <span className="btn-c btn-c--tr" aria-hidden="true" />
-            <span className="btn-c btn-c--bl" aria-hidden="true" />
-            <span className="btn-c btn-c--br" aria-hidden="true" />
-          </div>
         </motion.div>
       </div>
     </section>
