@@ -268,8 +268,8 @@
   flex: 1;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
   overflow: hidden;
 }
 
@@ -328,6 +328,53 @@
   .cta:hover & { transform: translateX(3px); }
 }
 
+// ── Active development status badge ──
+.activeBadge {
+  @include font-mono;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  color: rgba(74, 222, 128, 0.8);
+
+  [data-theme='light'] & { color: rgba(22, 163, 74, 0.8); }
+}
+
+.activeDot {
+  position: relative;
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: rgba(74, 222, 128, 0.65);
+  animation: pulse 3s ease-in-out infinite;
+
+  [data-theme='light'] & { background: rgba(22, 163, 74, 0.65); }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 1px solid rgba(74, 222, 128, 0.35);
+    animation: activeDotRing 3s ease-in-out infinite;
+
+    [data-theme='light'] & { border-color: rgba(22, 163, 74, 0.35); }
+  }
+}
+
+@keyframes activeDotRing {
+  0%        { transform: scale(0.6); opacity: 0.8; }
+  70%, 100% { transform: scale(1.8); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .activeDot,
+  .activeDot::after { animation: none !important; }
+}
+
 .ghLink {
   @include font-mono;
   font-size: 10px;
@@ -341,5 +388,11 @@
 
   &:hover {
     text-shadow: 0 0 12px rgba(221, 228, 236, 0.45);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    [data-theme='light'] &:hover {
+      text-shadow: 0 0 12px rgba(0, 0, 0, 0.35);
+    }
   }
 }

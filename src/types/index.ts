@@ -6,6 +6,7 @@ export interface Project {
   live: string;
   github: string;
   screenshot?: string;
+  activelyDeveloped?: boolean;
 }
 
 export type Theme = 'dark' | 'light';

@@ -53,8 +53,8 @@ export default function Hero() {
           {": ['React', 'TS', 'SCSS']"}
         </div>
         <div>
-          <span className={s.consoleGreen}>location</span>
-          {": 'France 🇫🇷'"}
+          <span className={s.consoleGreen}>status</span>
+          {": 'Open to opportunities'"}
         </div>
       </div>
 

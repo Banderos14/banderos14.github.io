@@ -90,7 +90,7 @@ export default function Work() {
           <span className={s.num}>{t.work.num}</span>
           <span className={s.title}>{t.work.title}</span>
           <span className={s.line} />
-          <div className={s.navBtns}>
+          <div className={s.navBtns} data-revealed={revealed}>
             <button className={s.navBtn} onClick={prevCard} disabled={atStart} aria-label="Previous">←</button>
             <button className={s.navBtn} onClick={nextCard} disabled={atEnd}   aria-label="Next">→</button>
           </div>
