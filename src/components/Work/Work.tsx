@@ -97,7 +97,7 @@ export default function Work() {
         </motion.div>
       </div>
 
-      <div className="container">
+      <div className={s.workContainer}>
         <div className={s.carouselOuter} ref={outerRef}>
           <motion.div
             ref={trackRef}
@@ -125,7 +125,7 @@ export default function Work() {
         </div>
       </div>
 
-      <div className="container">
+      <div className={s.workContainer}>
         <motion.div
           className={s.dots}
           initial={{ opacity: 0 }}
@@ -142,23 +142,6 @@ export default function Work() {
               aria-label={`Go to project ${i + 1}`}
             />
           ))}
-        </motion.div>
-
-        <motion.div
-          className={s.footer}
-          initial={{ opacity: 0, y: 40 }}
-          animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-          transition={{ type: 'spring', stiffness: 75, damping: 18, mass: 0.9, delay: projects.length * 0.1 + 0.25 }}
-        >
-          <div className="btn-wrap">
-            <a href="https://github.com/Banderos14" target="_blank" rel="noopener noreferrer" className="btn btn-p">
-              {t.work.cta} <span className="btn-arr">↗</span>
-            </a>
-            <span className="btn-c btn-c--tl" aria-hidden="true" />
-            <span className="btn-c btn-c--tr" aria-hidden="true" />
-            <span className="btn-c btn-c--bl" aria-hidden="true" />
-            <span className="btn-c btn-c--br" aria-hidden="true" />
-          </div>
         </motion.div>
       </div>
     </section>

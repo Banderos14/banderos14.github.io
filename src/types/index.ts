@@ -3,10 +3,11 @@ export interface Project {
   slug: string;
   year: number;
   tags: string[];
-  live: string;
+  live?: string;
   github: string;
   screenshot?: string;
   activelyDeveloped?: boolean;
+  archivedConcept?: boolean;
 }
 
 export type Theme = 'dark' | 'light';

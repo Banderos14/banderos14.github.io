@@ -1,10 +1,10 @@
 .section {
-  padding: 70px 0;
+  padding: 70px 0 84px;
   position: relative;
   z-index: 2;
   background: transparent;
 
-  @media (max-width: 640px) { padding: 64px 0; }
+  @media (max-width: 640px) { padding: 64px 0 72px; }
 }
 
 .header {
@@ -61,6 +61,16 @@
   &:disabled { opacity: 0.25; cursor: default; }
 }
 
+// ── Unified Work section container ──
+// Exactly 3 cards wide: 3×350px + 2×20px gap = 1090px content + 2×40px padding = 1170px
+.workContainer {
+  max-width: 1170px;
+  margin: 0 auto;
+  padding: 0 40px;
+
+  @media (max-width: 640px) { padding: 0 20px; }
+}
+
 // ── Outer clip — hides cards that are off-screen ──
 .carouselOuter {
   overflow: hidden;
@@ -80,11 +90,11 @@
 
 // ── Each slide ──
 .cardSlide {
-  flex: 0 0 320px;
+  flex: 0 0 350px;
   align-self: stretch;
 
-  @media (max-width: 880px) { flex: 0 0 280px; }
-  @media (max-width: 640px) { flex: 0 0 calc(88vw); }
+  @media (max-width: 880px) { flex: 0 0 308px; }
+  @media (max-width: 640px) { flex: 0 0 calc(90vw); }
 }
 
 // ── Dot indicators (visual only) ──
@@ -93,7 +103,7 @@
   justify-content: center;
   align-items: center;
   gap: 8px;
-  margin-top: 24px;
+  margin-top: 32px;
 }
 
 .dot {
@@ -108,13 +118,6 @@
     background: var(--accent);
     width: 22px;
   }
-}
-
-// ── Footer ──
-.footer {
-  margin-top: 48px;
-  display: flex;
-  justify-content: center;
 }
 
 // ── Nav arrow hint animation ──

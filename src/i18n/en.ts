@@ -37,11 +37,11 @@ export const en = {
   work: {
     num: '02',
     title: 'work',
-    cta: 'View all projects',
     loading: 'loading preview…',
     view_project: 'View project',
     github: '↗ GitHub',
     active_dev: 'Active development',
+    archived_concept: 'Archived concept',
   },
   contact: {
     num: '03',
@@ -77,6 +77,11 @@ export const en = {
       name: 'Nice Gadgets — Phone Catalog',
       role: 'Developer',
       desc: 'Full-featured e-commerce catalog for phones, tablets and accessories. Filtering, favourites, cart and dynamic routing connected to a real REST API.',
+    },
+    coffee_shop: {
+      name: 'Coffee Shop — E-commerce Website',
+      role: 'Designer & Developer',
+      desc: 'Custom Figma design and development. Coffee shop website built from scratch with a product catalog, shopping cart, interactive map and responsive layouts.',
     },
   },
 };
