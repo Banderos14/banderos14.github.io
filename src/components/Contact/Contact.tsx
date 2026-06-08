@@ -55,6 +55,9 @@ export default function Contact() {
             <a href="https://www.linkedin.com/in/anton-shyshenko-82798b310/?enhance=null" target="_blank" rel="noopener noreferrer" className={s.social}>
               ↗ linkedin
             </a>
+            <a href="https://www.instagram.com/ssshyshenko/" target="_blank" rel="noopener noreferrer" className={s.social}>
+              ↗ instagram
+            </a>
           </div>
 
           <div className={s.note}>
