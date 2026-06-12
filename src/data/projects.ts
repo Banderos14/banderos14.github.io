@@ -5,9 +5,9 @@ export const projects: Project[] = [
     slug: 'tete_a_tete',
     year: 2026,
     tags: ['React', 'TypeScript', 'Firebase', 'SCSS', 'i18n'],
-    live: 'https://tete-a-tete-theatre.vercel.app/',
+    live: 'https://www.theatre-teteatete.fr/',
     github: 'https://github.com/Banderos14/tete-a-tete-theatre',
-    screenshot: '/img/projects/tete_a_tete.webp',
+    screenshot: '/img/projects/tete_a_tete.png',
     activelyDeveloped: true,
   },
   {
