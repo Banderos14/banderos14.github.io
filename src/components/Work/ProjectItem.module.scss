@@ -261,6 +261,48 @@
   transition: color 0.25s var(--ease);
 }
 
+// ── Secondary metadata block: feature highlights ──
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.featuresLabel {
+  @include font-mono;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-d);
+  opacity: 0.7;
+}
+
+.featuresList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.featureItem {
+  @include font-mono;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  line-height: 1.4;
+  color: var(--text-m);
+  white-space: nowrap;
+
+  &::before {
+    content: '•';
+    color: var(--accent);
+    opacity: 0.8;
+  }
+}
+
 .desc {
   font-size: 12.5px;
   color: var(--text-d);

@@ -4,7 +4,8 @@ export const projects: Project[] = [
   {
     slug: 'tete_a_tete',
     year: 2026,
-    tags: ['React', 'TypeScript', 'Firebase', 'SCSS', 'i18n'],
+    tags: ['React', 'TypeScript', 'Firebase', 'Cloudflare', 'Vercel', 'Admin Panel'],
+    features: ['Ticket Booking', 'QR Check-in', 'Admin Dashboard', 'Email Notifications', 'SEO Optimized', 'Custom Domain'],
     live: 'https://www.theatre-teteatete.fr/',
     github: 'https://github.com/Banderos14/tete-a-tete-theatre',
     screenshot: '/img/projects/tete_a_tete.png',

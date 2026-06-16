@@ -42,6 +42,7 @@ export const fr = {
     github: '↗ GitHub',
     active_dev: 'En développement',
     archived_concept: 'Concept archivé',
+    features_label: 'Fonctionnalités',
   },
   contact: {
     num: '03',
@@ -56,7 +57,7 @@ export const fr = {
     tete_a_tete: {
       name: 'Tête-à-Tête Théâtre',
       role: 'Designer & Développeur',
-      desc: "Concept de plateforme pour une compagnie de théâtre en France. Réservation de billets, outils d'administration, interface multilingue et Firebase en backend. Toujours en développement.",
+      desc: "Tête-à-Tête est une plateforme de théâtre complète conçue pour une compagnie de théâtre française. Réservation de billets, contrôle d'accès par QR code, tableau de bord administrateur, notifications par e-mail, support multilingue, optimisation SEO, intégration d'un domaine personnalisé et infrastructure propulsée par Cloudflare.",
     },
     nice_cafe: {
       name: 'Nice Café Landing',
