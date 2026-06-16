@@ -3,6 +3,7 @@ export interface Project {
   slug: string;
   year: number;
   tags: string[];
+  features?: string[];
   live?: string;
   github: string;
   screenshot?: string;

@@ -126,6 +126,17 @@ export default function ProjectItem({ project, index }: Props) {
           <h3 className={s.name}>{name}</h3>
         </a>
 
+        {project.features && project.features.length > 0 && (
+          <div className={s.features}>
+            <span className={s.featuresLabel}>{t.work.features_label}</span>
+            <ul className={s.featuresList}>
+              {project.features.map(feature => (
+                <li key={feature} className={s.featureItem}>{feature}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         <p className={s.desc}>{desc}</p>
 
         <div className={s.tags}>
