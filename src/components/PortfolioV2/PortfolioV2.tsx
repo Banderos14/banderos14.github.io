@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import type { MouseEvent, ReactNode } from 'react';
 import { useLocale } from '@/i18n';
 import { projects } from '@/data/projects';
 import type { Project } from '@/types';
@@ -234,11 +235,11 @@ function ScrollLink({
   onNavigate,
 }: {
   id: string;
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
   onNavigate?: () => void;
 }) {
-  const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     onNavigate?.();
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -498,7 +499,7 @@ export default function PortfolioV2() {
 
             <div className={s.contactLinks} data-reveal>
               <a href="mailto:anton.shyshenko@gmail.com">{ui.email} <span>→</span></a>
-              <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer">{ui.linkedin} <span>→</span></a>
+              <a href="https://www.linkedin.com/in/anton-shyshenko-82798b310/?enhance=null" target="_blank" rel="noreferrer">{ui.linkedin} <span>→</span></a>
               <a href="https://github.com/Banderos14" target="_blank" rel="noreferrer">{ui.github} <span>→</span></a>
             </div>
           </div>
