@@ -2,21 +2,17 @@
 
 **Live:** https://banderos14.github.io
 
-Personal portfolio of Anton Shyshenko, Frontend Engineer based in France.
+This is my personal portfolio. I use it to keep the projects I've built, the work I've done for clients, and the things I'm learning along the way.
 
-A project-first portfolio built around real work, product systems and selected frontend projects. The design uses an editorial, poster-inspired visual system with lightweight interactions and responsive layouts.
+The site itself is intentionally simple — the main focus is the work.
 
 ## Selected work
 
-- **Tête-à-Tête Theatre** — production booking platform with online payments, QR check-in, administration tools and multilingual content.
-- **Nice Gadgets** — Mate Academy e-commerce project built from a Figma design and a REST API.
-- **2048** — browser puzzle built from scratch.
+- **Tête-à-Tête Theatre** — booking and admin platform I maintain in production.
+- **Nice Gadgets** — e-commerce project from Mate Academy.
+- **2048** — browser game built from scratch.
 - **Nice Café** — interactive landing page with a 3D visual.
-- **MiBike** — responsive Figma-to-code landing page.
-- **Coffee Shop** — own Figma concept and frontend implementation.
+- **MiBike** — responsive landing page built from a Figma design.
+- **Coffee Shop** — my own Figma concept turned into a working frontend.
 
-## Portfolio
-
-React / TypeScript / SCSS Modules
-
-EN / FR / RU
+You can see the full portfolio at the link above.
