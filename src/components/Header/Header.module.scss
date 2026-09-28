@@ -1,0 +1,280 @@
+// N7 brutal slab: ink bar, heavy wordmark, mono links, one yellow slab CTA.
+
+.slot {
+  position: relative;
+  height: var(--header-height);
+}
+
+// Scroll trigger: once this leaves the viewport the bar goes compact.
+.sentinel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 72px;
+  pointer-events: none;
+}
+
+// Fixed from the start (inside a same-height slot) so the compact switch never
+// changes layout. Centred with margin auto, not transform, so the fixed mobile
+// menu inside keeps the viewport as its containing block.
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-header);
+  width: 100%;
+  margin-inline: auto;
+  background: var(--color-ink);
+  color: var(--color-on-dark);
+  border: var(--rule) solid var(--color-ink);
+  border-top: 0;
+  box-shadow: 0 0 0 var(--color-accent-2);
+  transition:
+    width 420ms var(--ease-out),
+    top 420ms var(--ease-out),
+    box-shadow 420ms var(--ease-out);
+
+  // Compact floating bar: tablet and up only; phones keep the full-width bar.
+  @include from(md) {
+    &[data-compact='true'] {
+      top: var(--space-sm);
+      width: min(100% - 2rem, 65rem);
+      border-top: var(--rule) solid var(--color-ink);
+      box-shadow: 5px 5px 0 var(--color-accent-2);
+
+      .inner {
+        height: calc(var(--header-height) - 0.25rem);
+        padding-inline: var(--space-lg) var(--space-sm);
+      }
+
+      .links {
+        gap: var(--space-lg);
+      }
+    }
+  }
+}
+
+.inner {
+  @include shell;
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  height: var(--header-height);
+  transition:
+    height 420ms var(--ease-out),
+    padding 420ms var(--ease-out);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  line-height: 1;
+  white-space: nowrap;
+
+  &:focus-visible {
+    outline-color: var(--color-accent);
+  }
+}
+
+.logo {
+  width: auto;
+  height: 1.75rem;
+}
+
+.name {
+  @include display;
+  font-size: var(--text-lg);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.nav {
+  display: none;
+
+  @include from(md) {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+.links {
+  display: flex;
+  gap: var(--space-lg);
+
+  @include from(lg) {
+    gap: var(--space-xl);
+  }
+
+  a {
+    @include label;
+    display: inline-block;
+    padding-block: var(--space-xs);
+    line-height: 1;
+    color: var(--color-on-dark);
+    transition: color var(--dur-micro);
+
+    &:hover {
+      color: var(--color-accent);
+    }
+
+    &:focus-visible {
+      outline-color: var(--color-accent);
+    }
+  }
+}
+
+.end {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-left: auto;
+}
+
+.lang {
+  display: none;
+
+  @include from(md) {
+    display: inline-flex;
+  }
+}
+
+.cta {
+  @include display;
+  display: none;
+  padding: 0.5em 1em;
+  font-size: var(--text-sm);
+  letter-spacing: 0.06em;
+  line-height: 1;
+  white-space: nowrap;
+  background: var(--color-accent);
+  color: var(--color-ink);
+  border: var(--rule) solid var(--color-ink);
+  box-shadow: 3px 3px 0 var(--color-accent-2);
+  transition:
+    transform var(--dur-short) var(--ease-out),
+    box-shadow var(--dur-short) var(--ease-out);
+
+  @include from(md) {
+    display: inline-block;
+  }
+
+  &:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--color-accent-2);
+  }
+
+  &:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0 var(--color-accent-2);
+  }
+
+  &:focus-visible {
+    outline-color: var(--color-accent);
+  }
+}
+
+// — Mobile ----------------------------------------------------------
+
+.toggle {
+  @include display;
+  min-width: 5rem;
+  min-height: 2.5rem;
+  padding: 0 var(--space-md);
+  font-size: var(--text-base);
+  letter-spacing: 0.06em;
+  line-height: 1;
+  background: var(--color-accent);
+  color: var(--color-ink);
+  border: var(--rule) solid var(--color-ink);
+  box-shadow: 3px 3px 0 var(--color-accent-2);
+
+  &[aria-expanded='true'] {
+    background: var(--color-paper);
+  }
+
+  &:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0 var(--color-accent-2);
+  }
+
+  &:focus-visible {
+    outline-color: var(--color-accent);
+  }
+
+  @include from(md) {
+    display: none;
+  }
+}
+
+.menu {
+  position: fixed;
+  inset: var(--header-height) 0 0;
+  z-index: var(--z-menu);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-xl) var(--page-gutter) var(--space-2xl);
+  background: var(--color-ink);
+  border-top: var(--rule) solid var(--color-accent);
+  overflow-y: auto;
+
+  &[hidden] {
+    display: none;
+  }
+
+  @include from(md) {
+    display: none;
+  }
+}
+
+.menuList {
+  display: grid;
+
+  li {
+    border-bottom: var(--rule) solid var(--color-ink-2);
+  }
+
+  a {
+    @include display;
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-md);
+    padding-block: var(--space-md);
+    font-size: clamp(2.75rem, 14vw, 4.5rem);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-on-dark);
+
+    &:active,
+    &:hover {
+      color: var(--color-accent);
+    }
+
+    &:focus-visible {
+      outline-color: var(--color-accent);
+    }
+  }
+}
+
+.menuNum {
+  min-width: 1.5em;
+  font-size: 0.4em;
+  letter-spacing: 0.04em;
+  color: var(--color-accent-2);
+}
+
+.menuLang {
+  margin-top: var(--space-xl);
+  gap: var(--space-sm);
+
+  button {
+    min-width: 3rem;
+    min-height: 3rem;
+    font-size: var(--text-sm);
+    border: var(--rule) solid var(--color-ink-2);
+  }
+}

@@ -1,50 +1,110 @@
+// Ft8: marquee strip on top, mast-headed colophon below.
+
 .footer {
-  position: relative;
-  height: 220px;
-  overflow: hidden;
-  border-top: 1px solid var(--border);
+  background: var(--color-paper);
+}
 
-  @media (max-width: 640px) {
-    height: auto;
-    min-height: 120px;
+.body {
+  @include shell;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-xl) var(--space-lg);
+  padding-block: var(--space-2xl);
+
+  @include from(lg) {
+    grid-template-columns: minmax(0, 1.6fr) repeat(2, minmax(0, 1fr)) auto;
+    gap: var(--space-2xl);
+    align-items: start;
   }
 }
 
-.content {
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 980px;
-  z-index: 2;
+.brand {
+  grid-column: 1 / -1;
+
+  @include from(lg) {
+    grid-column: auto;
+  }
+}
+
+.mark {
+  @include display;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 24px 40px;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+  font-size: var(--text-2xl);
+  line-height: 0.9;
+  letter-spacing: var(--tracking-display);
 
-  @media (max-width: 640px) {
-    position: static;
-    transform: none;
-    flex-direction: column;
-    gap: 6px;
-    text-align: center;
-    padding: 24px 20px;
+  img {
+    width: auto;
+    height: 2.25rem;
   }
 }
 
-.left {
-  @include font-mono;
-  font-size: 11px;
-  color: var(--text-d);
-  letter-spacing: 0.06em;
+.blurb {
+  max-width: 32ch;
 }
 
-.right {
-  @include font-mono;
-  font-size: 11px;
-  color: var(--text-d);
-  letter-spacing: 0.06em;
+.col {
+  h2 {
+    @include label;
+    margin-bottom: var(--space-md);
+    color: var(--color-muted);
+  }
 
-  span { color: var(--accent); }
+  ul {
+    display: grid;
+    gap: var(--space-2xs);
+  }
+
+  a {
+    @include display;
+    display: inline-block;
+    padding-block: var(--space-2xs);
+    font-size: var(--text-md);
+    letter-spacing: 0.03em;
+    line-height: 1.1;
+    white-space: nowrap;
+    transition: color var(--dur-micro);
+
+    &:hover {
+      color: var(--color-accent-2-deep);
+    }
+  }
+}
+
+.colophon {
+  @include label;
+  grid-column: 1 / -1;
+  display: grid;
+  gap: var(--space-2xs);
+  padding-top: var(--space-lg);
+  border-top: var(--rule) solid var(--color-ink);
+  color: var(--color-muted);
+  line-height: 1.6;
+
+  @include from(lg) {
+    grid-column: auto;
+    padding-top: 0;
+    border-top: 0;
+    text-align: right;
+  }
+
+  strong {
+    font-weight: 500;
+    color: var(--color-ink);
+  }
+}
+
+.top {
+  justify-self: start;
+  margin-top: var(--space-sm);
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+
+  @include from(lg) {
+    justify-self: end;
+  }
 }

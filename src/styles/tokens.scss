@@ -1,0 +1,84 @@
+// Design tokens. Every colour and font on the page resolves to one of these.
+
+:root {
+  color-scheme: light;
+
+  /* — Colour -------------------------------------------------------- */
+  // Brand palette (from the logo identity)
+  --color-ink:      #113046; // deep navy: text, borders, shadows, dark bands
+  --color-sky:      #9cc9e3; // large light-blue surface
+  --color-blue:     #4d9cba; // secondary blue
+  --color-accent:   #f4ba41; // yellow: featured surfaces, CTA, marquee
+  --color-accent-2: #ec8c34; // orange: hover shadows, second slab, ornaments on dark
+
+  // Derived roles
+  --color-paper:    #edf4f8; // page ground, sky tinted almost to white
+  --color-paper-2:  #dceaf2;
+  --color-ink-2:    #2d4c62; // secondary text on light
+  --color-muted:    #4a6578; // labels on paper (5.4:1)
+  --color-accent-2-deep: #a8501a; // orange darkened for text-sized use on paper (5:1)
+  --color-on-dark:  #edf4f8;
+  --color-on-dark-muted: #9cc9e3;
+  --color-focus:    #a8501a;
+
+  /* — Type ---------------------------------------------------------- */
+  --font-display: 'Big Shoulders Display', 'Sofia Sans Extra Condensed', 'Arial Narrow', sans-serif;
+  --font-body:    'DM Sans', 'Onest', ui-sans-serif, system-ui, sans-serif;
+  --font-label:   'DM Mono', 'IBM Plex Mono', ui-monospace, monospace;
+
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-md:   1.125rem;
+  --text-lg:   1.375rem;
+  --text-xl:   1.875rem;
+  --text-2xl:  2.5rem;
+  --text-3xl:  3.5rem;
+  --text-display: clamp(3rem, 7vw + 1rem, 7rem);
+
+  --lh-poster:  0.84; // explicit line breaks only
+  --lh-tight:   0.95; // heads that may wrap
+  --lh-snug:    1.1;
+  --lh-normal:  1.45;
+
+  --tracking-display: 0.02em;
+  --tracking-label:   0.16em;
+
+  /* — Space --------------------------------------------------------- */
+  --space-3xs: 0.125rem;
+  --space-2xs: 0.25rem;
+  --space-xs:  0.5rem;
+  --space-sm:  0.75rem;
+  --space-md:  1rem;
+  --space-lg:  1.5rem;
+  --space-xl:  2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+
+  --section-pad: clamp(4rem, 6vw + 1rem, 6rem);
+  --page-max:    80rem;
+  --page-gutter: clamp(1rem, 3.5vw, 2.5rem);
+  --header-height: 3.5rem;
+
+  /* — Surface ------------------------------------------------------- */
+  --rule:         2px;
+  --shadow-offset: 6px;
+  --shadow-card:  var(--shadow-offset) var(--shadow-offset) 0 var(--color-ink);
+  --shadow-lift:  9px 9px 0 var(--color-accent-2);
+
+  /* — Motion -------------------------------------------------------- */
+  --ease-out:  cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-micro: 120ms;
+  --dur-short: 240ms;
+  --dur-marquee: 40s;
+
+  --z-header: 300;
+  --z-menu:   290;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --shadow-offset: 4px;
+    --shadow-lift: 6px 6px 0 var(--color-accent-2);
+  }
+}

@@ -1,210 +1,51 @@
-.section {
-  padding: 70px 0 84px;
-  position: relative;
-  z-index: 2;
-  background: transparent;
-
-  @media (max-width: 640px) {
-    padding: 64px 0 72px;
-    // Keeps navbar clear (≈68px nav + 20px gap) when scrolled to this section via native scroll
-    scroll-margin-top: 24px;
-  }
+.work {
+  @include shell;
+  padding-block: var(--section-pad);
 }
 
-.header {
-  @include section-header;
-}
-
-.num {
-  @include font-mono;
-  font-size: 11px;
-  color: var(--accent);
-  letter-spacing: 0.08em;
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-2xl);
 }
 
 .title {
-  @include font-mono;
-  font-size: 11px;
-  color: var(--text-m);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  @include display;
+  font-size: var(--text-display);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-display);
+  overflow-wrap: anywhere;
+
+  em {
+    font-style: normal;
+    color: var(--color-accent-2-deep);
+  }
 }
 
-.line {
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-}
-
-// ── Nav arrows ──
-.navBtns {
-  display: flex;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.navBtn {
-  @include font-mono;
+.divider {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  font-size: 14px;
-  color: var(--text-m);
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  cursor: pointer;
-  transition: color 0.2s, border-color 0.2s, box-shadow 0.3s;
+  gap: var(--space-md);
 
-  &:not(:disabled):hover {
-    color: var(--accent);
-    border-color: var(--accent);
-  }
-  &:disabled { opacity: 0.25; cursor: default; }
-}
-
-// ── Unified Work section container ──
-// Exactly 3 cards wide: 3×350px + 2×20px gap = 1090px content + 2×40px padding = 1170px
-.workContainer {
-  max-width: 1170px;
-  margin: 0 auto;
-  padding: 0 40px;
-
-  @media (max-width: 640px) { padding: 0 20px; }
-}
-
-// ── Outer clip — hides cards that are off-screen ──
-.carouselOuter {
-  overflow: hidden;
-  // Extra vertical room for card box-shadows
-  padding: 10px 0 52px;
-  margin: -10px 0 -52px;
-}
-
-// ── Motion track — slides left/right via Framer Motion x ──
-.carouselTrack {
-  display: flex;
-  gap: 20px;
-  cursor: grab;
-  user-select: none;
-  &:active { cursor: grabbing; }
-}
-
-// ── Each slide ──
-.cardSlide {
-  flex: 0 0 350px;
-  align-self: stretch;
-
-  @media (max-width: 880px) { flex: 0 0 308px; }
-  @media (max-width: 640px) { flex: 0 0 calc(90vw); }
-}
-
-// ── Dot indicators (visual only) ──
-.dots {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  margin-top: 32px;
-}
-
-.dot {
-  height: 6px;
-  width: 6px;
-  border-radius: 3px;
-  background: var(--border-h);
-  transition: background 0.3s var(--ease), width 0.3s var(--ease);
-  cursor: pointer;
-
-  &[data-active='true'] {
-    background: var(--accent);
-    width: 22px;
+  &::after {
+    content: '';
+    flex: 1;
+    height: var(--rule);
+    background: var(--color-ink);
   }
 }
 
-// ── Nav arrow hint animation (desktop) ──
-@keyframes arrowGlow {
-  0%, 100% {
-    color: var(--text-m);
-    border-color: var(--border);
-    box-shadow: none;
-  }
-  35%, 65% {
-    color: var(--accent);
-    border-color: var(--accent-dim);
-    box-shadow: 0 0 0 2px var(--accent-dim), 0 0 14px 2px var(--accent-dim);
-  }
-}
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2xl) var(--space-xl);
 
-@keyframes nudgeLeft {
-  0%, 100% { transform: translateX(0); }
-  40%, 60%  { transform: translateX(-3px); }
-}
-
-@keyframes nudgeRight {
-  0%, 100% { transform: translateX(0); }
-  40%, 60%  { transform: translateX(3px); }
-}
-
-.navBtns[data-revealed='true'] .navBtn:nth-child(1):not(:disabled) {
-  animation: arrowGlow 2.2s ease-in-out 0.8s 2, nudgeLeft 2.2s ease-in-out 0.8s 2;
-}
-
-.navBtns[data-revealed='true'] .navBtn:nth-child(2):not(:disabled) {
-  animation: arrowGlow 2.2s ease-in-out 0.8s 2, nudgeRight 2.2s ease-in-out 0.8s 2;
-}
-
-// ── Mobile: stronger hint on right arrow ──
-// Double-nudge fires in first ~22% of 5s cycle, then rests — 3 iterations, 2.5s initial delay
-@keyframes mobileArrowHint {
-  0%, 22%, 100% {
-    color: var(--text-m);
-    border-color: var(--border);
-    box-shadow: none;
-    transform: translateX(0) scale(1);
-  }
-  6% {
-    color: var(--accent);
-    border-color: var(--accent);
-    box-shadow: 0 0 0 5px var(--accent-dim), 0 0 24px 6px var(--accent-dim);
-    transform: translateX(9px) scale(1.18);
-  }
-  12% {
-    color: var(--accent);
-    border-color: var(--accent-dim);
-    box-shadow: 0 0 0 2px var(--accent-dim);
-    transform: translateX(3px) scale(1.06);
-  }
-  17% {
-    color: var(--accent);
-    border-color: var(--accent);
-    box-shadow: 0 0 0 4px var(--accent-dim);
-    transform: translateX(8px) scale(1.12);
-  }
-}
-
-@media (max-width: 640px) {
-  // Enlarge hit area for thumb comfort
-  .navBtn {
-    width: 44px;
-    height: 44px;
-    font-size: 16px;
+  @include from(md) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  // Suppress desktop 2-iteration hint — replaced by mobile version
-  .navBtns[data-revealed='true'] .navBtn:nth-child(1),
-  .navBtns[data-revealed='true'] .navBtn:nth-child(2) {
-    animation: none;
+  @include from(lg) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-
-  // Stronger mobile hint — right arrow only, 3 cycles, starts 2.5s after reveal
-  .navBtn[data-mobile-hint='true']:not(:disabled) {
-    animation: mobileArrowHint 5s ease-in-out 2.5s 3;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .navBtns .navBtn { animation: none !important; }
 }

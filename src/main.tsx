@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { LocaleProvider } from '@/i18n';
 import App from './App';
+import './styles/tokens.scss';
 import './styles/global.scss';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

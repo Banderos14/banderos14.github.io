@@ -2,47 +2,35 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { fileURLToPath, URL } from 'node:url'
 
+// Injected into every SCSS module. Mixins only — no CSS output here,
+// otherwise it would be duplicated into every module.
 const scssAdditionalData = `
-$ease: cubic-bezier(0.16, 1, 0.3, 1);
-
-@mixin font-mono {
-  font-family: 'JetBrains Mono', monospace;
+@mixin from($bp) {
+  @if $bp == sm { @media (min-width: 480px) { @content; } }
+  @else if $bp == md { @media (min-width: 768px) { @content; } }
+  @else if $bp == lg { @media (min-width: 1024px) { @content; } }
+  @else if $bp == xl { @media (min-width: 1280px) { @content; } }
 }
 
-@mixin font-sans {
-  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+@mixin shell {
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-inline: var(--page-gutter);
 }
 
-@mixin font-display {
-  font-family: 'Halfre', serif;
+@mixin display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  font-kerning: normal;
 }
 
-@mixin container {
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: 0 40px;
-}
-
-@mixin section-header {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 48px;
-}
-
-@mixin label-mono {
-  @include font-mono;
-  font-size: 11px;
-  color: var(--text-d);
-  letter-spacing: 0.1em;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  &::before {
-    content: '// ';
-    color: var(--accent);
-  }
+@mixin label {
+  font-family: var(--font-label);
+  font-size: var(--text-xs);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-label);
 }
 `
 
@@ -57,6 +45,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
+        api: 'modern-compiler',
         additionalData: scssAdditionalData,
       },
     },

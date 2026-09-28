@@ -17,9 +17,15 @@ export type Translations = typeof en;
 const LOCALES: Record<Locale, Translations> = { en, fr, ru };
 const STORAGE_KEY = 'locale';
 
+export const LOCALE_LIST: Locale[] = ['en', 'fr', 'ru'];
+
 function getInitialLocale(): Locale {
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored === 'en' || stored === 'fr' || stored === 'ru') return stored;
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored === 'en' || stored === 'fr' || stored === 'ru') return stored;
+  } catch {
+    // storage blocked — fall through to default
+  }
   return 'en';
 }
 
@@ -36,12 +42,16 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
 
   const setLocale = useCallback((l: Locale) => {
     setLocaleState(l);
-    localStorage.setItem(STORAGE_KEY, l);
+    try {
+      localStorage.setItem(STORAGE_KEY, l);
+    } catch {
+      // storage blocked — choice lasts for this visit only
+    }
   }, []);
 
-  // Keep document.title in sync — ready for future meta/OG expansion
   useEffect(() => {
     document.title = LOCALES[locale].meta.title;
+    document.documentElement.lang = locale;
   }, [locale]);
 
   return createElement(

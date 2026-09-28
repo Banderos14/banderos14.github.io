@@ -1,225 +1,296 @@
-// ── CSS vars — section background ──────────────────────────────────────────
-:root                { --about-bg: transparent; }
-[data-theme='light'] { --about-bg: var(--bg-2); }
+// Three numbered slabs: flat colour, 2px ink border, hard shadow.
+// Art | numbered text | metadata stamp.
 
-// ── Section wrapper ────────────────────────────────────────────────────────
-.section {
-  position: relative;
-  z-index: 2;
-  padding: 0;
-  background: var(--bg);
-}
-
-// ── Header area ───────────────────────────────────────────────────────────
-.headerWrap {
-  padding: 24px 0;
-
-  @media (max-width: 640px) { padding: 20px 0 24px; }
-}
-
-// ── Conway block — full-width with its own bg ─────────────────────────────
-.conwayBlock {
-  position: relative;
-  overflow: hidden;
-  background: var(--about-bg);
-}
-
-// Gradient fade blends conwayBlock into page bg
-.fadeTop,
-.fadeBottom {
-  position: absolute;
-  left: 0; right: 0;
-  height: 64px;
-  z-index: 4;
-  pointer-events: none;
-}
-.fadeTop    { top: 0;    background: linear-gradient(to bottom, var(--bg), transparent); }
-.fadeBottom { bottom: 0; background: linear-gradient(to top,   var(--bg), transparent); }
-
-// ── Section header ────────────────────────────────────────────────────────
-.header { @include section-header; }
-
-.num   { @include font-mono; font-size: 11px; color: var(--accent); letter-spacing: 0.08em; }
-.title { @include font-mono; font-size: 11px; color: var(--text-m); letter-spacing: 0.1em; text-transform: uppercase; }
-.line  { flex: 1; height: 1px; background: var(--border); }
-
-// ── Inner container (inside conwayBlock) ──────────────────────────────────
-.inner {
-  position: relative;
-  z-index: 5;
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 56px 40px 72px;
-}
-
-// ── 2-column layout ───────────────────────────────────────────────────────
-.layout {
+.about {
+  @include shell;
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 56px;
-  align-items: start;
+  gap: clamp(var(--space-xl), 5vw, var(--space-2xl));
+  padding-block: var(--section-pad);
+}
 
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 40px;
+.slab {
+  --art-bg: var(--color-paper);
+  --dot: var(--color-ink);
+  --num: var(--color-accent-2-deep);
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-lg);
+  padding: var(--space-lg);
+  border: var(--rule) solid var(--color-ink);
+  box-shadow: var(--shadow-card);
+
+  @include from(md) {
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: var(--space-xl);
+    padding: var(--space-xl);
+    align-items: start;
+  }
+
+  @include from(lg) {
+    grid-template-columns: 13rem minmax(0, 1fr) auto;
+    gap: var(--space-2xl);
+    padding: var(--space-2xl);
+    align-items: center;
   }
 }
 
-// ── LEFT column ───────────────────────────────────────────────────────────
-.left {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+.yellow {
+  --slab-bg: var(--color-accent);
+  --art-bg: var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-ink);
 }
 
-.heading {
-  font-family: var(--font-display);
-  font-size: clamp(31px, 5vw, 48px);
-  font-weight: 400;
-  color: var(--text);
-  line-height: 1.2;
-  letter-spacing: 0;
-  margin: 0;
+.ink {
+  --slab-bg: var(--color-ink);
+  --art-bg: var(--color-blue);
+  --dot: var(--color-on-dark);
+  --num: var(--color-accent);
+  background: var(--color-ink);
+  color: var(--color-on-dark);
+
+  .meta {
+    color: var(--color-on-dark-muted);
+  }
 }
+
+.orange {
+  --slab-bg: var(--color-accent-2);
+  --art-bg: var(--color-accent-2);
+  --num: var(--color-ink);
+  background: var(--color-accent-2);
+  color: var(--color-ink);
+
+  .meta {
+    color: var(--color-ink); // ink-2 is only 3.6:1 on orange
+  }
+}
+
+// — Art: photo or screenshot pushed through the slab colour + a dot screen.
+
+.art {
+  --clean: 0; // resting opacity of the clean layer
+  --clean-hover: 0.75;
+  --dot-opacity: 0.16;
+
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--art-bg);
+  border: var(--rule) solid var(--color-ink);
+
+  @include from(md) {
+    aspect-ratio: 4 / 5;
+  }
+
+  img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  // Print layer: grayscale multiplied into the slab colour.
+  .print {
+    filter: grayscale(1) contrast(1.15) brightness(1.08);
+    mix-blend-mode: multiply;
+  }
+
+  // Lifts pure blacks to navy so the print stays in palette.
+  .shade {
+    position: absolute;
+    inset: 0;
+    background: var(--color-ink);
+    mix-blend-mode: lighten;
+  }
+
+  .photo {
+    opacity: var(--clean);
+    transition: opacity 500ms var(--ease-out);
+  }
+
+  .dots {
+    background-size: 4px 4px;
+    opacity: var(--dot-opacity);
+    transition: opacity 500ms var(--ease-out);
+  }
+
+  // Same behaviour on all three panels: more of the clean original on hover.
+  @media (hover: hover) {
+    .slab:hover & {
+      .photo {
+        opacity: var(--clean-hover);
+      }
+
+      .dots {
+        opacity: 0;
+      }
+    }
+  }
+}
+
+// Product (light ticket card): regular multiply print, half the clean image
+// always visible so the ticket reads at rest; hover shows the original.
+.art_product {
+  --clean: 0.55;
+  --clean-hover: 1;
+  --dot-opacity: 0.08;
+}
+
+// Dark editor screenshot: 'screen' prints its light marks in the slab colour
+// (multiply would turn it black); dense, so mostly clean at rest.
+.art_tooling {
+  --clean: 0.82;
+  --clean-hover: 1;
+  --dot-opacity: 0.08;
+
+  .print {
+    filter: grayscale(1) contrast(1.2);
+    mix-blend-mode: screen;
+  }
+
+  .shade {
+    display: none;
+  }
+}
+
+.caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  gap: 0.15em;
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  border-top: var(--rule) solid var(--color-ink);
+
+  span {
+    @include label;
+    font-size: 0.625rem;
+    line-height: 1;
+    color: var(--color-muted);
+  }
+
+  strong {
+    @include display;
+    font-size: var(--text-base);
+    line-height: 1;
+    letter-spacing: 0.04em;
+  }
+}
+
+.dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(var(--dot) 1.4px, transparent 1.6px);
+  background-size: 8px 8px;
+}
+
+// — Text
 
 .text {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-
-  p {
-    font-size: 15px;
-    font-weight: 300;
-    line-height: 1.8;
-    color: var(--text-m);
-    margin: 0;
-
-    strong {
-      color: var(--text);
-      font-weight: 500;
-    }
-  }
+  min-width: 0;
 }
 
-.cta {
-  align-self: flex-start;
-  margin-top: 4px;
-
-  // Attract animation on touch — button pulses to invite tap
-  @media (pointer: coarse) {
-    :global(.btn-p) {
-      animation: ctaAttract 4s ease-in-out infinite 3s;
-    }
-  }
-}
-
-@keyframes ctaAttract {
-  0%, 100%  { transform: scale(1);    box-shadow: none; }
-  8%        { transform: scale(1.05); box-shadow: 0 6px 24px var(--accent-dim); }
-  16%       { transform: scale(0.97); }
-  22%       { transform: scale(1.02); }
-  28%       { transform: scale(1); }
-}
-
-// ── RIGHT column ──────────────────────────────────────────────────────────
-.right {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-// ── Stats 2×2 card ────────────────────────────────────────────────────────
-.statsCard {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  border-radius: 4px;
-  overflow: hidden;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-
-  [data-theme='light'] & {
-    background: rgba(255, 255, 255, 0.7);
-    border-color: rgba(0, 0, 0, 0.08);
-    border-radius: 0;
-  }
-}
-
-.statCell {
-  padding: 24px 20px 22px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-
-  [data-theme='light'] & {
-    border-right-color:  rgba(0, 0, 0, 0.06);
-    border-bottom-color: rgba(0, 0, 0, 0.06);
-  }
-
-  &:nth-child(even) { border-right: none; }
-  &:nth-child(3),
-  &:nth-child(4)    { border-bottom: none; }
-}
-
-.statNum {
-  font-family: var(--font-display);
-  font-size: 38px;
-  font-weight: 400;
-  color: var(--text);
-  letter-spacing: 0;
+.num {
+  @include display;
+  margin-bottom: var(--space-xs);
+  font-size: var(--text-2xl);
   line-height: 1;
-  min-width: 2.5ch;
+  letter-spacing: 0.02em;
+  color: var(--num);
 }
 
-.statLabel {
-  @include font-mono;
-  font-size: 10px;
-  color: var(--text-d);
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  line-height: 1.5;
+.title {
+  @include display;
+  margin-bottom: var(--space-sm);
+  font-size: clamp(2.5rem, 4vw + 1rem, 3.75rem);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-display);
+  overflow-wrap: anywhere;
 }
 
-// ── Code card ─────────────────────────────────────────────────────────────
-.codeCard {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  border-radius: 4px;
-  padding: 16px 18px;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+.meta {
+  @include label;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs) var(--space-lg);
+  margin-bottom: var(--space-md);
+  color: var(--color-ink-2);
+}
 
-  [data-theme='light'] & {
-    background: rgba(255, 255, 255, 0.7);
-    border-color: rgba(0, 0, 0, 0.08);
-    border-radius: 0;
+.body {
+  max-width: 46ch;
+
+  & + & {
+    margin-top: var(--space-sm);
+  }
+
+  font-size: var(--text-md);
+  line-height: var(--lh-normal);
+}
+
+// — Stamp: archival metadata label. Outline only, no fill, no shadow, no hover,
+// so it can't be mistaken for a button.
+
+.stamp {
+  position: relative;
+  display: grid;
+  gap: var(--space-2xs);
+  justify-items: start;
+  padding: var(--space-lg) var(--space-md) var(--space-md);
+  color: inherit;
+  border: 1px solid currentColor;
+  cursor: default;
+  user-select: text;
+
+  @include from(md) {
+    grid-column: 2;
+    justify-self: start;
+    min-width: 13rem;
+  }
+
+  @include from(lg) {
+    grid-column: auto;
+    min-width: 12.5rem;
   }
 }
 
-.code {
-  @include font-mono;
-  font-size: 12px;
-  line-height: 1.85;
-  margin: 0;
-  white-space: pre;
-
-  @media (max-width: 500px) { font-size: 10.5px; white-space: pre-wrap; }
+.stampIndex {
+  @include label;
+  position: absolute;
+  top: calc(var(--space-2xs) * -1 - 0.5em);
+  left: var(--space-sm);
+  padding-inline: var(--space-2xs);
+  font-size: 0.6875rem;
+  line-height: 1;
+  background: var(--slab-bg);
 }
 
-// Syntax colours
-.ckw   { color: #60a5fa; }
-.cid   { color: #fbbf24; }
-.cop   { color: var(--text-d); }
-.ckey  { color: var(--text-m); }
-.cstr  { color: #34d399; }
-.cbool { color: #f87171; }
+.stampLabel {
+  @include label;
+  width: 100%;
+  padding-bottom: var(--space-2xs);
+  margin-bottom: var(--space-2xs);
+  border-bottom: 1px solid currentColor;
+  opacity: 0.8;
+}
 
-[data-theme='light'] {
-  .ckw  { color: #2563eb; }
-  .cid  { color: #92400e; }
-  .cstr { color: #059669; }
-  .cbool{ color: #dc2626; }
+.stampTitle {
+  @include display;
+  font-size: var(--text-md);
+  line-height: var(--lh-snug);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.stampNote {
+  font-family: var(--font-label);
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
+  opacity: 0.85;
 }

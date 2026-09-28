@@ -1,0 +1,156 @@
+// Tracklist adaptation: full-bleed sky band, giant head left, ruled numbered index right.
+
+.band {
+  padding-block: var(--section-pad);
+  background: var(--color-sky);
+  border-block: var(--rule) solid var(--color-ink);
+}
+
+.inner {
+  @include shell;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2xl);
+
+  @include from(lg) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.55fr);
+    gap: var(--space-3xl);
+  }
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-lg);
+
+  @include from(lg) {
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-xl));
+    align-self: start;
+  }
+}
+
+.title {
+  @include display;
+  font-size: var(--text-display);
+  // Not poster leading: accented caps (FR "CRÉE") hit the Q tail above below ~1.05.
+  line-height: 1.05;
+  letter-spacing: var(--tracking-display);
+  overflow-wrap: anywhere;
+}
+
+.squares {
+  --squares-size: 1.5rem;
+}
+
+.intro {
+  max-width: 32ch;
+  font-size: var(--text-md);
+}
+
+.list {
+  border-top: var(--rule) solid var(--color-ink);
+  counter-reset: none;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--space-md);
+  row-gap: var(--space-2xs);
+  padding-block: var(--space-md);
+  border-bottom: var(--rule) solid var(--color-ink);
+
+  @include from(md) {
+    grid-template-columns: 4rem minmax(0, 1fr) auto;
+    padding-block: var(--space-lg);
+  }
+}
+
+.num {
+  @include display;
+  font-size: var(--text-xl);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--color-ink);
+
+  @include from(md) {
+    font-size: var(--text-2xl);
+  }
+}
+
+.name {
+  @include display;
+  font-size: var(--text-lg);
+  line-height: var(--lh-snug);
+  letter-spacing: 0.02em;
+  overflow-wrap: anywhere;
+
+  @include from(md) {
+    font-size: var(--text-xl);
+  }
+
+  small {
+    @include label;
+    display: block;
+    margin-top: var(--space-2xs);
+    color: var(--color-ink-2);
+  }
+}
+
+.proof {
+  @include label;
+  grid-column: 2;
+  justify-self: start;
+  padding-block: var(--space-2xs);
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  white-space: nowrap;
+  transition: text-decoration-color var(--dur-micro);
+
+  @include from(md) {
+    grid-column: auto;
+    justify-self: end;
+    text-decoration-color: transparent;
+  }
+
+  &:hover {
+    text-decoration-color: currentColor;
+  }
+
+  &:focus-visible {
+    outline-color: var(--color-ink);
+  }
+}
+
+.proofPlain {
+  color: var(--color-ink-2);
+  text-decoration: none;
+}
+
+// Row hover: title nudges right, arrow drops a few pixels. One move each, no fills.
+.name,
+.arrow {
+  transition: transform var(--dur-short) var(--ease-out);
+}
+
+.arrow {
+  margin-left: 0.5em;
+  vertical-align: -0.05em;
+}
+
+@media (hover: hover) {
+  .row:hover {
+    .name {
+      transform: translateX(6px);
+    }
+
+    .arrow {
+      transform: translateX(4px);
+    }
+  }
+}

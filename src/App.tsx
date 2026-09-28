@@ -1,39 +1,29 @@
-import { useGsapReveal } from '@/hooks/useGsapReveal';
-import { useTheme } from '@/hooks/useTheme';
-import { useScrollProgress } from '@/hooks/useScrollProgress';
-import { useLenisScroll } from '@/hooks/useLenisScroll';
-import { useMagneticButtons } from '@/hooks/useMagneticButtons';
-import Cursor from '@/components/Cursor/Cursor';
-import Nav from '@/components/Nav/Nav';
+import { useLocale } from '@/i18n';
+import Header from '@/components/Header/Header';
 import Hero from '@/components/Hero/Hero';
 import About from '@/components/About/About';
+import Capabilities from '@/components/Capabilities/Capabilities';
 import Work from '@/components/Work/Work';
 import Contact from '@/components/Contact/Contact';
 import Footer from '@/components/Footer/Footer';
-import BgCanvas from '@/components/BgCanvas/BgCanvas';
-import StatusBar from '@/components/StatusBar/StatusBar';
 
 export default function App() {
-  const { theme, toggle } = useTheme();
-  const { progress, scrollY } = useScrollProgress();
-
-  useGsapReveal();
-  useLenisScroll();
-  useMagneticButtons();
+  const { t } = useLocale();
 
   return (
     <>
-      <BgCanvas />
-      <Cursor />
-      <Nav scrollY={scrollY} theme={theme} onToggleTheme={toggle} />
-      <main>
+      <a className="skip-link" href="#main">
+        {t.a11y.skip}
+      </a>
+      <Header />
+      <main id="main">
         <Hero />
         <About />
+        <Capabilities />
         <Work />
         <Contact />
       </main>
       <Footer />
-      <StatusBar progress={progress} />
     </>
   );
 }

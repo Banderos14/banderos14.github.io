@@ -1,0 +1,23 @@
+.squares {
+  display: inline-flex;
+  gap: 0.5em;
+  font-size: var(--squares-size, 1.25rem);
+
+  i {
+    width: 1em;
+    height: 1em;
+    border: var(--rule) solid var(--color-ink);
+  }
+
+  i:nth-child(1) {
+    background: var(--color-accent);
+  }
+
+  i:nth-child(2) {
+    background: var(--color-accent-2);
+  }
+
+  i:nth-child(3) {
+    background: var(--color-blue);
+  }
+}
