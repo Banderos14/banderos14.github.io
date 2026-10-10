@@ -70,8 +70,8 @@ export const en = {
     ],
   },
   capabilities: {
-    title: ['What I', 'build.'],
-    intro: 'The systems I work on, and the project where each one runs.',
+    title: ['What I’ve', 'built.'],
+    intro: 'A few systems I’ve already built across my projects.',
     proof_label: 'See',
     no_proof: 'Personal tooling',
     items: {

@@ -71,8 +71,8 @@ export const fr: Translations = {
     ],
   },
   capabilities: {
-    title: ['Ce que', 'je crée.'],
-    intro: 'Les systèmes sur lesquels je travaille, et le projet où chacun tourne.',
+    title: ['Ce que j’ai', 'déjà réalisé.'],
+    intro: 'Quelques systèmes que j’ai déjà réalisés dans mes projets.',
     proof_label: 'Voir',
     no_proof: 'Outil personnel',
     items: {

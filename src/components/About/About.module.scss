@@ -69,6 +69,17 @@
 
 // — Art: photo or screenshot pushed through the slab colour + a dot screen.
 
+// Hover (desktop) / centred (touch) state: more of the clean original, no dots.
+@mixin clean-state {
+  .photo {
+    opacity: var(--clean-hover);
+  }
+
+  .dots {
+    opacity: 0;
+  }
+}
+
 .art {
   --clean: 0; // resting opacity of the clean layer
   --clean-hover: 0.75;
@@ -120,14 +131,14 @@
   // Same behaviour on all three panels: more of the clean original on hover.
   @media (hover: hover) {
     .slab:hover & {
-      .photo {
-        opacity: var(--clean-hover);
-      }
-
-      .dots {
-        opacity: 0;
-      }
+      @include clean-state;
     }
+  }
+
+  // Touch: same state while the slab sits in the centre of the viewport
+  // (.active is set by an IntersectionObserver in About.tsx).
+  .slab.active & {
+    @include clean-state;
   }
 }
 

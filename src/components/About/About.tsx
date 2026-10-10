@@ -1,11 +1,71 @@
+import { useEffect, useRef, useState, type MutableRefObject } from 'react';
 import { useLocale } from '@/i18n';
 import { aboutVisuals } from '@/data/profile';
 import s from './About.module.scss';
 
 const TONES = ['yellow', 'ink', 'orange'] as const;
 
+// Devices that can't hover get the hover state from scroll position instead.
+const TOUCH = '(hover: none), (pointer: coarse)';
+// Centre band of the viewport (middle 30%) that counts as "being read".
+const BAND = '-35% 0px -35% 0px';
+
+/** Index of the slab crossing the centre band, on touch devices only; null otherwise. */
+function useActiveSlab(slabs: MutableRefObject<(HTMLElement | null)[]>) {
+  const [active, setActive] = useState<number | null>(null);
+
+  useEffect(() => {
+    const mq = window.matchMedia(TOUCH);
+    let io: IntersectionObserver | null = null;
+
+    const start = () => {
+      io?.disconnect();
+      io = null;
+      setActive(null);
+      if (!mq.matches || !('IntersectionObserver' in window)) return;
+
+      const inBand = new Set<Element>();
+      io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) inBand.add(e.target);
+            else inBand.delete(e.target);
+          }
+          // One active slab at a time: the one whose centre is nearest the viewport's.
+          const mid = window.innerHeight / 2;
+          let best: number | null = null;
+          let bestDist = Infinity;
+          slabs.current.forEach((el, i) => {
+            if (!el || !inBand.has(el)) return;
+            const r = el.getBoundingClientRect();
+            const d = Math.abs(r.top + r.height / 2 - mid);
+            if (d < bestDist) {
+              bestDist = d;
+              best = i;
+            }
+          });
+          setActive(best);
+        },
+        { rootMargin: BAND },
+      );
+      slabs.current.forEach((el) => el && io!.observe(el));
+    };
+
+    start();
+    mq.addEventListener('change', start);
+    return () => {
+      mq.removeEventListener('change', start);
+      io?.disconnect();
+    };
+  }, [slabs]);
+
+  return active;
+}
+
 export default function About() {
   const { t } = useLocale();
+  const slabs = useRef<(HTMLElement | null)[]>([]);
+  const active = useActiveSlab(slabs);
 
   return (
     <section className={s.about} id="about" aria-labelledby="about-title">
@@ -14,7 +74,13 @@ export default function About() {
       </h2>
 
       {t.about.blocks.map((b, i) => (
-        <article key={b.id} className={`${s.slab} ${s[TONES[i % TONES.length]]}`}>
+        <article
+          key={b.id}
+          ref={(el) => {
+            slabs.current[i] = el;
+          }}
+          className={`${s.slab} ${s[TONES[i % TONES.length]]}${active === i ? ` ${s.active}` : ''}`}
+        >
           <div className={`${s.art} ${s[`art_${b.art}`]}`}>
             {/* Print layer: grayscale multiplied into the slab colour, shadows lifted to navy */}
             <img
@@ -28,7 +94,7 @@ export default function About() {
               style={{ objectPosition: aboutVisuals[b.art as keyof typeof aboutVisuals].focus }}
             />
             <span className={s.shade} aria-hidden="true" />
-            {/* Clean original, faded in on hover */}
+            {/* Clean original, faded in on hover (or while centred, on touch) */}
             <img
               className={s.photo}
               src={aboutVisuals[b.art as keyof typeof aboutVisuals].src}
