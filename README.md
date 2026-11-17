@@ -9,6 +9,7 @@ The site itself is intentionally simple — the main focus is the work.
 ## Selected work
 
 - **Tête-à-Tête Theatre** — booking and admin platform I maintain in production.
+- **BearlyCopy** — macOS app I built that keeps an AI coding agent's final answer, verbatim, one click from any other chat.
 - **Nice Gadgets** — e-commerce project from Mate Academy.
 - **2048** — browser game built from scratch.
 - **Nice Café** — interactive landing page with a 3D visual.

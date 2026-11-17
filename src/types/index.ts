@@ -1,4 +1,4 @@
-export type ProjectStatus = 'production' | 'live' | 'concept';
+export type ProjectStatus = 'production' | 'live' | 'concept' | 'app';
 
 export interface Project {
   /** Key into translation files — t.projects[slug] holds name/role/desc */
@@ -8,6 +8,12 @@ export interface Project {
   tags: string[];
   live?: string;
   github?: string;
+  /** Release download. When set it replaces the live link as the primary action. */
+  download?: string;
+  /** Renders as a full-width card like the lead project. */
+  featured?: boolean;
+  /** Featured card with the media on the right at desktop widths. */
+  mirror?: boolean;
   screenshot?: string;
   /** Intrinsic screenshot size, reserves space before load. Default 1600×900. */
   shotSize?: [number, number];

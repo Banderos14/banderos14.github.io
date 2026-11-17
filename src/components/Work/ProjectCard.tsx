@@ -18,7 +18,7 @@ export default function ProjectCard({ project: p, index, featured = false }: Pro
   return (
     <article
       id={`project-${p.slug}`}
-      className={`${s.card} ${featured ? s.featured : ''}`}
+      className={`${s.card} ${featured ? s.featured : ''} ${featured && p.mirror ? s.mirror : ''}`}
       aria-labelledby={`project-${p.slug}-title`}
     >
       <span className={`${s.tag} ${s[`tag_${p.status}`]}`}>{t.work.status[p.status]}</span>
@@ -57,6 +57,23 @@ export default function ProjectCard({ project: p, index, featured = false }: Pro
           </div>
         )}
 
+        {featured && copy.how && (
+          <div className={s.how}>
+            <h4 className={s.label}>{t.work.how}</h4>
+            <ol>
+              {copy.how.map((step) => (
+                <li key={step}>{step}</li>
+              ))}
+            </ol>
+          </div>
+        )}
+
+        {featured && copy.audience && (
+          <p className={s.audience}>
+            <strong>{t.work.audience}.</strong> {copy.audience}
+          </p>
+        )}
+
         {p.tags.length > 0 && (
           <p className={s.stack}>
             <span className="sr-only">{t.work.stack}: </span>
@@ -74,8 +91,15 @@ export default function ProjectCard({ project: p, index, featured = false }: Pro
           </span>
         </div>
 
-        {(p.live || p.github) && (
+        {(p.live || p.download || p.github) && (
           <div className={s.actions}>
+            {p.download && (
+              <a className={s.primary} href={p.download} target="_blank" rel="noopener noreferrer">
+                {t.work.download}
+                <Chevron className={s.chev} />
+                <span className="sr-only"> {t.a11y.new_tab}</span>
+              </a>
+            )}
             {p.live && (
               <a className={s.primary} href={p.live} target="_blank" rel="noopener noreferrer">
                 {t.work.live}

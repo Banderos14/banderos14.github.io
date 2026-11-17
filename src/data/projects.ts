@@ -1,5 +1,6 @@
 import type { Project } from '@/types';
 import { teteGallery } from './teteGallery';
+import { bearlyGallery } from './bearlyGallery';
 
 /**
  * Selected work, in display order. The first entry renders as the featured card.
@@ -23,6 +24,22 @@ const allProjects: Project[] = [
     screenshot: '/img/tete/home-fr.webp',
     shotSize: [1280, 1000],
     gallery: teteGallery,
+  },
+  {
+    slug: 'bearlycopy',
+    year: 2026,
+    status: 'app',
+    // Verified against the BearlyCopy repo (README, docs/PORTFOLIO.md): Swift 5.10 / SwiftUI + AppKit
+    // app, Python 3.9+ stdlib core, Claude Code plugin hooks. macOS 14+, Apple Silicon only.
+    tags: ['Swift', 'SwiftUI', 'AppKit', 'Python', 'Claude Code hooks'],
+    download: 'https://github.com/Banderos14/BearlyCopy/releases/latest',
+    github: 'https://github.com/Banderos14/BearlyCopy',
+    featured: true,
+    mirror: true,
+    // Details view, demo data. Crop keeps the whole island (no baked caption).
+    screenshot: '/img/bearlycopy/details.webp',
+    shotSize: [1440, 1060],
+    gallery: bearlyGallery,
   },
   {
     slug: 'portfolio',

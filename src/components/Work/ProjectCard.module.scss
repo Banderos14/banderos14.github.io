@@ -73,6 +73,36 @@
   }
 }
 
+// Second featured card: media on the right, so the two wide cards alternate.
+.mirror {
+  @include from(lg) {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.2fr);
+
+    .shot {
+      grid-column: 2;
+      grid-row: 1;
+      border-right: 0;
+      border-left: var(--rule) solid var(--color-ink);
+    }
+
+    .body {
+      grid-column: 1;
+      grid-row: 1;
+    }
+  }
+
+  // Dark product shot: the ground matches the screenshot's own backdrop
+  // (top/bottom edge colours), so the image blends in instead of floating.
+  .shot {
+    background: linear-gradient(to bottom, #332a25 50%, #1d1816 50%);
+  }
+
+  .shot img {
+    object-fit: contain;
+    object-position: 50% 50%;
+  }
+}
+
 // — Tag on the top edge
 
 .tag {
@@ -95,6 +125,10 @@
 
 .tag_live {
   background: var(--color-sky);
+}
+
+.tag_app {
+  background: var(--color-blue);
 }
 
 .tag_concept {
@@ -179,6 +213,44 @@
     letter-spacing: 0.03em;
     line-height: var(--lh-snug);
     border-bottom: 1px solid var(--color-ink);
+  }
+}
+
+.how ol {
+  counter-reset: step;
+  border-top: var(--rule) solid var(--color-ink);
+
+  li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    align-items: baseline;
+    padding-block: 0.4rem;
+    line-height: var(--lh-snug);
+    border-bottom: 1px solid var(--color-ink);
+
+    &::before {
+      @include display;
+      content: counter(step, decimal-leading-zero);
+      color: var(--color-accent-2-deep);
+      font-size: var(--text-md);
+    }
+  }
+}
+
+.audience {
+  max-width: 60ch;
+  padding-left: var(--space-sm);
+  line-height: var(--lh-normal);
+  color: var(--color-ink-2);
+  border-left: calc(var(--rule) * 2) solid var(--color-accent);
+
+  strong {
+    @include label;
+    display: block;
+    margin-bottom: 0.2rem;
+    color: var(--color-muted);
+    font-weight: 500;
   }
 }
 

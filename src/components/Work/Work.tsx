@@ -6,7 +6,6 @@ import s from './Work.module.scss';
 
 export default function Work() {
   const { t } = useLocale();
-  const [lead, ...rest] = projects;
 
   return (
     <section className={s.work} id="work" aria-labelledby="work-title">
@@ -20,9 +19,8 @@ export default function Work() {
       </header>
 
       <div className={s.grid}>
-        <ProjectCard project={lead} index={0} featured />
-        {rest.map((p, i) => (
-          <ProjectCard key={p.slug} project={p} index={i + 1} />
+        {projects.map((p, i) => (
+          <ProjectCard key={p.slug} project={p} index={i} featured={p.featured ?? i === 0} />
         ))}
       </div>
     </section>
